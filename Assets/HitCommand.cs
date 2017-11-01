@@ -1,15 +1,21 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(DamageSkill))]
 public class HitCommand : Command
 {
-    public HealthPoints Damage { get; set; }
+    private DamageSkill _damageSkill;
 
-    public override void Execute(GameObject actor)
+    public override void ExecuteCommand(GameObject actor)
     {
+        if (_damageSkill == null)
+        {
+            _damageSkill = GetComponent<DamageSkill>();
+        }
+
         UnitHealth health = actor.GetComponent<UnitHealth>();
         if (health != null)
         {
-            health.Hit(Damage);
+            health.Hit(_damageSkill.DamageValue);
         }
     }
 }

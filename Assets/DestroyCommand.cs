@@ -2,7 +2,7 @@
 
 public class DestroyCommand : Command
 {
-    public override void Execute(GameObject actor)
+    public override void ExecuteCommand(GameObject actor)
     {
         Destroy(gameObject);
     }

@@ -26,6 +26,9 @@ GameObject:
   - component: {fileID: 114199910434857542}
   - component: {fileID: 114001166990242556}
   - component: {fileID: 114958018698460986}
+  - component: {fileID: 114733010124290368}
+  - component: {fileID: 95323792700341506}
+  - component: {fileID: 114828184700736252}
   m_Layer: 10
   m_Name: Projectile
   m_TagString: Respawn
@@ -91,6 +94,23 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.16, y: 0.16}
   m_EdgeRadius: 0
+--- !u!95 &95323792700341506
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1990917973647500}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 13b175efa54cef8489eb1bcd2a6df8bf, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &114001166990242556
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -124,12 +144,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38d9d481b4707a548a6309c157986f98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _collisionEnterCommands: []
-  _collisionExitCommands: []
-  _triggerEnterCommands:
+  _tags:
+    _tagsArray:
+    - Enemy
+    - Wall
+  _colliderType: 1
+  _collisionType: 0
+  _commands:
   - {fileID: 114001166990242556}
   - {fileID: 114199910434857542}
-  _triggerExitCommands: []
+--- !u!114 &114733010124290368
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1990917973647500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a17a767f3b925324293defb54a4cc26e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _damageValue:
+    _value: 0
+--- !u!114 &114828184700736252
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1990917973647500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 241a261c891e35b4989751872e8ecc8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 0}
 --- !u!114 &114958018698460986
 MonoBehaviour:
   m_ObjectHideFlags: 1

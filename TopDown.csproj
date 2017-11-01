@@ -1,0 +1,208 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.20506</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{663E6AEF-2A3E-CC63-3D39-0F3B5505ABD2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AssemblyName>Assembly-CSharp</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
+    <CompilerResponseFile></CompilerResponseFile>
+    <UnityProjectType>Game:1</UnityProjectType>
+    <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
+    <UnityVersion>2017.1.1f1</UnityVersion>
+    <RootNamespace></RootNamespace>
+    <LangVersion>4</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Temp\UnityVS_bin\Debug\</OutputPath>
+    <IntermediateOutputPath>Temp\UnityVS_obj\Debug\</IntermediateOutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_1_1;UNITY_2017_1;UNITY_2017;PLATFORM_ARCH_64;UNITY_64;UNITY_ANALYTICS;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_RUNTIME_NAVMESH_BUILDING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_DIRECTOR;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_TIMELINE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;ENABLE_SPRITE_MASKING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;ENABLE_MONO_BDWGC;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_VIDEO;ENABLE_RMGUI;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_STYLE_SHEETS;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_VR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_2_0_SUBSET;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;ENABLE_VSTU</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Temp\UnityVS_bin\Release\</OutputPath>
+    <IntermediateOutputPath>Temp\UnityVS_obj\Release\</IntermediateOutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DefineConstants>TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_1_1;UNITY_2017_1;UNITY_2017;PLATFORM_ARCH_64;UNITY_64;UNITY_ANALYTICS;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_RUNTIME_NAVMESH_BUILDING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_DIRECTOR;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_TIMELINE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;ENABLE_SPRITE_MASKING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;ENABLE_MONO_BDWGC;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_VIDEO;ENABLE_RMGUI;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_STYLE_SHEETS;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_VR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_2_0_SUBSET;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;ENABLE_VSTU</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Core" />
+    <Reference Include="Boo.Lang" />
+    <Reference Include="UnityScript.Lang" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="UnityEditor">
+      <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>Library\UnityAssemblies\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Networking">
+      <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TestRunner">
+      <HintPath>Library\UnityAssemblies\UnityEngine.TestRunner.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>Library\UnityAssemblies\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Timeline">
+      <HintPath>Library\UnityAssemblies\UnityEngine.Timeline.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Analytics">
+      <HintPath>Library\UnityAssemblies\UnityEngine.Analytics.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.HoloLens">
+      <HintPath>Library\UnityAssemblies\UnityEngine.HoloLens.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.iOS.Extensions.Xcode">
+      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.iOS.Extensions.Common">
+      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Common.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\BuffShootDeltaTimeCommand.cs" />
+    <Compile Include="Assets\BuffSpeedCommand.cs" />
+    <Compile Include="Assets\BulletSpawner.cs" />
+    <Compile Include="Assets\CameraMover\CameraMover.cs" />
+    <Compile Include="Assets\CameraMover\ICameraSizeGetter.cs" />
+    <Compile Include="Assets\CollisionActionHandler.cs" />
+    <Compile Include="Assets\Command.cs" />
+    <Compile Include="Assets\DamageSkill.cs" />
+    <Compile Include="Assets\DespawnCommand.cs" />
+    <Compile Include="Assets\DestroyCommand.cs" />
+    <Compile Include="Assets\FollowMoveController.cs" />
+    <Compile Include="Assets\HealthPoints.cs" />
+    <Compile Include="Assets\HitCommand.cs" />
+    <Compile Include="Assets\HittableBody.cs" />
+    <Compile Include="Assets\IMutable.cs" />
+    <Compile Include="Assets\Mathematics\IInterpolator.cs" />
+    <Compile Include="Assets\MobSkillSet.cs" />
+    <Compile Include="Assets\MobViewController.cs" />
+    <Compile Include="Assets\MonoCameraMover.cs" />
+    <Compile Include="Assets\MoveController.cs" />
+    <Compile Include="Assets\Mover.cs" />
+    <Compile Include="Assets\PlayerMoveController.cs" />
+    <Compile Include="Assets\PlayerMoveController1.cs" />
+    <Compile Include="Assets\PlayerView.cs" />
+    <Compile Include="Assets\PlayerViewController.cs" />
+    <Compile Include="Assets\Projectile.cs" />
+    <Compile Include="Assets\ProjectileView.cs" />
+    <Compile Include="Assets\Scripts\Modules\Common\BasicObjectDependant.cs" />
+    <Compile Include="Assets\Scripts\Modules\Common\ErrorMessages\ErrorMessages.cs" />
+    <Compile Include="Assets\Scripts\Modules\Common\IPausable.cs" />
+    <Compile Include="Assets\Scripts\Modules\Common\IResetable.cs" />
+    <Compile Include="Assets\Scripts\Modules\Common\Singleton.cs" />
+    <Compile Include="Assets\Scripts\Modules\EventHandler\Basic\EventArguments.cs" />
+    <Compile Include="Assets\Scripts\Modules\EventHandler\Basic\IEventListener.cs" />
+    <Compile Include="Assets\Scripts\Modules\EventHandler\Basic\IEventManager.cs" />
+    <Compile Include="Assets\Scripts\Modules\EventHandler\Basic\IEventSender.cs" />
+    <Compile Include="Assets\Scripts\Modules\EventHandler\TypeEventManager\TypeEventManager.cs" />
+    <Compile Include="Assets\Scripts\Modules\InputManager\Basic\IInputArguments.cs" />
+    <Compile Include="Assets\Scripts\Modules\InputManager\Basic\IInputControl.cs" />
+    <Compile Include="Assets\Scripts\Modules\InputManager\Basic\IInputManager.cs" />
+    <Compile Include="Assets\Scripts\Modules\InputManager\Basic\InputAttribute.cs" />
+    <Compile Include="Assets\Scripts\Modules\InputManager\Basic\InputDictionary.cs" />
+    <Compile Include="Assets\Scripts\Modules\InputManager\InputDevices\ActionInputControl\ActionInputControl.cs" />
+    <Compile Include="Assets\Scripts\Modules\InputManager\InputDevices\DeviceInputControl\ClickButtonDeviceInputControl.cs" />
+    <Compile Include="Assets\Scripts\Modules\InputManager\InputDevices\DeviceInputControl\DeviceInputControl.cs" />
+    <Compile Include="Assets\Scripts\Modules\InputManager\InputDevices\DeviceInputControl\HoldButtonDeviceInputControl.cs" />
+    <Compile Include="Assets\Scripts\Modules\InputManager\InputDevices\DeviceInputControl\MoveCursorDeviceInputControl.cs" />
+    <Compile Include="Assets\Scripts\Modules\InputManager\InputDevices\Devices\KeyboardInputDevice.cs" />
+    <Compile Include="Assets\Scripts\Modules\InputManager\InputDevices\Devices\MouseInputDevice.cs" />
+    <Compile Include="Assets\Scripts\Modules\InputManager\InputDevices\Interfaces\IInputDevice.cs" />
+    <Compile Include="Assets\Scripts\Modules\InputManager\InputDevices\Interfaces\IInputDeviceClickable.cs" />
+    <Compile Include="Assets\Scripts\Modules\InputManager\InputDevices\Interfaces\IInputDeviceHoldable.cs" />
+    <Compile Include="Assets\Scripts\Modules\InputManager\InputDevices\Interfaces\IInputDevicePositioned.cs" />
+    <Compile Include="Assets\Scripts\Modules\InputManager\Test\InputAttributesSet.cs" />
+    <Compile Include="Assets\Scripts\Modules\InputManager\Test\InputManager.cs" />
+    <Compile Include="Assets\Scripts\Modules\ObjectMover\Basic\Arguments\IControlArguments.cs" />
+    <Compile Include="Assets\Scripts\Modules\ObjectMover\Basic\Arguments\IDirectionControlArguments.cs" />
+    <Compile Include="Assets\Scripts\Modules\ObjectMover\Basic\IControllableObjectMover.cs" />
+    <Compile Include="Assets\Scripts\Modules\ObjectMover\Basic\IMoveController.cs" />
+    <Compile Include="Assets\Scripts\Modules\ObjectMover\Basic\IObjectMover.cs" />
+    <Compile Include="Assets\Scripts\Modules\ObjectMover\MonoBehaviorObjectMover\ControllableMover\MonoBehaviorControllableObjectMover.cs" />
+    <Compile Include="Assets\Scripts\Modules\ObjectMover\MonoBehaviorObjectMover\Controller\MonoBehaviorMoveController.cs" />
+    <Compile Include="Assets\Scripts\Modules\ObjectMover\MonoBehaviorObjectMover\Mover\MonoBehaviorObjectMover.cs" />
+    <Compile Include="Assets\Scripts\Modules\ObjectMover\ObjectDependantObjectMover\ControllableMover\ObjectDependantControllableObjectMover.cs" />
+    <Compile Include="Assets\Scripts\Modules\ObjectMover\ObjectDependantObjectMover\Mover\ObjectDependantObjectMover.cs" />
+    <Compile Include="Assets\Scripts\Modules\ObjectMover\TestMover\DirectionControlArguments.cs" />
+    <Compile Include="Assets\Scripts\Modules\ObjectMover\TestMover\SimpleControllableMover.cs" />
+    <Compile Include="Assets\Scripts\Modules\Spawner\Basic\IDespawner.cs" />
+    <Compile Include="Assets\Scripts\Modules\Spawner\Basic\ISpawnableObject.cs" />
+    <Compile Include="Assets\Scripts\Modules\Spawner\Basic\ISpawner.cs" />
+    <Compile Include="Assets\Scripts\Modules\Spawner\ObjectGetter\IObjectGetter.cs" />
+    <Compile Include="Assets\Scripts\Modules\Spawner\ObjectGetter\SpawnableObjectWrapper.cs" />
+    <Compile Include="Assets\Scripts\Modules\Spawner\Pool\Basic\IObjectPoolLibrary.cs" />
+    <Compile Include="Assets\Scripts\Modules\Spawner\Pool\Basic\IPool.cs" />
+    <Compile Include="Assets\Scripts\Modules\Spawner\Pool\Basic\IPoolCreator.cs" />
+    <Compile Include="Assets\Scripts\Modules\Spawner\Pool\PrefabPool\DefaultPoolCreator.cs" />
+    <Compile Include="Assets\Scripts\Modules\Spawner\Pool\PrefabPool\ObjectInstantiator\ComponentInstantiator.cs" />
+    <Compile Include="Assets\Scripts\Modules\Spawner\Pool\PrefabPool\ObjectInstantiator\GameObjectInstantiator.cs" />
+    <Compile Include="Assets\Scripts\Modules\Spawner\Pool\PrefabPool\ObjectInstantiator\IObjectInstantiator.cs" />
+    <Compile Include="Assets\Scripts\Modules\Spawner\Pool\PrefabPool\ObjectInstantiator\ObjectInstantiatorFactory.cs" />
+    <Compile Include="Assets\Scripts\Modules\Spawner\Pool\PrefabPool\PrefabPool.cs" />
+    <Compile Include="Assets\Scripts\Modules\Spawner\PoolSpawner\DictionaryPoolLibrary.cs" />
+    <Compile Include="Assets\Scripts\Modules\Spawner\PoolSpawner\PoolSpawner.cs" />
+    <Compile Include="Assets\Scripts\Modules\Timer\Basic\ITimer.cs" />
+    <Compile Include="Assets\Scripts\Modules\Timer\CoroutineTimer\EndTimeTimer.cs" />
+    <Compile Include="Assets\Scripts\Modules\Timer\CoroutineTimer\IntervalTimer.cs" />
+    <Compile Include="Assets\Scripts\Modules\Timer\CoroutineTimer\TimerManager.cs" />
+    <Compile Include="Assets\Scripts\Modules\Tunnel\Basic\Angle.cs" />
+    <Compile Include="Assets\Scripts\Modules\Tunnel\Basic\ITunnel.cs" />
+    <Compile Include="Assets\Scripts\Modules\Tunnel\Basic\PositionRotation.cs" />
+    <Compile Include="Assets\Scripts\Modules\Tunnel\Basic\TunnelTransform.cs" />
+    <Compile Include="Assets\Scripts\Modules\Tunnel\Basic\TunnelVector2.cs" />
+    <Compile Include="Assets\Scripts\Modules\Tunnel\Basic\TunnelVector3.cs" />
+    <Compile Include="Assets\Scripts\Modules\Tunnel\SimpleCurve.cs" />
+    <Compile Include="Assets\Scripts\Modules\Tunnel\SimpleCurvedCurve.cs" />
+    <Compile Include="Assets\Scripts\Modules\Tunnel\SimpleCut.cs" />
+    <Compile Include="Assets\Scripts\Modules\Tunnel\SimpleDetailMap.cs" />
+    <Compile Include="Assets\Scripts\Modules\Tunnel\TunnelDetail\Basic\IDetailMap.cs" />
+    <Compile Include="Assets\Scripts\Modules\Tunnel\TunnelDetail\Basic\IPositionCurve.cs" />
+    <Compile Include="Assets\Scripts\Modules\Tunnel\TunnelDetail\Basic\ITunnelDetailCut.cs" />
+    <Compile Include="Assets\Scripts\Modules\Tunnel\TunnelDetail\Basic\ITunnelRails.cs" />
+    <Compile Include="Assets\Scripts\Modules\Tunnel\TunnelDetail\Basic\TunnelDetail.cs" />
+    <Compile Include="Assets\Scripts\Modules\Tunnel\TunnelDetail\DetailedTunnel.cs" />
+    <Compile Include="Assets\Scripts\Modules\Tunnel\TunnelDetail\DetailMap.cs" />
+    <Compile Include="Assets\Scripts\Modules\Tunnel\TunnelDetail\IPositionRotationCalculator.cs" />
+    <Compile Include="Assets\Scripts\Modules\Tunnel\TunnelDetail\SimplePositionRotationCalculator.cs" />
+    <Compile Include="Assets\Scripts\TagCheckList.cs" />
+    <Compile Include="Assets\SimpleProjectile.cs" />
+    <Compile Include="Assets\SimpleProjecTileWeapon.cs" />
+    <Compile Include="Assets\StateMachine\IState.cs" />
+    <Compile Include="Assets\StateMachine\StateMachine.cs" />
+    <Compile Include="Assets\StateMachine\Walk\WalkState.cs" />
+    <Compile Include="Assets\TestCommand.cs" />
+    <Compile Include="Assets\TilePit.cs" />
+    <Compile Include="Assets\UnitHealth.cs" />
+    <Compile Include="Assets\Vector3Direction.cs" />
+    <Compile Include="Assets\Weapon.cs" />
+    <Compile Include="Assets\WeaponController.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="GenerateTargetFrameworkMonikerAttribute" />
+</Project>

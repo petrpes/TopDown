@@ -2,25 +2,24 @@
 
 public class PlayerView : MonoBehaviour
 {
-    [SerializeField] private Animation _hitAnimation;
-    [SerializeField] private Animation _deathAnimation;
+    [SerializeField] private Animator _animator;
     [SerializeField] private SpriteRenderer _spriteRenderer;
 
     private bool _isLookingLeft;
 
     public void StartHitAnimation()
     {
-        _hitAnimation.Play();
+        _animator.SetBool("IsHit", true);
     }
 
     public void StopHitAnimation()
     {
-        _hitAnimation.Stop();
+        _animator.SetBool("IsHit", false);
     }
 
     public void StartDeathAnimation()
     {
-        _deathAnimation.Play();
+        _animator.SetBool("IsDead", true);
     }
 
     public bool IsLookingLeft

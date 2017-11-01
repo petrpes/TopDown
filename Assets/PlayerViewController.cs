@@ -14,6 +14,7 @@ public class PlayerViewController : MonoBehaviour
         if (_unitHealth != null)
         {
             _unitHealth.AfterHitAction += AfterHitAction;
+            _unitHealth.DeathAction += Die;
         }
         _mover = GetComponent<Mover>();
         _mover.MovingAction += MovingAction;

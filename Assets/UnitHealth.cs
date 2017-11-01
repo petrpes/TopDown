@@ -48,6 +48,9 @@ public class UnitHealth : MonoBehaviour
             }
             else
             {
+                _currentHealth = HealthPoints.Zero;
+                IsInvincible = true;
+
                 if (DeathAction != null)
                 {
                     DeathAction.Invoke();

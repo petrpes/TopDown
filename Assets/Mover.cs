@@ -21,12 +21,15 @@ public class Mover : MonoBehaviour
         if (_controller.GetControl(out direction))
         {
             Vector3 speed = direction * _skillSet.Speed;
-            MovingAction.Invoke(speed);
+            if (MovingAction != null)
+            {
+                MovingAction.Invoke(speed);
+            }
             _rigidbody.velocity = speed;
         }
         else if (_rigidbody.velocity != Vector2.zero)
         {
-            _rigidbody.velocity = Vector3.zero;
+            _rigidbody.velocity = Vector2.zero;
         }
     }
 }

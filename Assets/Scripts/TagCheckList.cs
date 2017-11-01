@@ -6,13 +6,18 @@ using UnityEditor;
 [Serializable]
 public class TagCheckList
 {
-    [SerializeField] private string[] TagsArray;
+    [SerializeField] private string[] _tagsArray;
 
     public bool ContainsTag(string tag)
     {
-        for (int i = 0; i < TagsArray.Length; i++)
+        if (_tagsArray == null || _tagsArray.Length == 0)
         {
-            if (TagsArray[i].Equals(tag))
+            return true;
+        }
+
+        for (int i = 0; i < _tagsArray.Length; i++)
+        {
+            if (_tagsArray[i].Equals(tag))
             {
                 return true;
             }
@@ -43,7 +48,7 @@ public class TagCheckListEditor : PropertyDrawer
             List<string> tagList = new List<string>();
             tagList.AddRange(UnityEditorInternal.InternalEditorUtility.tags);
 
-            SerializedProperty arrayProperty = property.FindPropertyRelative("TagsArray");
+            SerializedProperty arrayProperty = property.FindPropertyRelative("_tagsArray");
             ResetPropertyList(tagList, arrayProperty);
 
             for (int i = 0; i < tagList.Count; i++)
@@ -55,7 +60,7 @@ public class TagCheckListEditor : PropertyDrawer
                 SetListContainsTag(tagList[i], isToggled, arrayProperty);
             }
 
-            var buttonRect = new Rect(position.x, position.y + CheckBoxSize * tagList.Count, CheckBoxSize + LabelWidth, CheckBoxSize);
+            /*var buttonRect = new Rect(position.x, position.y + CheckBoxSize * tagList.Count, CheckBoxSize + LabelWidth, CheckBoxSize);
             if (GUI.Button(buttonRect, "select all"))
             {
                 SelectAll(arrayProperty, tagList);
@@ -65,7 +70,7 @@ public class TagCheckListEditor : PropertyDrawer
             if (GUI.Button(buttonRect, "deselect all"))
             {
                 DeselectAll(arrayProperty);
-            }
+            }*/
 
             EditorGUI.EndProperty();
         }
@@ -132,7 +137,7 @@ public class TagCheckListEditor : PropertyDrawer
         float height = base.GetPropertyHeight(property, label);
         if (isFoldout)
         {
-            height += UnityEditorInternal.InternalEditorUtility.tags.Length * CheckBoxSize + CheckBoxSize * 2;
+            height += UnityEditorInternal.InternalEditorUtility.tags.Length * CheckBoxSize;
         }
         return height;
     }

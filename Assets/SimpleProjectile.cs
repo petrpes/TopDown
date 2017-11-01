@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(HitCommand))]
+[RequireComponent(typeof(DamageSkill))]
 [RequireComponent(typeof(Rigidbody2D))]
 public class SimpleProjectile : Projectile
 {
-    private HitCommand _hitCommand;
+    private DamageSkill _damageSkill;
     private Rigidbody2D _rigidbody2D;
 
     public override void Shoot(Vector3 position, float rotation, Vector3 speed, HealthPoints damageAddition)
@@ -13,12 +13,12 @@ public class SimpleProjectile : Projectile
         {
             _rigidbody2D = GetComponent<Rigidbody2D>();
         }
-        if (_hitCommand == null)
+        if (_damageSkill == null)
         {
-            _hitCommand = GetComponent<HitCommand>();
+            _damageSkill = GetComponent<DamageSkill>();
         }
 
-        _hitCommand.Damage = damageAddition;
+        _damageSkill.DamageValue = damageAddition;
 
         _rigidbody2D.position = position;
         _rigidbody2D.rotation = rotation;

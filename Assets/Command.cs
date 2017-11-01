@@ -1,7 +1,22 @@
 ﻿using UnityEngine;
 
-public abstract class Command : MonoBehaviour
+public abstract class Command : MonoBehaviour, IMutable, IResetable
 {
-    public abstract void Execute(GameObject actor);
+    public bool IsMuted { get; set; }
+
+    public void Execute(GameObject actor)
+    {
+        if (!IsMuted)
+        {
+            ExecuteCommand(actor);
+        }
+    }
+
+    public abstract void ExecuteCommand(GameObject actor);
+
+    public void Reset()
+    {
+        IsMuted = false;
+    }
 }
 
