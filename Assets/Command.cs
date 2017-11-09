@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Components.Common;
+using UnityEngine;
 
 public abstract class Command : MonoBehaviour, IMutable, IResetable
 {

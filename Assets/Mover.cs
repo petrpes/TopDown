@@ -17,10 +17,10 @@ public class Mover : MonoBehaviour
             _rigidbody = GetComponent<Rigidbody2D>();
         }
 
-        Vector3 direction;
+        DirectionVector direction;
         if (_controller.GetControl(out direction))
         {
-            Vector3 speed = direction * _skillSet.Speed;
+            Vector3 speed = direction.Value * _skillSet.Speed;
             if (MovingAction != null)
             {
                 MovingAction.Invoke(speed);

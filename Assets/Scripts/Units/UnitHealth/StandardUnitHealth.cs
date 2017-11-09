@@ -1,12 +1,11 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class UnitHealth : MonoBehaviour
+public class StandardUnitHealth : UnitHealth
 {
     [SerializeField] private HealthPoints _maxHealth;
     [SerializeField] private HealthPoints _currentHealth;
 
-    public HealthPoints CurrentHealth
+    public override HealthPoints CurrentHealth
     {
         get
         {
@@ -14,11 +13,7 @@ public class UnitHealth : MonoBehaviour
         }
     }
 
-    public event Action AfterHealAction;
-    public event Action AfterHitAction;
-    public event Action DeathAction;
-
-    public bool Heal(HealthPoints health)
+    public override bool Heal(HealthPoints health)
     {
         if (_currentHealth + health > _maxHealth)
         {
@@ -28,38 +23,31 @@ public class UnitHealth : MonoBehaviour
 
         if (health != HealthPoints.Zero)
         {
-            AfterHealAction.Invoke();
+            InvokeHealAction();
             return true;
         }
         return false;
     }
 
-    public bool Hit(HealthPoints health)
+    public override bool Hit(HealthPoints health)
     {
         if (!IsInvincible)
         {
             _currentHealth -= health;
             if (_currentHealth > HealthPoints.Zero)
             {
-                if (AfterHitAction != null)
-                {
-                    AfterHitAction.Invoke();
-                }
+                InvokeHitAction();
             }
             else
             {
                 _currentHealth = HealthPoints.Zero;
                 IsInvincible = true;
 
-                if (DeathAction != null)
-                {
-                    DeathAction.Invoke();
-                }
+                InvokeDeathAction();
             }
             return true;
         }
         return false;
     }
-
-    public bool IsInvincible { get; set; }
 }
+

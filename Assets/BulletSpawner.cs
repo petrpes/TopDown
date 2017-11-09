@@ -1,4 +1,6 @@
-﻿public class BulletSpawner
+﻿using Components.Spawner.Pool;
+
+public class BulletSpawner
 {
     public static BulletSpawner Instance = new BulletSpawner();
 

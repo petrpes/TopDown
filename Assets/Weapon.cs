@@ -1,8 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour
 {
-    public abstract bool Attack(Vector3 direction);
+    public abstract bool Attack(DirectionVector direction);
 }
+

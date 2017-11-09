@@ -1,15 +1,13 @@
-﻿using UnityEngine;
-
-public class PlayerMoveController : MoveController
+﻿public class PlayerMoveController : MoveController
 {
     private class MoveDirection : IDirectionInputArguments
     {
-        public Vector3 Direction { get; set; }
+        public DirectionVector Direction { get; set; }
     }
 
     private MoveDirection _moveDirection;
 
-    public override bool GetControl(out Vector3 direction)
+    public override bool GetControl(out DirectionVector direction)
     {
         bool result = false;
         if (_moveDirection == null)

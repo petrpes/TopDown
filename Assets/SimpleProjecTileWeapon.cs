@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Components.Timer;
+using System.Collections;
 using UnityEngine;
 
 public class SimpleProjecTileWeapon : Weapon
@@ -9,26 +10,35 @@ public class SimpleProjecTileWeapon : Weapon
     [SerializeField] private DamageSkill _damageSkill;
 
     private bool _isCanAttack = true;
+    private ExpirationTimer _shootTimer;
 
-    public override bool Attack(Vector3 direction)
+    public override bool Attack(DirectionVector direction)
     {
+        if (_shootTimer == null)
+        {
+            _shootTimer = new ExpirationTimer(_skillSet.ShootDeltaTime, true);
+            _shootTimer.OnExpiredTimer += AttackAction;
+        }
+        if (_shootTimer.ExpirationTime != _skillSet.ShootDeltaTime)
+        {
+            _shootTimer.ExpirationTime = _skillSet.ShootDeltaTime;
+        }
+
         if (_isCanAttack)
         {
             Projectile projecTile = BulletSpawner.Instance.Spawn(_projecTile);
-            float rotation = Mathf.Atan2(direction.y, direction.x) *
+            float rotation = Mathf.Atan2(direction.Value.y, direction.Value.x) *
                 Mathf.Rad2Deg - 90;
-            projecTile.Shoot(transform.position, rotation, direction * _speed, _damageSkill.DamageValue);
-            StartCoroutine(AttackTimer(_skillSet.ShootDeltaTime));
-
+            projecTile.Shoot(transform.position, rotation, direction.Value * _speed, _damageSkill.DamageValue);
+            _isCanAttack = false;
+            _shootTimer.Start();
             return true;
         }
         return false;
     }
 
-    private IEnumerator AttackTimer(float deltaTime)
+    private void AttackAction()
     {
-        _isCanAttack = false;
-        yield return new WaitForSeconds(deltaTime);
         _isCanAttack = true;
     }
 }

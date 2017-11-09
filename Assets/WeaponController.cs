@@ -7,7 +7,7 @@ public class WeaponController : MonoBehaviour
         public bool IsPositionSet { get; private set; }
 
         private Vector3 _position;
-        private Vector3 _direction;
+        private DirectionVector _direction;
 
         public Vector3 Position
         {
@@ -15,10 +15,10 @@ public class WeaponController : MonoBehaviour
             set { _position = value; IsPositionSet = true; }
         }
 
-        public Vector3 Direction
+        public DirectionVector Direction
         {
             get { return _direction; }
-            set { _direction = value; _direction.Normalize(); IsPositionSet = false; }
+            set { _direction = value; IsPositionSet = false; }
         }
     }
 
@@ -43,11 +43,11 @@ public class WeaponController : MonoBehaviour
         {
             if (_inputArguments.IsPositionSet)
             {
-                _inputArguments.Direction = _inputArguments.Position - PlayerOnScreenPosition;
+                _inputArguments.Direction = new DirectionVector(_inputArguments.Position - PlayerOnScreenPosition);
             }
             _lastPosition = _transform.position;
-            _target.position = _lastPosition + _inputArguments.Direction;
-            float angle = Mathf.Atan2(_inputArguments.Direction.y, _inputArguments.Direction.x) * 
+            _target.position = _lastPosition + _inputArguments.Direction.Value;
+            float angle = Mathf.Atan2(_inputArguments.Direction.Value.y, _inputArguments.Direction.Value.x) * 
                 Mathf.Rad2Deg - 90;
             _target.rotation = Quaternion.Euler(0f, 0f, angle);
         }
