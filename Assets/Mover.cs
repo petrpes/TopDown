@@ -1,35 +1,61 @@
 ﻿using System;
 using UnityEngine;
 
+[RequireComponent(typeof(WalkableSkillsSet))]
+[RequireComponent(typeof(MoveController))]
 public class Mover : MonoBehaviour
 {
-    [SerializeField] private MoveController _controller;
-    [SerializeField] private MobSkillSet _skillSet;
-
     public event Action<Vector3> MovingAction;
 
+    private WalkableSkillsSet _skillSet;
     private Rigidbody2D _rigidbody;
+    private MoveController _controller;
+
+    public Vector3 CurrentSpeedVector { get; private set; }
+    private bool _hasStopped;
+
+    private float Acceleration { get { return _skillSet.Speed / (_skillSet.AccelerationTime / Time.deltaTime); } }
 
     void FixedUpdate ()
     {
+        if (_skillSet == null)
+        {
+            _skillSet = GetComponent<WalkableSkillsSet>();
+        }
         if (_rigidbody == null)
         {
             _rigidbody = GetComponent<Rigidbody2D>();
         }
+        if (_controller == null)
+        {
+            _controller = GetComponent<MoveController>();
+        }
+
+        Vector3 desiredSpeedVector;
 
         DirectionVector direction;
         if (_controller.GetControl(out direction))
         {
-            Vector3 speed = direction.Value * _skillSet.Speed;
+            _hasStopped = false;
+            desiredSpeedVector = direction.Value * _skillSet.Speed;
+        }
+        else
+        {
+            desiredSpeedVector = Vector3.zero;
+        }
+
+        CurrentSpeedVector = Vector3.Lerp(CurrentSpeedVector, desiredSpeedVector, Acceleration);
+
+        if (!_hasStopped)
+        {
             if (MovingAction != null)
             {
-                MovingAction.Invoke(speed);
+                MovingAction.Invoke(desiredSpeedVector);
             }
-            _rigidbody.velocity = speed;
-        }
-        else if (_rigidbody.velocity != Vector2.zero)
-        {
-            _rigidbody.velocity = Vector2.zero;
+
+            _rigidbody.velocity = CurrentSpeedVector;
+
+            _hasStopped = CurrentSpeedVector.Equals(Vector3.zero);
         }
     }
 }

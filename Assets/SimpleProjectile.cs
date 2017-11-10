@@ -7,7 +7,7 @@ public class SimpleProjectile : Projectile
     private DamageSkill _damageSkill;
     private Rigidbody2D _rigidbody2D;
 
-    public override void Shoot(Vector3 position, float rotation, Vector3 speed, HealthPoints damageAddition)
+    public override void Shoot(Vector3 position, float rotation, float range, Vector3 speed, HealthPoints damageAddition)
     {
         if (_rigidbody2D == null)
         {

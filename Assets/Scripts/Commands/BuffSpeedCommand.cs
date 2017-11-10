@@ -6,7 +6,7 @@ public class BuffSpeedCommand : Command
 
     public override void ExecuteCommand(GameObject actor)
     {
-        actor.GetComponent<MobSkillSet>().Speed += _buff;
+        actor.GetComponent<WalkableSkillsSet>().Speed += _buff;
     }
 }
 

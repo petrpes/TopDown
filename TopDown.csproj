@@ -84,23 +84,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\BuffShootDeltaTimeCommand.cs" />
-    <Compile Include="Assets\BuffSpeedCommand.cs" />
     <Compile Include="Assets\BulletSpawner.cs" />
     <Compile Include="Assets\CameraMover\CameraMover.cs" />
     <Compile Include="Assets\CameraMover\ICameraSizeGetter.cs" />
     <Compile Include="Assets\CollisionActionHandler.cs" />
-    <Compile Include="Assets\Command.cs" />
-    <Compile Include="Assets\DamageSkill.cs" />
-    <Compile Include="Assets\DespawnCommand.cs" />
-    <Compile Include="Assets\DestroyCommand.cs" />
     <Compile Include="Assets\FollowMoveController.cs" />
     <Compile Include="Assets\HealthPoints.cs" />
-    <Compile Include="Assets\HitCommand.cs" />
     <Compile Include="Assets\HittableBody.cs" />
     <Compile Include="Assets\IMutable.cs" />
     <Compile Include="Assets\Mathematics\IInterpolator.cs" />
-    <Compile Include="Assets\MobSkillSet.cs" />
     <Compile Include="Assets\MobViewController.cs" />
     <Compile Include="Assets\MonoCameraMover.cs" />
     <Compile Include="Assets\MoveController.cs" />
@@ -111,6 +103,14 @@
     <Compile Include="Assets\PlayerViewController.cs" />
     <Compile Include="Assets\Projectile.cs" />
     <Compile Include="Assets\ProjectileView.cs" />
+    <Compile Include="Assets\Scripts\Commands\BuffAccelerationCommand.cs" />
+    <Compile Include="Assets\Scripts\Commands\BuffShootDeltaTimeCommand.cs" />
+    <Compile Include="Assets\Scripts\Commands\BuffSpeedCommand.cs" />
+    <Compile Include="Assets\Scripts\Commands\Command.cs" />
+    <Compile Include="Assets\Scripts\Commands\DespawnCommand.cs" />
+    <Compile Include="Assets\Scripts\Commands\DestroyCommand.cs" />
+    <Compile Include="Assets\Scripts\Commands\HitCommand.cs" />
+    <Compile Include="Assets\Scripts\Commands\TestCommand.cs" />
     <Compile Include="Assets\Scripts\InputManager\InputAttributesSet.cs" />
     <Compile Include="Assets\Scripts\InputManager\InputManager.cs" />
     <Compile Include="Assets\Scripts\Modules\Common\ErrorMessages\ErrorMessages.cs" />
@@ -161,6 +161,10 @@
     <Compile Include="Assets\Scripts\Modules\Timer\StopWatch\StopWatch.cs" />
     <Compile Include="Assets\Scripts\Modules\Timer\TimeGetter\DefaultTimeGetter.cs" />
     <Compile Include="Assets\Scripts\Modules\Timer\TimeGetter\ITimeGetter.cs" />
+    <Compile Include="Assets\Scripts\OrderInLayerDefiner.cs" />
+    <Compile Include="Assets\Scripts\Skills\DamageSkill.cs" />
+    <Compile Include="Assets\Scripts\Skills\MobSkillSet.cs" />
+    <Compile Include="Assets\Scripts\Skills\WalkableSkillsSet.cs" />
     <Compile Include="Assets\Scripts\TagCheckList.cs" />
     <Compile Include="Assets\Scripts\Units\UnitHealth\StandardUnitHealth.cs" />
     <Compile Include="Assets\Scripts\Units\UnitHealth\UnitHealth.cs" />
@@ -169,7 +173,6 @@
     <Compile Include="Assets\StateMachine\IState.cs" />
     <Compile Include="Assets\StateMachine\StateMachine.cs" />
     <Compile Include="Assets\StateMachine\Walk\WalkState.cs" />
-    <Compile Include="Assets\TestCommand.cs" />
     <Compile Include="Assets\TilePit.cs" />
     <Compile Include="Assets\Vector3Direction.cs" />
     <Compile Include="Assets\Weapon.cs" />

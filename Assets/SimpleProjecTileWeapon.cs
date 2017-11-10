@@ -1,5 +1,4 @@
 ﻿using Components.Timer;
-using System.Collections;
 using UnityEngine;
 
 public class SimpleProjecTileWeapon : Weapon
@@ -16,7 +15,7 @@ public class SimpleProjecTileWeapon : Weapon
     {
         if (_shootTimer == null)
         {
-            _shootTimer = new ExpirationTimer(_skillSet.ShootDeltaTime, true);
+            _shootTimer = new ExpirationTimer(_skillSet.ShootDeltaTime);
             _shootTimer.OnExpiredTimer += AttackAction;
         }
         if (_shootTimer.ExpirationTime != _skillSet.ShootDeltaTime)
@@ -29,7 +28,7 @@ public class SimpleProjecTileWeapon : Weapon
             Projectile projecTile = BulletSpawner.Instance.Spawn(_projecTile);
             float rotation = Mathf.Atan2(direction.Value.y, direction.Value.x) *
                 Mathf.Rad2Deg - 90;
-            projecTile.Shoot(transform.position, rotation, direction.Value * _speed, _damageSkill.DamageValue);
+            projecTile.Shoot(transform.position, rotation, 1, direction.Value * _speed, _damageSkill.DamageValue);
             _isCanAttack = false;
             _shootTimer.Start();
             return true;
