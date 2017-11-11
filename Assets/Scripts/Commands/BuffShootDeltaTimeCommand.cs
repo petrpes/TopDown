@@ -6,7 +6,11 @@ public class BuffShootDeltaTimeCommand : Command
 
     public override void ExecuteCommand(GameObject actor)
     {
-        actor.GetComponent<MobSkillSet>().ShootDeltaTime /= _buff;
+        BuffHandler buffHandler = actor.GetComponent<BuffHandler>();
+        if (buffHandler != null)
+        {
+            buffHandler.BuffParameter(BuffType.ShootDeltaTime, _buff, gameObject);
+        }
     }
 }
 

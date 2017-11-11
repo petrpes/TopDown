@@ -5,7 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Wall
-  - Enemy
+  - Mob
+  - Surrounding
   layers:
   - Default
   - TransparentFX
@@ -15,13 +16,13 @@ TagManager:
   - UI
   - 
   - 
-  - Player
-  - Mob
-  - PlayerProjectile
-  - MobProjectile
-  - Buff
-  - Wall
   - Tile
+  - PickUps
+  - Legs
+  - Wings
+  - Projectiles
+  - HittableBody
+  - Walls
   - 
   - 
   - 
@@ -46,7 +47,7 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Mob
+  - name: SceneObjects
     uniqueID: 3523863075
     locked: 0
   - name: InGameUI

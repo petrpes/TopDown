@@ -19,19 +19,20 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4770213805279164}
-  - component: {fileID: 212961556426133932}
-  - component: {fileID: 61412934743264240}
-  - component: {fileID: 50492830543901934}
   - component: {fileID: 114352580037239750}
-  - component: {fileID: 114199910434857542}
+  - component: {fileID: 114669821233585706}
   - component: {fileID: 114001166990242556}
+  - component: {fileID: 114199910434857542}
   - component: {fileID: 114958018698460986}
   - component: {fileID: 114733010124290368}
-  - component: {fileID: 95323792700341506}
   - component: {fileID: 114828184700736252}
-  m_Layer: 10
+  - component: {fileID: 61412934743264240}
+  - component: {fileID: 50492830543901934}
+  - component: {fileID: 95323792700341506}
+  - component: {fileID: 212961556426133932}
+  m_Layer: 12
   m_Name: Projectile
-  m_TagString: Respawn
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -122,6 +123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f1ca6f42ced5574481ac05479e0fe76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _onHitCommand: {fileID: 114199910434857542}
 --- !u!114 &114199910434857542
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -146,13 +148,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _tags:
     _tagsArray:
-    - Enemy
     - Wall
+    - Surrounding
+  _colliderType: 1
+  _collisionType: 0
+  _commands:
+  - {fileID: 114199910434857542}
+--- !u!114 &114669821233585706
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1990917973647500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38d9d481b4707a548a6309c157986f98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tags:
+    _tagsArray:
+    - Mob
+    - Player
   _colliderType: 1
   _collisionType: 0
   _commands:
   - {fileID: 114001166990242556}
-  - {fileID: 114199910434857542}
 --- !u!114 &114733010124290368
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -166,6 +186,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _damageValue:
     _value: 0
+  _fraction:
+    _fraction: 0
 --- !u!114 &114828184700736252
 MonoBehaviour:
   m_ObjectHideFlags: 1

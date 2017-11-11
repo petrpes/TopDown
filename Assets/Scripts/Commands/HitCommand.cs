@@ -24,7 +24,10 @@ public class HitCommand : Command
             if (actorFraction.IsHittableBy(_damageSkill.CurrentFraction))
             {
                 actorHealth.Hit(_damageSkill.DamageValue);
-                _onHitCommand.Execute(actor);
+                if (_onHitCommand != null)
+                {
+                    _onHitCommand.Execute(actor);
+                }
             }
         }
     }

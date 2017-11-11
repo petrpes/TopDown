@@ -68,10 +68,6 @@ public class CollisionActionHandler : MonoBehaviour
     private void ExecuteCommands(ColliderType currentColliderType, 
         CollisionType currentCollisionType, GameObject actor)
     {
-        if (actor.name == "HittableBody" && currentColliderType == _colliderType)
-        {
-            Debug.Log(111);
-        }
         if (currentColliderType == _colliderType && _tags.ContainsTag(actor.tag) &&
             !_updateCollisions.Contains(actor))
         {

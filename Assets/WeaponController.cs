@@ -25,7 +25,7 @@ public class WeaponController : MonoBehaviour
     [SerializeField] private Camera _camera;
     [SerializeField] private Transform _target;
     [SerializeField] private Weapon _weapon;
-    [SerializeField] private MobSkillSet _mobSkillSet;
+
     private Transform _transform;
     private PositionDirectionInputArguments _inputArguments;
     private Vector3 _lastPosition;

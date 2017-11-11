@@ -1,12 +1,9 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
-[RequireComponent(typeof(UnitHealth))]
 public class MobViewController : MonoBehaviour
 {
+    [SerializeField] private UnitHealth _unitHealth;
     [SerializeField] private Command[] _deathCommands;
-
-    private UnitHealth _unitHealth;
 
     private void Awake()
     {

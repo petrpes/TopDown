@@ -58,7 +58,7 @@ public class Mover : MonoBehaviour
         {
             if (MovingAction != null)
             {
-                MovingAction.Invoke(desiredSpeedVector);
+                MovingAction.Invoke(CurrentSpeedVector);
             }
 
             _rigidbody.velocity = CurrentSpeedVector;

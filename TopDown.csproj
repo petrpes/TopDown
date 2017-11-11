@@ -102,6 +102,8 @@
     <Compile Include="Assets\PlayerViewController.cs" />
     <Compile Include="Assets\Projectile.cs" />
     <Compile Include="Assets\ProjectileView.cs" />
+    <Compile Include="Assets\Scripts\Buff\BuffHandler.cs" />
+    <Compile Include="Assets\Scripts\Buff\ComponentsBuffHandler.cs" />
     <Compile Include="Assets\Scripts\CollisionHandler\CollisionActionHandler.cs" />
     <Compile Include="Assets\Scripts\CollisionHandler\CollisionsList.cs" />
     <Compile Include="Assets\Scripts\Commands\BuffAccelerationCommand.cs" />
@@ -111,6 +113,7 @@
     <Compile Include="Assets\Scripts\Commands\DespawnCommand.cs" />
     <Compile Include="Assets\Scripts\Commands\DestroyCommand.cs" />
     <Compile Include="Assets\Scripts\Commands\HitCommand.cs" />
+    <Compile Include="Assets\Scripts\Commands\SuckUnitCommand.cs" />
     <Compile Include="Assets\Scripts\Commands\TestCommand.cs" />
     <Compile Include="Assets\Scripts\Fraction.cs" />
     <Compile Include="Assets\Scripts\InputManager\InputAttributesSet.cs" />

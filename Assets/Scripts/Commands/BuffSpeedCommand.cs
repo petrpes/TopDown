@@ -6,10 +6,10 @@ public class BuffSpeedCommand : Command
 
     public override void ExecuteCommand(GameObject actor)
     {
-        WalkableSkillsSet skillSet = actor.GetComponent<WalkableSkillsSet>();
-        if (skillSet != null)
+        BuffHandler buffHandler = actor.GetComponent<BuffHandler>();
+        if (buffHandler != null)
         {
-            skillSet.Speed += _buff;
+            buffHandler.BuffParameter(BuffType.Speed, _buff, gameObject);
         }
     }
 }
