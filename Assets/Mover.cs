@@ -5,10 +5,10 @@ using UnityEngine;
 [RequireComponent(typeof(MoveController))]
 public class Mover : MonoBehaviour
 {
+    [SerializeField] private Rigidbody2D _rigidbody;
     public event Action<Vector3> MovingAction;
 
     private WalkableSkillsSet _skillSet;
-    private Rigidbody2D _rigidbody;
     private MoveController _controller;
 
     public Vector3 CurrentSpeedVector { get; private set; }

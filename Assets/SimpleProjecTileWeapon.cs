@@ -28,7 +28,8 @@ public class SimpleProjecTileWeapon : Weapon
             Projectile projecTile = BulletSpawner.Instance.Spawn(_projecTile);
             float rotation = Mathf.Atan2(direction.Value.y, direction.Value.x) *
                 Mathf.Rad2Deg - 90;
-            projecTile.Shoot(transform.position, rotation, 1, direction.Value * _speed, _damageSkill.DamageValue);
+            projecTile.Shoot(transform.position, rotation, 1, direction.Value * _speed, _damageSkill.DamageValue, 
+                _damageSkill.CurrentFraction);
             _isCanAttack = false;
             _shootTimer.Start();
             return true;

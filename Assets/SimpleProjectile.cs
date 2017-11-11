@@ -7,7 +7,8 @@ public class SimpleProjectile : Projectile
     private DamageSkill _damageSkill;
     private Rigidbody2D _rigidbody2D;
 
-    public override void Shoot(Vector3 position, float rotation, float range, Vector3 speed, HealthPoints damageAddition)
+    public override void Shoot(Vector3 position, float rotation, float range, Vector3 speed, HealthPoints damageAddition,
+        Fraction currentFraction)
     {
         if (_rigidbody2D == null)
         {
@@ -19,6 +20,7 @@ public class SimpleProjectile : Projectile
         }
 
         _damageSkill.DamageValue = damageAddition;
+        _damageSkill.CurrentFraction = currentFraction;
 
         _rigidbody2D.position = position;
         _rigidbody2D.rotation = rotation;

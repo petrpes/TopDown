@@ -112,6 +112,7 @@
     <Compile Include="Assets\Scripts\Commands\DestroyCommand.cs" />
     <Compile Include="Assets\Scripts\Commands\HitCommand.cs" />
     <Compile Include="Assets\Scripts\Commands\TestCommand.cs" />
+    <Compile Include="Assets\Scripts\Fraction.cs" />
     <Compile Include="Assets\Scripts\InputManager\InputAttributesSet.cs" />
     <Compile Include="Assets\Scripts\InputManager\InputManager.cs" />
     <Compile Include="Assets\Scripts\Modules\Common\ErrorMessages\ErrorMessages.cs" />
