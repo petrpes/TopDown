@@ -87,7 +87,6 @@
     <Compile Include="Assets\BulletSpawner.cs" />
     <Compile Include="Assets\CameraMover\CameraMover.cs" />
     <Compile Include="Assets\CameraMover\ICameraSizeGetter.cs" />
-    <Compile Include="Assets\CollisionActionHandler.cs" />
     <Compile Include="Assets\FollowMoveController.cs" />
     <Compile Include="Assets\HealthPoints.cs" />
     <Compile Include="Assets\HittableBody.cs" />
@@ -103,6 +102,8 @@
     <Compile Include="Assets\PlayerViewController.cs" />
     <Compile Include="Assets\Projectile.cs" />
     <Compile Include="Assets\ProjectileView.cs" />
+    <Compile Include="Assets\Scripts\CollisionHandler\CollisionActionHandler.cs" />
+    <Compile Include="Assets\Scripts\CollisionHandler\CollisionsList.cs" />
     <Compile Include="Assets\Scripts\Commands\BuffAccelerationCommand.cs" />
     <Compile Include="Assets\Scripts\Commands\BuffShootDeltaTimeCommand.cs" />
     <Compile Include="Assets\Scripts\Commands\BuffSpeedCommand.cs" />

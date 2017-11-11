@@ -9,7 +9,6 @@ public class BuffAccelerationCommand : Command
         WalkableSkillsSet skillSet = actor.GetComponent<WalkableSkillsSet>();
         if (skillSet != null)
         {
-            Debug.Log(_buff);
             skillSet.AccelerationTime += _buff;
         }
     }

@@ -8,15 +8,25 @@ public class CollisionActionHandler : MonoBehaviour
     [SerializeField] private CollisionType _collisionType;
     [SerializeField] private Command[] _commands;
 
-    private IList<GameObject> _collisions;
+    private ICollection<GameObject> _collisions;
+    private ICollection<GameObject> _updateCollisions;
 
     private void Awake()
     {
         if (_collisions == null)
         {
-            _collisions = new List<GameObject>();
+            _collisions = new CollisionsList();
         }
+        if (_updateCollisions == null)
+        {
+            _updateCollisions = new CollisionsList();
+        }
+    }
+
+    private void OnDisable()
+    {
         _collisions.Clear();
+        _updateCollisions.Clear();
     }
 
     private void FixedUpdate()
@@ -25,16 +35,14 @@ public class CollisionActionHandler : MonoBehaviour
         {
             for (int i = 0; i < _commands.Length; i++)
             {
-                for (int j = 0; j < _collisions.Count; j++)
+                foreach (GameObject collision in _collisions)
                 {
-                    _commands[i].Execute(_collisions[j]);
+                    _commands[i].Execute(collision);
                 }
             }
         }
-        else
-        {
-            _collisions.Clear();
-        }
+
+        _updateCollisions.Clear();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -60,22 +68,29 @@ public class CollisionActionHandler : MonoBehaviour
     private void ExecuteCommands(ColliderType currentColliderType, 
         CollisionType currentCollisionType, GameObject actor)
     {
-        if (currentColliderType == _colliderType && _tags.ContainsTag(actor.tag))
+        if (actor.name == "HittableBody" && currentColliderType == _colliderType)
         {
-            if (currentCollisionType == CollisionType.OnEnter &&
-                _collisionType == CollisionType.OnStay && 
-                !_collisions.Contains(actor))
+            Debug.Log(111);
+        }
+        if (currentColliderType == _colliderType && _tags.ContainsTag(actor.tag) &&
+            !_updateCollisions.Contains(actor))
+        {
+
+            bool shouldExecute = false;
+            if (currentCollisionType == CollisionType.OnEnter)
             {
+                shouldExecute = !_collisions.Contains(actor);
                 _collisions.Add(actor);
             }
-            else if (currentCollisionType == CollisionType.OnExit &&
-                _collisionType == CollisionType.OnStay)
+            else if (currentCollisionType == CollisionType.OnExit)
             {
                 _collisions.Remove(actor);
+                shouldExecute = !_collisions.Contains(actor);
             }
-            else if (currentCollisionType == _collisionType && !_collisions.Contains(actor))
+
+            if (currentCollisionType == _collisionType && shouldExecute)
             {
-                _collisions.Add(actor);
+                _updateCollisions.Add(actor);
 
                 for (int i = 0; i < _commands.Length; i++)
                 {

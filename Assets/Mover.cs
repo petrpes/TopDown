@@ -14,7 +14,15 @@ public class Mover : MonoBehaviour
     public Vector3 CurrentSpeedVector { get; private set; }
     private bool _hasStopped;
 
-    private float Acceleration { get { return _skillSet.Speed / (_skillSet.AccelerationTime / Time.deltaTime); } }
+    private float Acceleration
+    {
+        get
+        {
+            float accelerationTime = _skillSet.AccelerationTime / Time.deltaTime;
+            accelerationTime = accelerationTime < 1 ? 1 : accelerationTime;
+            return _skillSet.Speed / accelerationTime;
+        }
+    }
 
     void FixedUpdate ()
     {
