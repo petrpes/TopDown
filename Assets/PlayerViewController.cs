@@ -18,7 +18,7 @@ public class PlayerViewController : MonoBehaviour
 
         if (_mover != null)
         {
-            _mover.MovingAction += MovingAction;
+            _mover.WalkingAction += MovingAction;
         }
     }
 

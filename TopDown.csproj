@@ -95,7 +95,6 @@
     <Compile Include="Assets\MobViewController.cs" />
     <Compile Include="Assets\MonoCameraMover.cs" />
     <Compile Include="Assets\MoveController.cs" />
-    <Compile Include="Assets\Mover.cs" />
     <Compile Include="Assets\PlayerMoveController.cs" />
     <Compile Include="Assets\PlayerMoveController1.cs" />
     <Compile Include="Assets\PlayerView.cs" />
@@ -168,6 +167,8 @@
     <Compile Include="Assets\Scripts\Modules\Timer\StopWatch\StopWatch.cs" />
     <Compile Include="Assets\Scripts\Modules\Timer\TimeGetter\DefaultTimeGetter.cs" />
     <Compile Include="Assets\Scripts\Modules\Timer\TimeGetter\ITimeGetter.cs" />
+    <Compile Include="Assets\Scripts\Mover\Mover.cs" />
+    <Compile Include="Assets\Scripts\Mover\VelocityMover.cs" />
     <Compile Include="Assets\Scripts\OrderInLayerDefiner.cs" />
     <Compile Include="Assets\Scripts\Skills\DamageSkill.cs" />
     <Compile Include="Assets\Scripts\Skills\MobSkillSet.cs" />
