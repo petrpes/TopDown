@@ -3,7 +3,7 @@
 [RequireComponent(typeof(DamageSkill))]
 public class HitCommand : Command
 {
-    [SerializeField] private Command _onHitCommand;
+    [SerializeField] private Command[] _onHitCommand;
 
     private DamageSkill _damageSkill;
 
@@ -23,10 +23,13 @@ public class HitCommand : Command
 
             if (actorFraction.IsHittableBy(_damageSkill.CurrentFraction))
             {
-                actorHealth.Hit(_damageSkill.DamageValue);
+                actorHealth.Hit(_damageSkill.DamageValue, gameObject);
                 if (_onHitCommand != null)
                 {
-                    _onHitCommand.Execute(actor);
+                    for (int i = 0; i < _onHitCommand.Length; i++)
+                    {
+                        _onHitCommand[i].Execute(actor);
+                    }
                 }
             }
         }

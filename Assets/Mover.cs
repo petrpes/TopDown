@@ -52,6 +52,7 @@ public class Mover : MonoBehaviour
             desiredSpeedVector = Vector3.zero;
         }
 
+        CurrentSpeedVector = _rigidbody.velocity;
         CurrentSpeedVector = Vector3.Lerp(CurrentSpeedVector, desiredSpeedVector, Acceleration);
 
         if (!_hasStopped)

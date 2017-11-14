@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 114352580037239750}
   - component: {fileID: 114669821233585706}
   - component: {fileID: 114001166990242556}
+  - component: {fileID: 114817687415960232}
   - component: {fileID: 114199910434857542}
   - component: {fileID: 114958018698460986}
   - component: {fileID: 114733010124290368}
@@ -123,7 +124,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f1ca6f42ced5574481ac05479e0fe76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _onHitCommand: {fileID: 114199910434857542}
+  _onHitCommand:
+  - {fileID: 114817687415960232}
+  - {fileID: 114199910434857542}
 --- !u!114 &114199910434857542
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -149,7 +152,6 @@ MonoBehaviour:
   _tags:
     _tagsArray:
     - Wall
-    - Surrounding
   _colliderType: 1
   _collisionType: 0
   _commands:
@@ -169,6 +171,7 @@ MonoBehaviour:
     _tagsArray:
     - Mob
     - Player
+    - Surrounding
   _colliderType: 1
   _collisionType: 0
   _commands:
@@ -188,6 +191,20 @@ MonoBehaviour:
     _value: 0
   _fraction:
     _fraction: 0
+  _movableBody: {fileID: 0}
+--- !u!114 &114817687415960232
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1990917973647500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7c9bff550ce0614bb77024e82548ca7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _useVelocity: 1
+  _mass: 0.5
 --- !u!114 &114828184700736252
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -18,7 +18,7 @@ public class SuckUnitCommand : Command
 
         Vector3 velocity = rigidbody.velocity;
         rigidbody.velocity = Vector3.zero;
-        health.Hit(_damage);
+        health.Hit(_damage, gameObject);
 
         StartCoroutine(Fall(spriteRenderer, rigidbody, health, velocity));
     }

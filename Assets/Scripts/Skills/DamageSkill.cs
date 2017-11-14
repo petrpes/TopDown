@@ -4,6 +4,7 @@ public class DamageSkill : MonoBehaviour
 {
     [SerializeField] private HealthPoints _damageValue;
     [SerializeField] private Fraction _fraction;
+    [SerializeField] private Rigidbody2D _movableBody;
 
     public HealthPoints DamageValue
     {
@@ -21,6 +22,12 @@ public class DamageSkill : MonoBehaviour
     {
         get { return _fraction; }
         set { _fraction = value; }
+    }
+
+    public Rigidbody2D MovableBody
+    {
+        get { return _movableBody; }
+        set { _movableBody = value; }
     }
 }
 

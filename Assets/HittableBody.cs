@@ -72,7 +72,7 @@ public class HittableBody : MonoBehaviour
 
     private void Hit(UnitHealth unitHealth)
     {
-        if (unitHealth.Hit(Damage))
+        if (unitHealth.Hit(Damage, null))
         {
             for (int i = 0; i < _afterHitCommands.Length; i++)
             {

@@ -29,9 +29,19 @@ public struct HealthPoints
         return hp1.Value > hp2.Value;
     }
 
+    public static bool operator >=(HealthPoints hp1, HealthPoints hp2)
+    {
+        return hp1.Value >= hp2.Value;
+    }
+
     public static bool operator <(HealthPoints hp1, HealthPoints hp2)
     {
         return hp1.Value < hp2.Value;
+    }
+
+    public static bool operator <=(HealthPoints hp1, HealthPoints hp2)
+    {
+        return hp1.Value <= hp2.Value;
     }
 
     public static bool operator ==(HealthPoints hp1, HealthPoints hp2)
