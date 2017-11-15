@@ -1,30 +1,28 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerViewController : MonoBehaviour
 {
-    [SerializeField] private UnitHealth _unitHealth;
+    [SerializeField] private HealthContainer _healthContainer;
+    [SerializeField] private HealthChanger _healthChanger;
     [SerializeField] private PlayerView _playerView;
-    [SerializeField] private float _invincibleTime;
     [SerializeField] private Mover _mover;
 
     private void Awake()
     {
-        if (_unitHealth != null)
+        if (_healthChanger != null)
         {
-            _unitHealth.AfterHitAction += AfterHitAction;
-            _unitHealth.DeathAction += Die;
+            _healthChanger.OnAfterDeathAction += Die;
+        }
+
+        if (_healthContainer != null)
+        {
+            _healthContainer.OnIsInvincibleChanged += SetInvincibvle;
         }
 
         if (_mover != null)
         {
             _mover.WalkingAction += MovingAction;
         }
-    }
-
-    private void AfterHitAction()
-    {
-        StartCoroutine(SetInvincible());
     }
 
     private void MovingAction(Vector3 speed)
@@ -35,20 +33,21 @@ public class PlayerViewController : MonoBehaviour
         }
     }
 
-    private IEnumerator SetInvincible()
-    {
-        _unitHealth.IsInvincible = true;
-        _playerView.StartHitAnimation();
-
-        yield return new WaitForSeconds(_invincibleTime);
-
-        _unitHealth.IsInvincible = false;
-        _playerView.StopHitAnimation();
-    }
-
     private void Die()
     {
         _playerView.StartDeathAnimation();
+    }
+
+    private void SetInvincibvle()
+    {
+        if (_healthContainer.IsInvincible)
+        {
+            _playerView.StartHitAnimation();
+        }
+        else
+        {
+            _playerView.StopHitAnimation();
+        }
     }
 }
 

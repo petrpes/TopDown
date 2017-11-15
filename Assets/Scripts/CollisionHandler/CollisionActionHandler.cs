@@ -57,12 +57,14 @@ public class CollisionActionHandler : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        ExecuteCommands(ColliderType.Trigger, CollisionType.OnEnter, collision.gameObject);
+        ExecuteCommands(ColliderType.Trigger, CollisionType.OnEnter,
+            collision.attachedRigidbody == null ? collision.gameObject : collision.attachedRigidbody.gameObject);
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        ExecuteCommands(ColliderType.Trigger, CollisionType.OnExit, collision.gameObject);
+        ExecuteCommands(ColliderType.Trigger, CollisionType.OnExit,
+            collision.attachedRigidbody == null ? collision.gameObject : collision.attachedRigidbody.gameObject); 
     }
 
     private void ExecuteCommands(ColliderType currentColliderType, 

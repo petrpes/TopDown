@@ -14,11 +14,8 @@ public abstract class Mover : MonoBehaviour
     }
 
     public abstract Vector3 WalkingSpeed { get; }
-
-    public abstract void Push(Vector3 speed);
-
+    public abstract void AddForce(Vector3 force);
+    public abstract Vector3 Position { get; set; }
     public abstract void ForceStop();
-
-    public abstract void ForceSetPosition(Vector3 position);
 }
 

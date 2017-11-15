@@ -7,6 +7,7 @@ public class SimpleProjecTileWeapon : Weapon
     [SerializeField] private float _speed;
     [SerializeField] private MobSkillSet _skillSet;
     [SerializeField] private DamageSkill _damageSkill;
+    [SerializeField] private ClassInformation _classInformation;
 
     private bool _isCanAttack = true;
     private ExpirationTimer _shootTimer;
@@ -28,8 +29,8 @@ public class SimpleProjecTileWeapon : Weapon
             Projectile projecTile = BulletSpawner.Instance.Spawn(_projecTile);
             float rotation = Mathf.Atan2(direction.Value.y, direction.Value.x) *
                 Mathf.Rad2Deg - 90;
-            projecTile.Shoot(transform.position, rotation, 1, direction.Value * _speed, _damageSkill.DamageValue, 
-                _damageSkill.CurrentFraction);
+            projecTile.Shoot(transform.position, rotation, 1, direction.Value * _speed, _damageSkill.DamageValue,
+                _classInformation.CurrentFraction);
             _isCanAttack = false;
             _shootTimer.Start();
             return true;

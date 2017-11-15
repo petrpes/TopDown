@@ -3,12 +3,10 @@
 public class AddForceCommand : Command
 {
     [SerializeField] private bool _useVelocity;
-    [SerializeField] private float _mass;
+    [SerializeField] private float _force;
 
     private Transform _transform;
     private Rigidbody2D _rigidbody;
-
-    private float Impulse { get { return _mass * (_useVelocity ? _rigidbody.velocity.magnitude : 1); } }
 
     public override void ExecuteCommand(GameObject actor)
     {
@@ -21,8 +19,8 @@ public class AddForceCommand : Command
             _rigidbody = GetComponent<Rigidbody2D>();
         }
 
-        DamageSkill actorDamageSkill = actor.GetComponent<DamageSkill>();
-        if (actorDamageSkill != null && actorDamageSkill.MovableBody != null)
+        MovableBody actorMovableBody = actor.GetComponent<MovableBody>();
+        if (actorMovableBody != null)
         {
             DirectionVector direction = new DirectionVector()
             {
@@ -30,8 +28,7 @@ public class AddForceCommand : Command
                     (Vector3)_rigidbody.velocity :
                     (actor.transform.position - _transform.position)
             };
-            //actorDamageSkill.MovableBody.AddForce(direction.Value * Impulse);
-            actorDamageSkill.MovableBody.velocity += (Vector2)direction.Value * Impulse;
+            actorMovableBody.Push(direction.Value * _force);
         }
     }
 }

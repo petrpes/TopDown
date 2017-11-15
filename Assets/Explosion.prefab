@@ -93,6 +93,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _onHitCommand: []
+  _hitType: 0
+  _classInformation: {fileID: 0}
 --- !u!114 &114536375726795710
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -117,9 +119,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _damageValue:
     _value: 2
-  _fraction:
-    _fraction: 2
-  _movableBody: {fileID: 0}
 --- !u!114 &114805682797328248
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -132,7 +131,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _useVelocity: 0
-  _mass: 20
+  _force: 20
 --- !u!114 &114966527872824384
 MonoBehaviour:
   m_ObjectHideFlags: 1

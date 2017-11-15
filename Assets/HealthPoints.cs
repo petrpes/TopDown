@@ -53,4 +53,14 @@ public struct HealthPoints
     {
         return hp1.Value != hp2.Value;
     }
+
+    public static HealthPoints Max(HealthPoints hp1, HealthPoints hp2)
+    {
+        return hp1.Value > hp2.Value ? hp1 : hp2;
+    }
+
+    public static HealthPoints Min(HealthPoints hp1, HealthPoints hp2)
+    {
+        return hp1.Value < hp2.Value ? hp1 : hp2;
+    }
 }

@@ -1,7 +1,4 @@
-﻿using Components.Timer;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class VelocityMover : Mover
 {
@@ -25,19 +22,19 @@ public class VelocityMover : Mover
         }
     }
 
-    public override void ForceSetPosition(Vector3 position)
+    public override Vector3 Position
     {
-        _rigidbody.MovePosition(position);
+        get
+        {
+            return _rigidbody.position;
+        }
+        set
+        {
+            _rigidbody.MovePosition(value);
+        }
     }
 
-    public override void ForceStop()
-    {
-        _rigidbody.velocity = Vector3.zero;
-        _hasStopped = true;
-        _isWalking = false;
-    }
-
-    public override void Push(Vector3 speed)
+    public override void AddForce(Vector3 speed)
     {
         _hasStopped = false;
         _rigidbody.velocity += (Vector2)speed;
@@ -99,6 +96,13 @@ public class VelocityMover : Mover
         {
             _controller = GetComponent<MoveController>();
         }
+    }
+
+    public override void ForceStop()
+    {
+        _rigidbody.velocity = Vector3.zero;
+        _hasStopped = true;
+        _isWalking = false;
     }
 
     private bool _isWalking;

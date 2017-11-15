@@ -2,16 +2,16 @@
 
 public class MobViewController : MonoBehaviour
 {
-    [SerializeField] private UnitHealth _unitHealth;
+    [SerializeField] private HealthChanger _unitHealth;
     [SerializeField] private Command[] _deathCommands;
 
     private void Awake()
     {
         if (_unitHealth == null)
         {
-            _unitHealth = GetComponent<UnitHealth>();
+            _unitHealth = GetComponent<HealthChanger>();
         }
-        _unitHealth.DeathAction += ExecuteDeathAction;
+        _unitHealth.OnAfterDeathAction += ExecuteDeathAction;
     }
 
     private void ExecuteDeathAction()

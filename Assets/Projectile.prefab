@@ -25,12 +25,14 @@ GameObject:
   - component: {fileID: 114817687415960232}
   - component: {fileID: 114199910434857542}
   - component: {fileID: 114958018698460986}
+  - component: {fileID: 114725725170153174}
   - component: {fileID: 114733010124290368}
   - component: {fileID: 114828184700736252}
   - component: {fileID: 61412934743264240}
   - component: {fileID: 50492830543901934}
   - component: {fileID: 95323792700341506}
   - component: {fileID: 212961556426133932}
+  - component: {fileID: 114199998837281962}
   m_Layer: 12
   m_Name: Projectile
   m_TagString: Untagged
@@ -127,6 +129,8 @@ MonoBehaviour:
   _onHitCommand:
   - {fileID: 114817687415960232}
   - {fileID: 114199910434857542}
+  _hitType: 0
+  _classInformation: {fileID: 114725725170153174}
 --- !u!114 &114199910434857542
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -138,6 +142,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a39464f1885043948970791f349916e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114199998837281962
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1990917973647500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3256d821a64b64440a812252f3eeafb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _time: 2
+  _isIntervalTimer: 0
+  _commands:
+  - {fileID: 114199910434857542}
 --- !u!114 &114352580037239750
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -176,6 +195,19 @@ MonoBehaviour:
   _collisionType: 0
   _commands:
   - {fileID: 114001166990242556}
+--- !u!114 &114725725170153174
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1990917973647500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc4021d08d5f5d14bb14c1a03a6d634e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _fraction:
+    _fraction: 0
 --- !u!114 &114733010124290368
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -189,9 +221,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _damageValue:
     _value: 0
-  _fraction:
-    _fraction: 0
-  _movableBody: {fileID: 0}
 --- !u!114 &114817687415960232
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -204,7 +233,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _useVelocity: 1
-  _mass: 0.5
+  _force: 3
 --- !u!114 &114828184700736252
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -216,7 +245,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 241a261c891e35b4989751872e8ecc8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _animator: {fileID: 0}
+  _animator: {fileID: 95323792700341506}
 --- !u!114 &114958018698460986
 MonoBehaviour:
   m_ObjectHideFlags: 1
