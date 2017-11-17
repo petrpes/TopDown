@@ -9,9 +9,9 @@ public class PlayerViewController : MonoBehaviour
 
     private void Awake()
     {
-        if (_healthChanger != null)
+        if (_healthContainer != null)
         {
-            _healthChanger.OnAfterDeathAction += Die;
+            _healthContainer.OnDeath += Die;
         }
 
         if (_healthContainer != null)

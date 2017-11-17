@@ -7,7 +7,7 @@ public class SpawnObjectCommand : Command
 
     private PoolSpawner _spawner;
 
-    public override void ExecuteCommand(GameObject actor)
+    public override void Execute(GameObject actor)
     {
         if (_spawner == null)
         {

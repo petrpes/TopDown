@@ -177,6 +177,7 @@
     <Compile Include="Assets\Scripts\TimerAction\TimerAction.cs" />
     <Compile Include="Assets\Scripts\Units\ClassInformation\ClassInformation.cs" />
     <Compile Include="Assets\Scripts\Units\UnitHealth\BlastDamageHealthChanger.cs" />
+    <Compile Include="Assets\Scripts\Units\UnitHealth\DeathActionInvoker.cs" />
     <Compile Include="Assets\Scripts\Units\UnitHealth\HealthChanger.cs" />
     <Compile Include="Assets\Scripts\Units\UnitHealth\HealthContainer.cs" />
     <Compile Include="Assets\Scripts\Units\UnitHealth\InvincibleProtection.cs" />

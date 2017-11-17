@@ -8,7 +8,7 @@ public class AddForceCommand : Command
     private Transform _transform;
     private Rigidbody2D _rigidbody;
 
-    public override void ExecuteCommand(GameObject actor)
+    public override void Execute(GameObject actor)
     {
         if (_transform == null)
         {

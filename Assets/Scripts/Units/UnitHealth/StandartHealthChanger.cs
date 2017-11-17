@@ -1,5 +1,18 @@
-﻿public class StandartHealthChanger : HealthChanger
+﻿using UnityEngine;
+
+public class StandartHealthChanger : HealthChanger
 {
+    [SerializeField] private ClassInformation _classInformation;
+
+    private Fraction CurrentFraction
+    {
+        get
+        {
+            return _classInformation == null ? Fraction.Neutral : 
+                _classInformation.CurrentFraction;
+        }
+    }
+
     public override bool Heal(HealthPoints value)
     {
         if (AddToCurrentHealth(value))
@@ -18,13 +31,8 @@
             if (HealthContainer.CurrentHealth <= HealthPoints.Zero)
             {
                 HealthContainer.CurrentHealth = HealthPoints.Zero;
-
-                InvokeOnAfterDeathAction();
             }
-            else
-            {
-                InvokeOnAfterHitAction();
-            }
+            InvokeOnAfterHitAction();
 
             return true;
         }

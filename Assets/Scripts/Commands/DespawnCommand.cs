@@ -4,7 +4,7 @@ public class DespawnCommand : Command
 {
     private Projectile _projectile;
 
-    public override void ExecuteCommand(GameObject actor)
+    public override void Execute(GameObject actor)
     {
         if (_projectile == null)
         {

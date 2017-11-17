@@ -37,7 +37,8 @@ public class VelocityMover : Mover
     public override void AddForce(Vector3 speed)
     {
         _hasStopped = false;
-        _rigidbody.velocity += (Vector2)speed;
+        //_rigidbody.velocity += (Vector2)speed;
+        _rigidbody.AddForce(speed, ForceMode2D.Impulse);
     }
 
     void FixedUpdate()

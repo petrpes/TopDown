@@ -14,16 +14,15 @@ public abstract class HealthChanger : MonoBehaviour
 
     public event Action OnAfterHealAction;
     public event Action OnAfterHitAction;
-    public event Action OnAfterDeathAction;
 
     protected void InvokeOnAfterHealAction() { OnAfterHealAction.SafeInvoke(); }
     protected void InvokeOnAfterHitAction() { OnAfterHitAction.SafeInvoke(); }
-    protected void InvokeOnAfterDeathAction() { OnAfterDeathAction.SafeInvoke(); }
 }
 
 public enum HitType
 {
     Projectile,
-    Explosion
+    Explosion,
+    Contact
 }
 

@@ -35,6 +35,11 @@ public class HealthContainer : MonoBehaviour
             {
                 _currentHealth = value;
                 OnCurrentHealthChanged.SafeInvoke();
+
+                if (_currentHealth == HealthPoints.Zero)
+                {
+                    OnDeath.SafeInvoke();
+                }
             }
         }
     }
@@ -58,5 +63,6 @@ public class HealthContainer : MonoBehaviour
     public event Action OnCurrentHealthChanged;
     public event Action OnMaxHealthChanged;
     public event Action OnIsInvincibleChanged;
+    public event Action OnDeath;
 }
 

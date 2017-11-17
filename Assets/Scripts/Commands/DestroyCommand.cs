@@ -2,9 +2,15 @@
 
 public class DestroyCommand : Command
 {
-    public override void ExecuteCommand(GameObject actor)
+    [SerializeField] private GameObject _mainBody;
+
+    public override void Execute(GameObject actor)
     {
-        Destroy(gameObject);
+        if (_mainBody == null)
+        {
+            _mainBody = gameObject;
+        }
+        Destroy(_mainBody);
     }
 }
 

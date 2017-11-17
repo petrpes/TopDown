@@ -7,12 +7,19 @@ public class HitCommand : Command
     [SerializeField] private HitType _hitType;
     [SerializeField] private ClassInformation _classInformation;
 
+    private Fraction CurrentFraction
+    {
+        get
+        {
+            return _classInformation == null ? Fraction.Neutral :
+                _classInformation.CurrentFraction;
+        }
+    }
+
     private DamageSkill _damageSkill;
 
-    public override void ExecuteCommand(GameObject actor)
+    public override void Execute(GameObject actor)
     {
-        Fraction fraction = _classInformation == null ? Fraction.Neutral : _classInformation.CurrentFraction;
-
         if (_damageSkill == null)
         {
             _damageSkill = GetComponent<DamageSkill>();
@@ -23,11 +30,9 @@ public class HitCommand : Command
         if (actorHealth != null)
         {
             DamageSkill actorDamage = actor.GetComponent<DamageSkill>();
-            ClassInformation actorClassInformation = actor.GetComponent<ClassInformation>();
-            Fraction actorFraction = actorClassInformation == null ? Fraction.Neutral : 
-                actorClassInformation.CurrentFraction;
+            Fraction actorFraction = actor.GetFraction();
 
-            if (actorFraction.IsHittableBy(fraction))
+            if (actorFraction.IsHittableBy(CurrentFraction))
             {
                 actorHealth.Hit(_damageSkill.DamageValue, _hitType);
                 if (_onHitCommand != null)
