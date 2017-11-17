@@ -113,11 +113,16 @@
     <Compile Include="Assets\Scripts\Commands\HitCommand.cs" />
     <Compile Include="Assets\Scripts\Commands\SpawnObjectCommand.cs" />
     <Compile Include="Assets\Scripts\Commands\TestCommand.cs" />
+    <Compile Include="Assets\Scripts\Editors\RoomCreatorWindow.cs" />
     <Compile Include="Assets\Scripts\Extecntions\ActionExtentions.cs" />
     <Compile Include="Assets\Scripts\Extecntions\GameObjectExtentions.cs" />
     <Compile Include="Assets\Scripts\Fraction.cs" />
     <Compile Include="Assets\Scripts\InputManager\InputAttributesSet.cs" />
     <Compile Include="Assets\Scripts\InputManager\InputManager.cs" />
+    <Compile Include="Assets\Scripts\Level\Room\PrefabId.cs" />
+    <Compile Include="Assets\Scripts\Level\Room\Room.cs" />
+    <Compile Include="Assets\Scripts\Level\Room\RoomRect.cs" />
+    <Compile Include="Assets\Scripts\Level\Room\RoomVector.cs" />
     <Compile Include="Assets\Scripts\Modules\Common\ErrorMessages\ErrorMessages.cs" />
     <Compile Include="Assets\Scripts\Modules\Common\InterfaceObjectWrapper.cs" />
     <Compile Include="Assets\Scripts\Modules\Common\IResetable.cs" />
