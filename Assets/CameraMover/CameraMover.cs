@@ -12,6 +12,18 @@ public class CameraMover
     private float _cameraZPosition;
 
     public Transform TargetTransform { set { _targetTransform = value; } }
+    public Rect SceneSizeUnits
+    {
+        set
+        {
+            bool shouldRecalculate = _sceneSizeUnits != value;
+            _sceneSizeUnits = value;
+            if (shouldRecalculate)
+            {
+                RecalculatePosition();
+            }
+        }
+    }
 
     public CameraMover(Camera camera, Rect sceneSizeUnits)
     {

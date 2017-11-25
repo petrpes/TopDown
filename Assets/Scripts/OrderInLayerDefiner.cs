@@ -1,13 +1,11 @@
-﻿using UnityEngine;
+﻿using Components.EventHandler;
+using UnityEngine;
 
 public class OrderInLayerDefiner : MonoBehaviour
 {
     private static float UnitsCount = 0.03f;
 
-    [SerializeField] private Rect _sceneSize;
-
     private SpriteRenderer _spriteRenderer;
-    private Sprite _sprite;
     private Transform _transform;
 
     // Use this for initialization
@@ -18,22 +16,9 @@ public class OrderInLayerDefiner : MonoBehaviour
             _spriteRenderer = GetComponent<SpriteRenderer>();
         }
 
-        if (_sprite == null)
-        {
-            _sprite = _spriteRenderer.sprite;
-        }
-
         if (_transform == null)
         {
             _transform = transform;
-        }
-    }
-
-    private float LocalPointOffset
-    {
-        get
-        {
-            return (_sprite.rect.height / _sprite.pixelsPerUnit) * _transform.localScale.y / 2f;
         }
     }
 
@@ -43,12 +28,12 @@ public class OrderInLayerDefiner : MonoBehaviour
 	void FixedUpdate ()
     {
         float positionY = _transform.position.y;
-        if (_lastPositionY != positionY)
+        if (_lastPositionY != positionY && RoomManager.Instance.CurrentRoom != null)
         {
-            Rect sceneRect = _sceneSize;//SceneManager.Instance.Size;//todo 
-            float localPointY = positionY - sceneRect.y - LocalPointOffset;
+            Rect sceneRect = RoomManager.Instance.CurrentRoom.Rectangle;
+            float localPointY = positionY - sceneRect.y;
             _spriteRenderer.sortingOrder = (int)((sceneRect.height - localPointY) / UnitsCount);
             _lastPositionY = positionY;
         }
-	}
+    }
 }
