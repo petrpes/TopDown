@@ -13,9 +13,9 @@ public class RoomManager : IEventListener<LevelChangedEventArguments>
 
     private RoomManager()
     {
-        ResetRoomId();
-        _eventArguments = new RoomChangedEventArguments();
         TypeEventManager.Instance.SubscribeListener(this);
+        _eventArguments = new RoomChangedEventArguments();
+        ResetRoomId();
     }
 
     private Level CurrentLevel { get { return LevelManager.Instance.CurrentLevel; } }

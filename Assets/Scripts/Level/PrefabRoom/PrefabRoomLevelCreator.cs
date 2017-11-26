@@ -18,6 +18,10 @@ public class PrefabRoomLevelCreator : Singleton<PrefabRoomLevelCreator>, ILevelC
             SpawnManager.Instance.CreatePool(newLevel.RoomLibrary[i], 1);
         }
         onLevelCreated.SafeInvoke(newLevel);
+
+        GameObject player = SpawnManager.Instance.Spawn(GameManager.Instance.PlayerPrefab);
+        player.transform.position = newLevel.RoomLibrary[newLevel.StartingRoomId].Rectangle.center;
+        GameManager.Instance.PlayerInstance = player;
     }
 
     public void DestroyLevel(Level level, Action onLevelDestroyed)

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public abstract class PrefabRoom : MonoBehaviour, IRoom
+public class PrefabRoom : MonoBehaviour, IRoom
 {
     [SerializeField] private Vector2 _size;
 

@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class MonoCameraMover : MonoBehaviour, IEventListener<RoomChangedEventArguments>
 {
-    [SerializeField] private Camera _camera;
-    [SerializeField] private Transform _target;
+    private Transform _target;
+    private Camera _camera;
 
     private CameraMover _cameraMover;
     private CameraMover CameraMover
@@ -13,8 +13,10 @@ public class MonoCameraMover : MonoBehaviour, IEventListener<RoomChangedEventArg
         {
             if (_cameraMover == null)
             {
-                _cameraMover = new CameraMover(_camera, RoomManager.Instance.CurrentRoom.Rectangle);
-                _cameraMover.TargetTransform = _target;
+                //_target = GameManager.Instance.PlayerInstance.transform;
+                _camera = Camera.current;
+                _cameraMover = new CameraMover(_camera);
+                _cameraMover.TargetTransform = transform;
             }
             return _cameraMover;
         }

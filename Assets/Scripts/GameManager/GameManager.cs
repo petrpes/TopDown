@@ -1,5 +1,13 @@
-﻿public class GameManager
+﻿using Components.Common;
+using UnityEngine;
+
+public class GameManager : Singleton<GameManager>
 {
+    [SerializeField] private GameObject _player;
+
+    public GameObject PlayerPrefab { get { return _player; } }
+    public GameObject PlayerInstance { get; set; }
+
     public GameManager()
     {
 

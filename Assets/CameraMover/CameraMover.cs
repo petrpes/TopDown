@@ -25,16 +25,20 @@ public class CameraMover
         }
     }
 
-    public CameraMover(Camera camera, Rect sceneSizeUnits)
+    public CameraMover(Camera camera)
     {
         _camera = camera;
-        _sceneSizeUnits = sceneSizeUnits;
         _cameraTransform = _camera.transform;
         _cameraZPosition = _cameraTransform.position.z;
     }
 
     public void RecalculatePosition()
     {
+        if (_sceneSizeUnits.Equals(Rect.zero))
+        {
+            return;
+        }
+
         bool isCameraSizeChanged = CheckCameraSizeIsChanged();
         bool isTargetPositionChanged = CheckIfTargetPositionChanged();
 
