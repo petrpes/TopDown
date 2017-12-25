@@ -28,12 +28,20 @@ public class OrderInLayerDefiner : MonoBehaviour
 	void FixedUpdate ()
     {
         float positionY = _transform.position.y;
-        if (_lastPositionY != positionY && RoomManager.Instance.CurrentRoom != null)
+        if (_lastPositionY != positionY && CurrentRoom != null)
         {
-            Rect sceneRect = RoomManager.Instance.CurrentRoom.Rectangle;
+            Rect sceneRect = CurrentRoom.Rectangle;
             float localPointY = positionY - sceneRect.y;
             _spriteRenderer.sortingOrder = (int)((sceneRect.height - localPointY) / UnitsCount);
             _lastPositionY = positionY;
+        }
+    }
+
+    private IRoom CurrentRoom
+    {
+        get
+        {
+            return LevelManager.Instance.CurrentRoom;
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Components.EventHandler;
 using Components.Spawner.Pool;
 
-public class SpawnManager : ISpawnManager, IEventListener<LevelChangedEventArguments>
+public class SpawnManager : ISpawnManager
 {
     public static ISpawnManager Instance = new SpawnManager();
 
@@ -48,16 +48,6 @@ public class SpawnManager : ISpawnManager, IEventListener<LevelChangedEventArgum
             return _projectileSpawner;
         }
         return _defaultSpawner;
-    }
-
-    public void HandleEvent(LevelChangedEventArguments arguments, object sender)
-    {
-        if (arguments.NewLevel == null)
-        {
-            _roomsSpawner.Dispose();
-            _projectileSpawner.Dispose();
-            _defaultSpawner.Dispose();
-        }
     }
 }
 

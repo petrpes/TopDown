@@ -1,28 +1,11 @@
-﻿using Components.Common;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : Singleton<GameManager>
+public class GameManager : MonoBehaviour
 {
-    [SerializeField] private GameObject _player;
-
-    public GameObject PlayerPrefab { get { return _player; } }
-    public GameObject PlayerInstance { get; set; }
-
-    public GameManager()
+	void Start ()
     {
-
-    }
-
-    public void StartGame()
-    {
-        if (RoomManager.Instance != null && LevelManager.Instance != null)
-        {
-            LevelManager.Instance.LoadNextLevel(null);
-        }
-    }
-
-    public void StopGame()
-    {
-
-    }
+        LevelManager.Instance.LoadNextLevel(null);
+	}
 }

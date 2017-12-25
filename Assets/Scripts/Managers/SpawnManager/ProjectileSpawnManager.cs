@@ -1,8 +1,6 @@
-﻿using Components.EventHandler;
-using Components.Spawner.Pool;
+﻿using Components.Spawner.Pool;
 
-public class ProjectileSpawnManager : ISpawnManager, IEventListener<RoomChangedEventArguments>,
-    IEventListener<LevelChangedEventArguments>
+public class ProjectileSpawnManager : ISpawnManager
 {
     private PoolSpawner _pool;
 
@@ -24,19 +22,6 @@ public class ProjectileSpawnManager : ISpawnManager, IEventListener<RoomChangedE
     public void DestroyPool<T>(T prefab)
     {
         _pool.Dispose();
-    }
-
-    public void HandleEvent(RoomChangedEventArguments arguments, object sender)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void HandleEvent(LevelChangedEventArguments arguments, object sender)
-    {
-        if (arguments.NewLevel == null)
-        {
-            _pool.Dispose();
-        }
     }
 
     public T Spawn<T>(T prefab)
