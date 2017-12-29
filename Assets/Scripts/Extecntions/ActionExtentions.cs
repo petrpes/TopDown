@@ -17,5 +17,13 @@ public static class ActionExtentions
             action.Invoke(arg);
         }
     }
+
+    public static void SafeInvoke<T1, T2>(this Action<T1, T2> action, T1 arg1, T2 arg2)
+    {
+        if (action != null)
+        {
+            action.Invoke(arg1, arg2);
+        }
+    }
 }
 

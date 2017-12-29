@@ -5,6 +5,7 @@ public class LevelManager
     public static LevelManager Instance = new LevelManager();
 
     public ILevel CurrentLevel { get { return _currentLevel; } }
+    public IRoomContentMananger RoomContentManager { get; private set; }
 
     public event Action OnAfterLevelCreated;
     public event Action OnBeforeLevelDestroyed;
@@ -13,6 +14,7 @@ public class LevelManager
     private ILevel _currentLevel;
     private IRoom _currentRoom;
 
+    private IRoomEventHandler _roomEventHandler;
     private ILevelCreator _levelCreator;
     private ILevelDestroyer _levelDestroyer;
     private ILevelStarter _levelStarter;
@@ -23,14 +25,20 @@ public class LevelManager
         _levelCreator = new TestLevelCreator();
         _levelDestroyer = new TestLevelDestroyer();
         _levelStarter = new TestLevelStarter();
+
         _roomTransition = RoomTransitionInvoker.Instance;
+        RoomContentManager = new RoomContentManangerDictionary();
+        _roomEventHandler = RoomEventHandler.Instance;
     }
 
     public void LoadNextLevel(object levelParams)
     {
         if (_currentLevel != null)
         {
-            OnBeforeLevelDestroyed.SafeInvoke();
+            if (OnBeforeLevelDestroyed != null)
+            {
+                OnBeforeLevelDestroyed.Invoke();
+            }//TODO safe invoke
 
             _levelDestroyer.DestroyCurrentLevel(_currentLevel, () =>
             {
@@ -43,16 +51,28 @@ public class LevelManager
         }
     }
 
+    private void ResetRoomData()
+    {
+        RoomContentManager.Dispose();
+    }
+
     private void CreateLevel(object levelParams)
     {
         _levelCreator.CreateLevel(levelParams, (level) =>
         {
             _currentLevel = level;
-            OnAfterLevelCreated.SafeInvoke();
+
+            if (OnAfterLevelCreated != null)
+            {
+                OnAfterLevelCreated.Invoke();
+            }
 
             _levelStarter.StartLevel(_currentLevel, () =>
             {
-                OnAfterLevelStarted.SafeInvoke();
+                if (OnAfterLevelStarted != null)
+                {
+                    OnAfterLevelStarted.Invoke();
+                }
             });
         });
     }
@@ -70,14 +90,20 @@ public class LevelManager
     {
         if (_currentRoom != null)
         {
-            RoomEventHandler.Instance.InvokeEvent(_currentRoom, RoomEventType.OnBeforeClose);
+            ExecuteRoomAction(CurrentRoom, RoomEventType.OnBeforeClose);
         }
         _roomTransition.TransitionToRoom(_currentRoom, room, () =>
         {
             _currentRoom = room;
-            RoomEventHandler.Instance.InvokeEvent(_currentRoom, RoomEventType.OnAfterOpen);
-            RoomEventHandler.Instance.InvokeEvent(_currentRoom, RoomEventType.OnStarted);
+
+            ExecuteRoomAction(CurrentRoom, RoomEventType.OnAfterOpen);
+            ExecuteRoomAction(CurrentRoom, RoomEventType.OnStarted);
         });
+    }
+
+    private void ExecuteRoomAction(IRoom room, RoomEventType eventType)
+    {
+        _roomEventHandler.InvokeRoomEvent(CurrentRoom, eventType);
     }
 }
 

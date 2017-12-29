@@ -1,12 +1,48 @@
 ﻿using System;
 using System.Collections;
+using UnityEditor;
 using UnityEngine;
 
 public class TestRoom : MonoBehaviour, IRoom, ICoroutineCollectionWriter<RoomTransitionArguments>
 {
     [SerializeField] private Vector2 _size;
+    [SerializeField] private ComponentsCache _roomBasicObjects = new ComponentsCache(typeof(RoomContainedObject).Name, true);
+
     private Transform _transform;
     private Rect _rectangle;
+
+    private Action[] _roomActions;
+    public Action this[RoomEventType eventType]
+    {
+        get
+        {
+            CreateRoomActionsArrayIfNull();
+            return _roomActions[(int)eventType];
+        }
+        set
+        {
+            CreateRoomActionsArrayIfNull();
+            _roomActions[(int)eventType] = value;
+        }
+    }
+
+    public int ComponentsCount { get { return _roomBasicObjects.Count; } }
+
+    public void SubscribeAllObjects()
+    {
+        foreach (var roomObject in _roomBasicObjects.GetCachedComponets<RoomContainedObject>())
+        {
+            roomObject.SetRoomInInspector(this);
+        }
+    }
+
+    private void CreateRoomActionsArrayIfNull()
+    {
+        if (_roomActions == null)
+        {
+            _roomActions = new Action[Enum.GetValues(typeof(RoomEventType)).Length];
+        }
+    }
 
     public Rect Rectangle
     {
@@ -46,6 +82,27 @@ public class TestRoom : MonoBehaviour, IRoom, ICoroutineCollectionWriter<RoomTra
     private void Awake()
     {
         RoomTransitionInvoker.Instance.SubscribeCoroutine(this);
+    }
+}
+
+
+[CustomEditor(typeof(TestRoom))]
+public class TestRoomEditor : Editor
+{
+    private int _previousCount = 0;
+
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+
+        var basicContent = serializedObject.targetObject as TestRoom;
+        int newCount = basicContent.ComponentsCount;
+        if (newCount != _previousCount)
+        {
+            basicContent.SubscribeAllObjects();
+
+            _previousCount = newCount;
+        }
     }
 }
 

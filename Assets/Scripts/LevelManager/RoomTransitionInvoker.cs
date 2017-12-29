@@ -17,6 +17,11 @@ public class RoomTransitionInvoker : IRoomTransition
         _coroutineCollection.AddCoroutine(collectionWriter);
     }
 
+    public void UnsubscribeCoroutine(ICoroutineCollectionWriter<RoomTransitionArguments> collectionWriter)
+    {
+        _coroutineCollection.RemoveCoroutine(collectionWriter);
+    }
+
     public void TransitionToRoom(IRoom oldRoom, IRoom newRoom, Action onComplete)
     {
         if (_coroutineCollection.IsRunning)

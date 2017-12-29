@@ -6,26 +6,29 @@ public class TestLevelMap : MonoBehaviour, ILevelMap
 {
     public static TestLevelMap Instance;
 
-    [SerializeField] private TestRoom[] _roomsPrefabs;
+    [SerializeField] private TestRoom[] _rooms;
+
+    public int RoomsCount
+    {
+        get
+        {
+            return _rooms.Length;
+        }
+    }
 
     private void Awake()
     {
         Instance = this;
     }
 
-    public IEnumerable<IRoom> GetRooms<T>(Func<T, bool> predicate) where T : IRoomsPredicateArguments
+    public IEnumerable<IRoom> GetRooms(Func<IRoom, bool> predicate = null)
     {
-        foreach (IRoom room in GetRooms())
+        for (int i = 0; i < _rooms.Length; i++)
         {
-            yield return room;
-        }
-    }
-
-    public IEnumerable<IRoom> GetRooms()
-    {
-        for (int i = 0; i < _roomsPrefabs.Length; i++)
-        {
-            yield return _roomsPrefabs[i];
+            if (predicate == null || predicate(_rooms[i]))
+            {
+                yield return _rooms[i];
+            }
         }
     }
 }

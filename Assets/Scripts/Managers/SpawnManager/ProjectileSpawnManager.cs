@@ -24,6 +24,11 @@ public class ProjectileSpawnManager : ISpawnManager
         _pool.Dispose();
     }
 
+    public bool IsSpawned<T>(T obj)
+    {
+        throw new System.NotImplementedException();
+    }
+
     public T Spawn<T>(T prefab)
     {
         return _pool.Spawn(prefab);

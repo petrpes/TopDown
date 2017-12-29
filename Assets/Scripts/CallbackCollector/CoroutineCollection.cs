@@ -25,6 +25,15 @@ public class CoroutineCollection<T>
         _writersList.Add(collectionWriter);
     }
 
+    public void RemoveCoroutine(ICoroutineCollectionWriter<T> collectionWriter)
+    {
+        if (_callbackCollector.IsRunning)
+        {
+            throw new Exception();
+        }
+        _writersList.Remove(collectionWriter);
+    }
+
     public void Run(Action onComplete, T arg)
     {
 

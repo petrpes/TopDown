@@ -1,5 +1,6 @@
 ﻿using Components.EventHandler;
 using Components.Spawner.Pool;
+using UnityEngine;
 
 public class SpawnManager : ISpawnManager
 {
@@ -48,6 +49,15 @@ public class SpawnManager : ISpawnManager
             return _projectileSpawner;
         }
         return _defaultSpawner;
+    }
+
+    public bool IsSpawned<T>(T obj)
+    {
+        if (obj is MonoBehaviour)
+        {
+            return (obj as MonoBehaviour).gameObject.activeSelf;
+        }
+        return false;
     }
 }
 

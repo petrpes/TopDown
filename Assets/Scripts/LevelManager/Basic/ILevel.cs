@@ -2,6 +2,5 @@
 {
     IRoom StartRoom { get; }
     ILevelMap LevelMap { get; }
-
 }
 

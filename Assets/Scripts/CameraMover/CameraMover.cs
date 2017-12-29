@@ -6,6 +6,7 @@ public class CameraMover : MonoBehaviour, ICoroutineCollectionWriter<RoomTransit
 {
     [SerializeField] private Transform _pursuitedTransform;
     [SerializeField] private float _speed = 0.5f;
+    [SerializeField] private float _timeOfTransition = 0.5f;
 
     private Transform _transform;
     private Camera _camera;
@@ -39,7 +40,7 @@ public class CameraMover : MonoBehaviour, ICoroutineCollectionWriter<RoomTransit
         Vector2 currentPosition = _transform.position;
         while (Mathf.Abs((currentPosition - _lastPosition).magnitude) >= 1f)//TODO const + test if no game break
         {
-            yield return new WaitForEndOfFrame();
+            yield return new WaitForSeconds(_timeOfTransition);
         }
         onComplete.Invoke();
     }
