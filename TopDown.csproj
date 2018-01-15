@@ -118,6 +118,8 @@
     <Compile Include="Assets\Scripts\Commands\TestCommand.cs" />
     <Compile Include="Assets\Scripts\ComponentsCache\ComponentsCache.cs" />
     <Compile Include="Assets\Scripts\ComponentsCache\InterfaceComponentCache.cs" />
+    <Compile Include="Assets\Scripts\ComponentsCache\LinearPropertyDrawer.cs" />
+    <Compile Include="Assets\Scripts\ComponentsCache\PublicComponentsCacheBase.cs" />
     <Compile Include="Assets\Scripts\Extecntions\ActionExtentions.cs" />
     <Compile Include="Assets\Scripts\Extecntions\GameObjectExtentions.cs" />
     <Compile Include="Assets\Scripts\Fraction.cs" />

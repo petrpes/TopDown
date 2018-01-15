@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -8,12 +9,15 @@ public class ComponentsCache
 {
     [SerializeField] private string _componentTypeName;
     [SerializeField] private bool _shouldAlsoCountInChildren;
+    [SerializeField] private bool _shouldCountSelf = false;
     [SerializeField] protected Component[] _components;
 
-    public ComponentsCache(string componentTypeName, bool shouldAlsoCountInChildren)
+    public ComponentsCache(string componentTypeName, bool shouldAlsoCountInChildren, 
+        bool shouldAlsoCountSelf = false)
     {
         _componentTypeName = componentTypeName;
         _shouldAlsoCountInChildren = shouldAlsoCountInChildren;
+        _shouldCountSelf = shouldAlsoCountSelf;
     }
 
     public int Count { get { return _components == null ? 0 : _components.Length; } }
@@ -34,9 +38,9 @@ public class ComponentsCache
         }
     }
 
-    public void RecalculateComponents<T>(GameObject parent, bool shouldAlsoCountInChildren)
+    public void RecalculateComponents<T>(GameObject parent, Component self)
     {
-        if (shouldAlsoCountInChildren)
+        if (_shouldAlsoCountInChildren)
         {
             _components = Array.ConvertAll(parent.GetComponentsInChildren<T>(), item => item as Component);
         }
@@ -44,78 +48,94 @@ public class ComponentsCache
         {
             _components = Array.ConvertAll(parent.GetComponents<T>(), item => item as Component);
         }
+
+        if (self is T)
+        {
+            RemoveSelf(self);
+        }
     }
 
-    public void RecalculateComponents(GameObject parent)
+    public void RecalculateComponents(GameObject parent, Component self)
     {
         if (_componentTypeName == "")
         {
             return;
         }
 
+        Type parentType = Type.GetType(_componentTypeName);
+
         if (_shouldAlsoCountInChildren)
         {
-            _components = Array.ConvertAll(parent.GetComponentsInChildren(Type.GetType(_componentTypeName)), item => item as Component);
+            _components = Array.ConvertAll(parent.GetComponentsInChildren(parentType), item => item as Component);
         }
         else
         {
-            _components = Array.ConvertAll(parent.GetComponents(Type.GetType(_componentTypeName)), item => item as Component);
+            _components = Array.ConvertAll(parent.GetComponents(parentType), item => item as Component);
         }
+
+        RemoveSelf(self);
+    }
+
+    private void RemoveSelf(Component self)
+    {
+        if (_components == null || self == null || _shouldCountSelf)
+        {
+            return;
+        }
+
+        _components =
+            _components.Where((component) =>
+            { return !component.Equals(self); }).ToArray();
     }
 }
 
 [CustomPropertyDrawer(typeof(ComponentsCache))]
-public class ComponentsCacheEditor : PropertyDrawer
+public class ComponentsCacheEditor : LinearPropertyDrawer<ComponentsCache>
 {
-    private float _textHeight = 15;
-    private float _checkHeight = 15;
-    private float _buttonHeight = 20;
-    private float _distance = 5;
+    private DrawableProperty _typeName = new DrawableProperty("_componentTypeName", "Type name", 15, true, null);
+    private DrawableProperty _countChildren = new DrawableProperty("_shouldAlsoCountInChildren", "Count children", 15, true, null);
+    private DrawableProperty _recalculateButton = new DrawableProperty("", "", 20, true, null);
+
+    private DrawableProperty[] _properties;
+    protected override DrawableProperty[] Properties
+    {
+        get
+        {
+            if (_properties == null)
+            {
+                _recalculateButton.OnChangeAction = OnButtonPressed;
+                _properties = new DrawableProperty[] { _typeName, _countChildren, _recalculateButton };
+            }
+            return _properties;
+        }
+    }
+
+    protected override float Distance
+    {
+        get { return 5f; }
+    }
+
+    private void OnButtonPressed(SerializedProperty property)
+    {
+        if (BaseObject != null && MonoBehaviour != null)
+        {
+            BaseObject.RecalculateComponents(MonoBehaviour.gameObject, MonoBehaviour);
+        }
+    }
 
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
-        //base.OnGUI(position, property, label);
+        _recalculateButton.Caption = "Recalculate (Count = " + ObjectsCount + ")";
 
-        EditorGUI.BeginProperty(position, label, property);
-
-        // Draw label
-        position = EditorGUI.PrefixLabel(position, GUIUtility.GetControlID(FocusType.Passive), label);
-
-        // Don't make child fields be indented
-        var indent = EditorGUI.indentLevel;
-        EditorGUI.indentLevel = 0;
-
-        // Calculate rects
-        var typeNameRect = new Rect(position.x, position.y, 
-            position.width, _textHeight);
-        var boolRect =     new Rect(position.x, position.y + _textHeight + _distance, 
-            position.width, _checkHeight);
-        var buttonRect =   new Rect(position.x, position.y + _textHeight + _checkHeight + _distance * 2, 
-            position.width, _buttonHeight);
-
-        // Draw fields - passs GUIContent.none to each so they are drawn without labels
-        EditorGUI.PropertyField(typeNameRect, property.FindPropertyRelative("_componentTypeName"), new GUIContent("Type name"));
-        EditorGUI.PropertyField(boolRect, property.FindPropertyRelative("_shouldAlsoCountInChildren"), new GUIContent("Count children"));
-
-        var componentsCache = 
-            fieldInfo.GetValue(property.serializedObject.targetObject) as ComponentsCache;
-        var count = componentsCache.Count;
-
-        if (GUI.Button(buttonRect, "Recalculate (Count = "+ count + ")"))
-        {
-            var monoBehaviour = property.serializedObject.targetObject as MonoBehaviour;
-            componentsCache.RecalculateComponents(monoBehaviour.gameObject);
-        }
-
-        // Set indent back to what it was
-        EditorGUI.indentLevel = indent;
-
-        EditorGUI.EndProperty();
+        base.OnGUI(position, property, label);
     }
 
-    public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+    private int ObjectsCount
     {
-        return _textHeight + _buttonHeight + _checkHeight + _distance * 2;
+        get
+        {
+            return BaseObject == null ? 0 : BaseObject.Count;
+        }
     }
 }
 

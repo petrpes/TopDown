@@ -30,12 +30,12 @@ public class RoomContainedObject : MonoBehaviour, IRoomContainedObject, ISpawnab
             }
             if (_currentRoom != null)
             {
-                LevelManager.Instance.RoomContentManager.RemoveObject(_currentRoom, this);
+                //LevelManager.Instance.RoomContentManager.RemoveObject(_currentRoom, this);
                 OnObjectDisappearFromRoom.SafeInvoke(_currentRoom);
             }
             if (value != null)
             {
-                LevelManager.Instance.RoomContentManager.AddObject(value, this);
+                //LevelManager.Instance.RoomContentManager.AddObject(value, this);
                 OnObjectAppearInRoom.SafeInvoke(value);
             }
             _currentRoom = value;
