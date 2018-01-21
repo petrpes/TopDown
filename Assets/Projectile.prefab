@@ -33,6 +33,8 @@ GameObject:
   - component: {fileID: 95323792700341506}
   - component: {fileID: 212961556426133932}
   - component: {fileID: 114199998837281962}
+  - component: {fileID: 114567234408533874}
+  - component: {fileID: 114381338724303996}
   m_Layer: 12
   m_Name: Projectile
   m_TagString: Untagged
@@ -126,8 +128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f1ca6f42ced5574481ac05479e0fe76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _onHitCommand:
-  - {fileID: 114817687415960232}
+  _onAfterHitCommand:
   - {fileID: 114199910434857542}
   _hitType: 0
   _classInformation: {fileID: 114725725170153174}
@@ -142,13 +143,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a39464f1885043948970791f349916e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _component: {fileID: 114958018698460986}
 --- !u!114 &114199998837281962
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1990917973647500}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3256d821a64b64440a812252f3eeafb6, type: 3}
   m_Name: 
@@ -175,6 +177,42 @@ MonoBehaviour:
   _collisionType: 0
   _commands:
   - {fileID: 114199910434857542}
+  _shouldLog: 0
+--- !u!114 &114381338724303996
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1990917973647500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 833a29a3458ded34ab74f0a74420ea95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _roomEventsListener:
+    _componentTypeName: IRoomEventListener
+    _assemblyQualifiedName: 
+    _shouldAlsoCountInChildren: 1
+    _shouldCountSelf: 0
+    _components:
+    - {fileID: 114567234408533874}
+  _roomObject: {fileID: 0}
+--- !u!114 &114567234408533874
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1990917973647500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f356a3e6642f564e927c0653684ed44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _onOpenCommands: []
+  _onCloseCommands:
+  - {fileID: 114199910434857542}
+  _onClearCommands: []
+  _onStartCommands: []
 --- !u!114 &114669821233585706
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -195,6 +233,7 @@ MonoBehaviour:
   _collisionType: 0
   _commands:
   - {fileID: 114001166990242556}
+  _shouldLog: 0
 --- !u!114 &114725725170153174
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -6,9 +6,6 @@ public interface IRoomEventHandler : IDisposable
 
     void SubscribeListener(IRoomEventListener listener, IRoom room);
     void UnsubscribeListener(IRoomEventListener listener, IRoom room);
-
-    void SubscribeListener(IAllRoomsEventListener listener);
-    void UnsubscribeListener(IAllRoomsEventListener listener);
 }
 
 public enum RoomEventType
@@ -20,11 +17,6 @@ public enum RoomEventType
 }
 
 public interface IRoomEventListener
-{
-    Action this[RoomEventType eventType] { get; }
-}
-
-public interface IAllRoomsEventListener
 {
     Action<IRoom> this[RoomEventType eventType] { get; }
 }

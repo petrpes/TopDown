@@ -12,11 +12,8 @@ public abstract class HealthChanger : MonoBehaviour
     public abstract bool Heal(HealthPoints value);
     public abstract bool Kill(HitType hitType);
 
-    public event Action OnAfterHealAction;
-    public event Action OnAfterHitAction;
-
-    protected void InvokeOnAfterHealAction() { OnAfterHealAction.SafeInvoke(); }
-    protected void InvokeOnAfterHitAction() { OnAfterHitAction.SafeInvoke(); }
+    public abstract event Action AfterHeal;
+    public abstract event Action AfterHit;
 }
 
 public enum HitType

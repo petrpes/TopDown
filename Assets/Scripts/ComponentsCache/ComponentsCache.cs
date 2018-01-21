@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -8,16 +9,27 @@ using UnityEngine;
 public class ComponentsCache
 {
     [SerializeField] private string _componentTypeName;
+    [SerializeField] private string _assemblyQualifiedName;
     [SerializeField] private bool _shouldAlsoCountInChildren;
     [SerializeField] private bool _shouldCountSelf = false;
     [SerializeField] protected Component[] _components;
 
     public ComponentsCache(string componentTypeName, bool shouldAlsoCountInChildren, 
-        bool shouldAlsoCountSelf = false)
+        bool shouldAlsoCountSelf = false, string assemblyQualifiedName = "")
     {
         _componentTypeName = componentTypeName;
         _shouldAlsoCountInChildren = shouldAlsoCountInChildren;
         _shouldCountSelf = shouldAlsoCountSelf;
+        _assemblyQualifiedName = assemblyQualifiedName;
+    }
+
+    public ComponentsCache(Type type, bool shouldAlsoCountInChildren,
+        bool shouldAlsoCountSelf = false)
+    {
+        _componentTypeName = type.Name;
+        _shouldAlsoCountInChildren = shouldAlsoCountInChildren;
+        _shouldCountSelf = shouldAlsoCountSelf;
+        _assemblyQualifiedName = type.AssemblyQualifiedName;
     }
 
     public int Count { get { return _components == null ? 0 : _components.Length; } }
@@ -62,7 +74,7 @@ public class ComponentsCache
             return;
         }
 
-        Type parentType = Type.GetType(_componentTypeName);
+        Type parentType = FindType(_componentTypeName, _assemblyQualifiedName);
 
         if (_shouldAlsoCountInChildren)
         {
@@ -74,6 +86,34 @@ public class ComponentsCache
         }
 
         RemoveSelf(self);
+    }
+
+    public static Type FindType(string typeName, string assemblyQualifiedName)
+    {
+        Type type = Type.GetType(typeName);
+
+        if (type != null)
+        {
+            return type;
+        }
+
+        if (assemblyQualifiedName != "")
+        {
+            type = Type.GetType(assemblyQualifiedName);
+            if (type != null)
+            {
+                return type;
+            }
+        }
+        foreach (Assembly asm in AppDomain.CurrentDomain.GetAssemblies())
+        {
+            type = asm.GetType(typeName);
+            if (type != null)
+            {
+                return type;
+            }
+        }
+        return null;
     }
 
     private void RemoveSelf(Component self)

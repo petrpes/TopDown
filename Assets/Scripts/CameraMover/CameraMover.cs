@@ -18,7 +18,7 @@ public class CameraMover : MonoBehaviour, ICoroutineCollectionWriter<RoomTransit
     {
         _transform = transform;
         _camera = GetComponent<Camera>();
-        RoomTransitionInvoker.Instance.SubscribeCoroutine(this);
+        //RoomTransitionInvoker.Instance.SubscribeCoroutine(this);
     }
 	
 	// Update is called once per frame
@@ -49,11 +49,15 @@ public class CameraMover : MonoBehaviour, ICoroutineCollectionWriter<RoomTransit
     {
         get
         {
+            _currentRoom = LevelManager.Instance.CurrentRoom;
             if (_currentRoom == null)
             {
                 return Rect.zero;
             }
-            return _currentRoom.Rectangle;
+            var room = _currentRoom.Rectangle;
+            var rect = new Rect(room.position - RoomConsts.WallsSize - RoomConsts.VisibleEdgeSize, 
+                room.size + (RoomConsts.WallsSize + RoomConsts.VisibleEdgeSize) * 2f);
+            return rect;
         }
     }
 }

@@ -4,30 +4,12 @@ using UnityEngine;
 
 [RequireComponent(typeof(DamageSkill))]
 [RequireComponent(typeof(Rigidbody2D))]
-public class SimpleProjectile : Projectile, IAllRoomsEventListener
+public class SimpleProjectile : Projectile
 {
     private DamageSkill _damageSkill;
     private Rigidbody2D _rigidbody2D;
     private ClassInformation _classInformation;
     private ExpirationTimer _timer;
-
-    public Action<IRoom> this[RoomEventType eventType]
-    {
-        get
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    private void Awake()
-    {
-        RoomEventHandler.Instance.SubscribeListener(this);
-    }
-
-    private void OnDestroy()
-    {
-        RoomEventHandler.Instance.UnsubscribeListener(this);
-    }
 
     public override void Shoot(Vector3 position, float rotation, float timeFloat, Vector3 speed, HealthPoints damageAddition,
         Fraction currentFraction)
@@ -66,14 +48,6 @@ public class SimpleProjectile : Projectile, IAllRoomsEventListener
     private void DespawnAction()
     {
         SpawnManager.Instance.Despawn(this);
-    }
-
-    public void OnRoomEvent(IRoom room, RoomEventType eventType)
-    {
-        if (eventType == RoomEventType.OnBeforeClose && SpawnManager.Instance.IsSpawned(this))
-        {
-            DespawnAction();
-        }
     }
 }
 

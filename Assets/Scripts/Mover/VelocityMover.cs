@@ -1,16 +1,21 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class VelocityMover : Mover
 {
     [SerializeField] private Rigidbody2D _rigidbody;
+    [SerializeField] private WalkableSkillsSet _skillSet;
+    [SerializeField] private MoveController _controller;
 
-    private WalkableSkillsSet _skillSet;
-    private MoveController _controller;
     private Vector3 _walkingSpeed;
+    private bool _isWalking;
 
     private bool _hasStopped;
 
+    public override event Action<Vector3> WalkingAction;
+
     public override Vector3 WalkingSpeed { get { return _walkingSpeed; } }
+    public override Vector3 MovingSpeed { get { return _rigidbody.velocity; } }
 
     private float Acceleration
     {
@@ -43,15 +48,13 @@ public class VelocityMover : Mover
 
     void FixedUpdate()
     {
-        SetComponents();
-
         DirectionVector direction;
 
         if (_controller.GetControl(out direction))
         {
             _isWalking = true;
             _hasStopped = false;
-            _walkingSpeed = direction.Value * _skillSet.Speed;
+            _walkingSpeed = direction * _skillSet.Speed;
         }
         else
         {
@@ -79,23 +82,7 @@ public class VelocityMover : Mover
 
         if (_isWalking)
         {
-            InvokeWalkingAction(_walkingSpeed);
-        }
-    }
-
-    private void SetComponents()
-    {
-        if (_skillSet == null)
-        {
-            _skillSet = GetComponent<WalkableSkillsSet>();
-        }
-        if (_rigidbody == null)
-        {
-            _rigidbody = GetComponent<Rigidbody2D>();
-        }
-        if (_controller == null)
-        {
-            _controller = GetComponent<MoveController>();
+            WalkingAction.SafeInvoke(currentSpeedVector);
         }
     }
 
@@ -105,7 +92,5 @@ public class VelocityMover : Mover
         _hasStopped = true;
         _isWalking = false;
     }
-
-    private bool _isWalking;
 }
 

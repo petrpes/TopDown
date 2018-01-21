@@ -7,6 +7,7 @@ public class CollisionActionHandler : MonoBehaviour
     [SerializeField] private ColliderType _colliderType;
     [SerializeField] private CollisionType _collisionType;
     [SerializeField] private Command[] _commands;
+    [SerializeField] private bool _shouldLog;
 
     private ICollection<GameObject> _collisions;
     private ICollection<GameObject> _updateCollisions;
@@ -33,12 +34,9 @@ public class CollisionActionHandler : MonoBehaviour
     {
         if (_collisionType == CollisionType.OnStay)
         {
-            for (int i = 0; i < _commands.Length; i++)
+            foreach (GameObject collision in _collisions)
             {
-                foreach (GameObject collision in _collisions)
-                {
-                    _commands[i].Execute(collision);
-                }
+                _commands.Execute(collision);
             }
         }
 
@@ -73,7 +71,6 @@ public class CollisionActionHandler : MonoBehaviour
         if (currentColliderType == _colliderType && _tags.ContainsTag(actor.tag) &&
             !_updateCollisions.Contains(actor))
         {
-
             bool shouldExecute = false;
             if (currentCollisionType == CollisionType.OnEnter)
             {
@@ -89,12 +86,18 @@ public class CollisionActionHandler : MonoBehaviour
             if (currentCollisionType == _collisionType && shouldExecute)
             {
                 _updateCollisions.Add(actor);
-
-                for (int i = 0; i < _commands.Length; i++)
-                {
-                    _commands[i].Execute(actor);
-                }
+                Log(currentColliderType, currentCollisionType, actor);
+                _commands.Execute(actor);
             }
+        }
+    }
+
+    private void Log(ColliderType colliderType,
+        CollisionType collisionType, GameObject actor)
+    {
+        if (_shouldLog)
+        {
+            Debug.Log(gameObject.name + " " + colliderType + " " + collisionType + " " + actor.name);
         }
     }
 }

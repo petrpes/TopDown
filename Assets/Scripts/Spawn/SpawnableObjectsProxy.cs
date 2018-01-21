@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SpawnableObjectsProxy : MonoBehaviour, ISpawnableObject
 {
-    [SerializeField] private ComponentsCache _spawnableObjects = new ComponentsCache(typeof(ISpawnableObject).Name, true);
+    [SerializeField] private ComponentsCache _spawnableObjects = new ComponentsCache(typeof(ISpawnableObject), true, false);
 
     public void OnAfterSpawn()
     {

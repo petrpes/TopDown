@@ -19,8 +19,8 @@ public class AddForceCommand : Command
             _rigidbody = GetComponent<Rigidbody2D>();
         }
 
-        MovableBody actorMovableBody = actor.GetComponent<MovableBody>();
-        if (actorMovableBody != null)
+        var actorMover = actor.GetMover();
+        if (actorMover != null)
         {
             DirectionVector direction = new DirectionVector()
             {
@@ -28,7 +28,7 @@ public class AddForceCommand : Command
                     (Vector3)_rigidbody.velocity :
                     (actor.transform.position - _transform.position)
             };
-            actorMovableBody.Push(direction.Value * _force);
+            actorMover.AddForce(direction.Value * _force);
         }
     }
 }

@@ -3,7 +3,7 @@
 [RequireComponent(typeof(DamageSkill))]
 public class HitCommand : Command
 {
-    [SerializeField] private Command[] _onHitCommand;
+    [SerializeField] private Command[] _onAfterHitCommand;
     [SerializeField] private HitType _hitType;
     [SerializeField] private ClassInformation _classInformation;
 
@@ -29,18 +29,14 @@ public class HitCommand : Command
 
         if (actorHealth != null)
         {
-            DamageSkill actorDamage = actor.GetComponent<DamageSkill>();
             Fraction actorFraction = actor.GetFraction();
 
             if (actorFraction.IsHittableBy(CurrentFraction))
             {
                 actorHealth.Hit(_damageSkill.DamageValue, _hitType);
-                if (_onHitCommand != null)
+                if (_onAfterHitCommand != null)
                 {
-                    for (int i = 0; i < _onHitCommand.Length; i++)
-                    {
-                        _onHitCommand[i].Execute(actor);
-                    }
+                    _onAfterHitCommand.Execute(actor);
                 }
             }
         }

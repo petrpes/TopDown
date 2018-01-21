@@ -10,6 +10,7 @@ public class TestRoom : MonoBehaviour, IRoom, ICoroutineCollectionWriter<RoomTra
 
     private Transform _transform;
     private Rect _rectangle;
+    private IWallsCreator _wallsCreator = new WallsCreator();
 
     private Action[] _roomActions;
     public Action this[RoomEventType eventType]
@@ -83,6 +84,12 @@ public class TestRoom : MonoBehaviour, IRoom, ICoroutineCollectionWriter<RoomTra
     {
         RoomTransitionInvoker.Instance.SubscribeCoroutine(this);
     }
+
+    //TODO in Editor
+    public void BuildWallsInEditor()
+    {
+        _wallsCreator.CreateWalls(Rectangle, RoomConsts.WallsSize, transform);
+    }
 }
 
 
@@ -102,6 +109,11 @@ public class TestRoomEditor : Editor
             basicContent.SubscribeAllObjects();
 
             _previousCount = newCount;
+        }
+
+        if (GUILayout.Button("Build Walls"))
+        {
+            (target as TestRoom).BuildWallsInEditor();
         }
     }
 }

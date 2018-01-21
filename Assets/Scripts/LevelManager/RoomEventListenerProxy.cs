@@ -2,18 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(RoomContainedObject))]
 public class RoomEventListenerProxy : MonoBehaviour, IRoomEventListener
 {
     [SerializeField] private ComponentsCache _roomEventsListener = 
         new ComponentsCache(typeof(IRoomEventListener).Name, true);
     [SerializeField] private RoomContainedObject _roomObject;
 
-    private Dictionary<RoomEventType, Action> _actions;
+    private Dictionary<RoomEventType, Action<IRoom>> _actions;
 
     private void FillActionsDictionary()
     {
-        _actions = new Dictionary<RoomEventType, Action>(Enum.GetValues(typeof(RoomEventType)).Length);
+        _actions = new Dictionary<RoomEventType, Action<IRoom>>(Enum.GetValues(typeof(RoomEventType)).Length);
 
         foreach (RoomEventType eventType in Enum.GetValues(typeof(RoomEventType)))
         {
@@ -22,7 +21,7 @@ public class RoomEventListenerProxy : MonoBehaviour, IRoomEventListener
             foreach (var eventListeners in
                 _roomEventsListener.GetCachedComponets<IRoomEventListener>())
             {
-                if (!eventListeners.Equals(this))
+                if (eventListeners[eventType] != null)
                 {
                     _actions[eventType] += eventListeners[eventType];
                 }
@@ -33,23 +32,15 @@ public class RoomEventListenerProxy : MonoBehaviour, IRoomEventListener
     private void Awake()
     {
         FillActionsDictionary();
-
-        _roomObject.OnObjectAppearInRoom += Subscribe;
-        _roomObject.OnObjectDisappearFromRoom += Unsubscribe;
-
-        if (_roomObject.CurrentRoom != null)
-        {
-            Subscribe(_roomObject.CurrentRoom);
-        }
+        SubscribeToChangeRoom();
     }
 
     private void OnDestroy()
     {
-        _roomObject.OnObjectAppearInRoom -= Subscribe;
-        _roomObject.OnObjectDisappearFromRoom -= Unsubscribe;
+        UnsubscribeFromChangeRoom();
     }
 
-    public Action this[RoomEventType eventType]
+    public Action<IRoom> this[RoomEventType eventType]
     {
         get
         {
@@ -57,12 +48,44 @@ public class RoomEventListenerProxy : MonoBehaviour, IRoomEventListener
         }
     }
 
-    private void Subscribe(IRoom room)
+    private void OnRoomChanged(IRoom roomBefore, IRoom roomAfter)
+    {
+        if (roomBefore != null)
+        {
+            UnsubscribeFromRoomEventHandler(roomBefore);
+        }
+        if (roomAfter != null)
+        {
+            SubscribeToRoomEventHandler(roomBefore);
+        }
+    }
+
+    private void SubscribeToChangeRoom()
+    {
+        if (_roomObject == null)
+        {
+            SubscribeToRoomEventHandler(null);
+            return;
+        }
+        _roomObject.RoomChanged += OnRoomChanged;
+    }
+
+    private void UnsubscribeFromChangeRoom()
+    {
+        if (_roomObject == null)
+        {
+            UnsubscribeFromRoomEventHandler(null);
+            return;
+        }
+        _roomObject.RoomChanged -= OnRoomChanged;
+    }
+
+    private void SubscribeToRoomEventHandler(IRoom room)
     {
         RoomEventHandler.Instance.SubscribeListener(this, room);
     }
 
-    private void Unsubscribe(IRoom room)
+    private void UnsubscribeFromRoomEventHandler(IRoom room)
     {
         RoomEventHandler.Instance.UnsubscribeListener(this, room);
     }

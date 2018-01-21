@@ -11,12 +11,12 @@ public class PlayerViewController : MonoBehaviour
     {
         if (_healthContainer != null)
         {
-            _healthContainer.OnDeath += Die;
+            _healthContainer.Death += Die;
         }
 
         if (_healthContainer != null)
         {
-            _healthContainer.OnIsInvincibleChanged += SetInvincibvle;
+            _healthContainer.InvincibleChanged += SetInvincibvle;
         }
 
         if (_mover != null)

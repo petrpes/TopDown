@@ -45,10 +45,7 @@ public class TimerAction : MonoBehaviour
 
     private void OnTimerTick()
     {
-        for (int i = 0; i < _commands.Length; i++)
-        {
-            _commands[i].Execute(gameObject);
-        }
+        _commands.Execute(gameObject);
     }
 }
 

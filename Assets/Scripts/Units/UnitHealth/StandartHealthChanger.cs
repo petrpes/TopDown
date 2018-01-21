@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class StandartHealthChanger : HealthChanger
 {
@@ -13,11 +14,14 @@ public class StandartHealthChanger : HealthChanger
         }
     }
 
+    public override event Action AfterHeal;
+    public override event Action AfterHit;
+
     public override bool Heal(HealthPoints value)
     {
         if (AddToCurrentHealth(value))
         {
-            InvokeOnAfterHealAction();
+            AfterHeal.SafeInvoke();
             return true;
         }
 
@@ -32,7 +36,7 @@ public class StandartHealthChanger : HealthChanger
             {
                 HealthContainer.CurrentHealth = HealthPoints.Zero;
             }
-            InvokeOnAfterHitAction();
+            AfterHit.SafeInvoke();
 
             return true;
         }

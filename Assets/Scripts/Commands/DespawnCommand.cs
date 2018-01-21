@@ -2,15 +2,11 @@
 
 public class DespawnCommand : Command
 {
-    private Projectile _projectile;
+    [SerializeField] private Projectile _component;
 
     public override void Execute(GameObject actor)
     {
-        if (_projectile == null)
-        {
-            _projectile = GetComponent<Projectile>();
-        }
-        BulletSpawner.Instance.Despawn(_projectile);
+        SpawnManager.Instance.Despawn(_component);
     }
 }
 

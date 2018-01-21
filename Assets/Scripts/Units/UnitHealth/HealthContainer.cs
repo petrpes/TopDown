@@ -18,7 +18,7 @@ public class HealthContainer : MonoBehaviour
             if (_maxHealth != value)
             {
                 _maxHealth = value;
-                OnMaxHealthChanged.SafeInvoke();
+                MaxHealthChanged.SafeInvoke();
             }
         }
     }
@@ -34,11 +34,11 @@ public class HealthContainer : MonoBehaviour
             if (_currentHealth != value)
             {
                 _currentHealth = value;
-                OnCurrentHealthChanged.SafeInvoke();
+                CurrentHealthChanged.SafeInvoke();
 
                 if (_currentHealth == HealthPoints.Zero)
                 {
-                    OnDeath.SafeInvoke();
+                    Death.SafeInvoke();
                 }
             }
         }
@@ -55,14 +55,14 @@ public class HealthContainer : MonoBehaviour
             if (_isInvincible != value)
             {
                 _isInvincible = value;
-                OnIsInvincibleChanged.SafeInvoke();
+                InvincibleChanged.SafeInvoke();
             }
         }
     }
 
-    public event Action OnCurrentHealthChanged;
-    public event Action OnMaxHealthChanged;
-    public event Action OnIsInvincibleChanged;
-    public event Action OnDeath;
+    public event Action CurrentHealthChanged;
+    public event Action MaxHealthChanged;
+    public event Action InvincibleChanged;
+    public event Action Death;
 }
 

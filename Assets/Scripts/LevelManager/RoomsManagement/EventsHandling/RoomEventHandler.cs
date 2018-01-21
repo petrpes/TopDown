@@ -5,13 +5,13 @@ public class RoomEventHandler : IRoomEventHandler
 {
     public static RoomEventHandler Instance = new RoomEventHandler();
 
-    private Dictionary<IRoom, Dictionary<RoomEventType, Action>> _events;
+    private Dictionary<IRoom, Dictionary<RoomEventType, Action<IRoom>>> _events;
     private Dictionary<RoomEventType, Action<IRoom>> _allRoomsEvents;
 
     private int RoomEventTypeCount = Enum.GetValues(typeof(RoomEventType)).Length;
 
 #region dictionaries
-    private Action this[IRoom room, RoomEventType eventType]
+    private Action<IRoom> this[IRoom room, RoomEventType eventType]
     {
         get
         {
@@ -30,11 +30,11 @@ public class RoomEventHandler : IRoomEventHandler
         {
             if (_events == null)
             {
-                _events = new Dictionary<IRoom, Dictionary<RoomEventType, Action>>();
+                _events = new Dictionary<IRoom, Dictionary<RoomEventType, Action<IRoom>>>();
             }
             if (!_events.ContainsKey(room))
             {
-                _events.Add(room, new Dictionary<RoomEventType, Action>(RoomEventTypeCount));
+                _events.Add(room, new Dictionary<RoomEventType, Action<IRoom>>(RoomEventTypeCount));
             }
             if (!_events[room].ContainsKey(eventType))
             {
@@ -80,14 +80,8 @@ public class RoomEventHandler : IRoomEventHandler
 
     public void InvokeRoomEvent(IRoom room, RoomEventType eventType)
     {
-        if (this[room, eventType] != null)
-        {
-            this[room, eventType].Invoke();
-        }
-        if (this[eventType] != null)
-        {
-            this[eventType].Invoke(room);
-        }
+        this[room, eventType].SafeInvoke(room);
+        this[eventType].SafeInvoke(room);
     }
 
     public void SubscribeListener(IRoomEventListener listener, IRoom room)
@@ -96,7 +90,14 @@ public class RoomEventHandler : IRoomEventHandler
         {
             if (listener[eventType] != null)
             {
-                this[room, eventType] += listener[eventType];
+                if (room == null)
+                {
+                    this[eventType] += listener[eventType];
+                }
+                else
+                {
+                    this[room, eventType] += listener[eventType];
+                }
             }
         }
     }
@@ -107,33 +108,18 @@ public class RoomEventHandler : IRoomEventHandler
         {
             if (listener[eventType] != null)
             {
-                this[room, eventType] -= listener[eventType];
+                if (room == null)
+                {
+                    this[eventType] -= listener[eventType];
+                }
+                else
+                {
+                    this[room, eventType] -= listener[eventType];
+                }
             }
         }
     }
-
-    public void SubscribeListener(IAllRoomsEventListener listener)
-    {
-        foreach (RoomEventType eventType in Enum.GetValues(typeof(RoomEventType)))
-        {
-            if (listener[eventType] != null)
-            {
-                this[eventType] += listener[eventType];
-            }
-        }
-    }
-
-    public void UnsubscribeListener(IAllRoomsEventListener listener)
-    {
-        foreach (RoomEventType eventType in Enum.GetValues(typeof(RoomEventType)))
-        {
-            if (listener[eventType] != null)
-            {
-                this[eventType] -= listener[eventType];
-            }
-        }
-    }
-
+    
     public void Dispose()
     {
         _events = null;

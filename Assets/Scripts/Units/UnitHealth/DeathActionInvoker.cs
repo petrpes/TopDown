@@ -7,20 +7,17 @@ public class DeathActionInvoker : MonoBehaviour
 
     private void OnEnable()
     {
-        _healthContainer.OnDeath += DeathAction;
+        _healthContainer.Death += DeathAction;
     }
 
     private void OnDisable()
     {
-        _healthContainer.OnDeath -= DeathAction;
+        _healthContainer.Death -= DeathAction;
     }
 
     private void DeathAction()
     {
-        for (int i = 0; i < _deathCommands.Length; i++)
-        {
-            _deathCommands[i].Execute(gameObject);
-        }
+        _deathCommands.Execute(gameObject);
     }
 }
 

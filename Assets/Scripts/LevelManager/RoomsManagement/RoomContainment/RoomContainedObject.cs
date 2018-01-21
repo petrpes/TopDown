@@ -6,8 +6,7 @@ public class RoomContainedObject : MonoBehaviour, IRoomContainedObject, ISpawnab
 {
     [SerializeField] private InterfaceComponentCache _defaultRoom;
 
-    public event Action<IRoom> OnObjectAppearInRoom;
-    public event Action<IRoom> OnObjectDisappearFromRoom;
+    public event Action<IRoom, IRoom> RoomChanged;
 
     //TODO in inspector
     public void SetRoomInInspector(IRoom room)
@@ -28,16 +27,8 @@ public class RoomContainedObject : MonoBehaviour, IRoomContainedObject, ISpawnab
             {
                 return;
             }
-            if (_currentRoom != null)
-            {
-                //LevelManager.Instance.RoomContentManager.RemoveObject(_currentRoom, this);
-                OnObjectDisappearFromRoom.SafeInvoke(_currentRoom);
-            }
-            if (value != null)
-            {
-                //LevelManager.Instance.RoomContentManager.AddObject(value, this);
-                OnObjectAppearInRoom.SafeInvoke(value);
-            }
+
+            RoomChanged.SafeInvoke(_currentRoom, value);
             _currentRoom = value;
         }
     }

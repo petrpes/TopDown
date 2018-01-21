@@ -29,7 +29,7 @@ public class InvincibleProtection : MonoBehaviour
 
     private void Awake()
     {
-        _healthChanger.OnAfterHitAction += OnAfterHitAction;
+        _healthChanger.AfterHit += OnAfterHitAction;
     }
 
     private void OnAfterHitAction()

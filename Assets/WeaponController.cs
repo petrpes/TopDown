@@ -22,9 +22,10 @@ public class WeaponController : MonoBehaviour
         }
     }
 
-    [SerializeField] private Camera _camera;
-    [SerializeField] private Transform _target;
+    [SerializeField] private Transform _targetArrow;
     [SerializeField] private Weapon _weapon;
+
+    private Camera _camera;
 
     private Transform _transform;
     private PositionDirectionInputArguments _inputArguments;
@@ -46,10 +47,8 @@ public class WeaponController : MonoBehaviour
                 _inputArguments.Direction = new DirectionVector(_inputArguments.Position - PlayerOnScreenPosition);
             }
             _lastPosition = _transform.position;
-            _target.position = _lastPosition + _inputArguments.Direction.Value;
-            float angle = Mathf.Atan2(_inputArguments.Direction.Value.y, _inputArguments.Direction.Value.x) * 
-                Mathf.Rad2Deg - 90;
-            _target.rotation = Quaternion.Euler(0f, 0f, angle);
+            _targetArrow.position = _lastPosition + _inputArguments.Direction.Value;
+            _targetArrow.rotation = _inputArguments.Direction.Value.RotationTowards();
         }
 
         if (InputManager.Instance.GetIsControl(InputAttributesSet.WeaponShoot))
@@ -62,6 +61,10 @@ public class WeaponController : MonoBehaviour
     {
         get
         {
+            if (_camera == null)
+            {
+                _camera = Camera.main;
+            }
             return _camera.WorldToScreenPoint(_transform.position);
         }
     }
