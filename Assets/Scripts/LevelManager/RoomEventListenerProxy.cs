@@ -10,6 +10,29 @@ public class RoomEventListenerProxy : MonoBehaviour, IRoomEventListener
 
     private Dictionary<RoomEventType, Action<IRoom>> _actions;
 
+    public Action<IRoom> this[RoomEventType eventType]
+    {
+        get
+        {
+            if (isActiveAndEnabled)
+            {
+                return _actions[eventType];
+            }
+            return null;
+        }
+    }
+
+    private void Awake()
+    {
+        FillActionsDictionary();
+        SubscribeToEvents();
+    }
+    
+    private void OnDestroy()
+    {
+        UnsubscribeFromEvents();
+    }
+
     private void FillActionsDictionary()
     {
         _actions = new Dictionary<RoomEventType, Action<IRoom>>(Enum.GetValues(typeof(RoomEventType)).Length);
@@ -29,22 +52,35 @@ public class RoomEventListenerProxy : MonoBehaviour, IRoomEventListener
         }
     }
 
-    private void Awake()
+    private void SubscribeToEvents()
     {
-        FillActionsDictionary();
-        SubscribeToChangeRoom();
-    }
-
-    private void OnDestroy()
-    {
-        UnsubscribeFromChangeRoom();
-    }
-
-    public Action<IRoom> this[RoomEventType eventType]
-    {
-        get
+        if (_roomObject == null)
         {
-            return _actions[eventType];
+            SubscribeToRoomEventHandler(null);
+        }
+        else
+        {
+            if (_roomObject.CurrentRoom != null)
+            {
+                SubscribeToRoomEventHandler(_roomObject.CurrentRoom);
+            }
+            _roomObject.RoomChanged += OnRoomChanged;
+        }
+    }
+
+    private void UnsubscribeFromEvents()
+    {
+        if (_roomObject == null)
+        {
+            UnsubscribeFromRoomEventHandler(null);
+        }
+        else
+        {
+            if (_roomObject.CurrentRoom != null)
+            {
+                UnsubscribeFromRoomEventHandler(_roomObject.CurrentRoom);
+            }
+            _roomObject.RoomChanged -= OnRoomChanged;
         }
     }
 
@@ -58,26 +94,6 @@ public class RoomEventListenerProxy : MonoBehaviour, IRoomEventListener
         {
             SubscribeToRoomEventHandler(roomBefore);
         }
-    }
-
-    private void SubscribeToChangeRoom()
-    {
-        if (_roomObject == null)
-        {
-            SubscribeToRoomEventHandler(null);
-            return;
-        }
-        _roomObject.RoomChanged += OnRoomChanged;
-    }
-
-    private void UnsubscribeFromChangeRoom()
-    {
-        if (_roomObject == null)
-        {
-            UnsubscribeFromRoomEventHandler(null);
-            return;
-        }
-        _roomObject.RoomChanged -= OnRoomChanged;
     }
 
     private void SubscribeToRoomEventHandler(IRoom room)

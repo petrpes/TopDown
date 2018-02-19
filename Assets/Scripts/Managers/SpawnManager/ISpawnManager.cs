@@ -1,9 +1,10 @@
 ﻿using Components.Spawner;
+using System;
+using UnityEngine;
 
-public interface ISpawnManager : ISpawner, IDespawner
+public interface ISpawnManager : ISpawner<GameObject>, IDespawner<GameObject>, IDisposable
 {
-    void CreatePool<T>(T prefab, int instancesCount);
-    void DestroyPool<T>(T prefab);
-    bool IsSpawned<T>(T obj);
+    void CreatePool(GameObject prefab, int instancesCount);
+    bool IsSpawned(GameObject obj);
 }
 

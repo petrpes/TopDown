@@ -129,9 +129,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _onAfterHitCommand:
+  - {fileID: 114817687415960232}
   - {fileID: 114199910434857542}
   _hitType: 0
   _classInformation: {fileID: 114725725170153174}
+  _damageSkill: {fileID: 114733010124290368}
 --- !u!114 &114199910434857542
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -143,19 +145,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a39464f1885043948970791f349916e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _component: {fileID: 114958018698460986}
+  _parent: {fileID: 0}
+  _despawnSelf: 1
 --- !u!114 &114199998837281962
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1990917973647500}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3256d821a64b64440a812252f3eeafb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _time: 2
+  _time: 1
   _isIntervalTimer: 0
   _commands:
   - {fileID: 114199910434857542}
@@ -194,6 +197,7 @@ MonoBehaviour:
     _assemblyQualifiedName: 
     _shouldAlsoCountInChildren: 1
     _shouldCountSelf: 0
+    _showAdditionalInEditor: 0
     _components:
     - {fileID: 114567234408533874}
   _roomObject: {fileID: 0}
@@ -213,6 +217,7 @@ MonoBehaviour:
   - {fileID: 114199910434857542}
   _onClearCommands: []
   _onStartCommands: []
+  _shouldDebug: 0
 --- !u!114 &114669821233585706
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -259,7 +264,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damageValue:
-    _value: 0
+    _value: 1
 --- !u!114 &114817687415960232
 MonoBehaviour:
   m_ObjectHideFlags: 1

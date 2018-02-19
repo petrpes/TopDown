@@ -14,7 +14,7 @@ public struct Fraction
     {
         return new Fraction()
         {
-            _fraction = ReverseEnum(fraction._fraction)
+            _fraction = ReverseFraction(fraction._fraction)
         };
     }
 
@@ -30,7 +30,7 @@ public struct Fraction
         return false;
     }
 
-    private static FractionEnum ReverseEnum(FractionEnum fractionEnum)
+    private static FractionEnum ReverseFraction(FractionEnum fractionEnum)
     {
         switch (fractionEnum)
         {

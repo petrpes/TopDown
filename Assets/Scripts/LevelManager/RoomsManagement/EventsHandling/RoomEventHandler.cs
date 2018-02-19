@@ -4,13 +4,13 @@ using System.Collections.Generic;
 public class RoomEventHandler : IRoomEventHandler
 {
     public static RoomEventHandler Instance = new RoomEventHandler();
+    private int RoomEventTypeCount = Enum.GetValues(typeof(RoomEventType)).Length;
+
+#region dictionaries
 
     private Dictionary<IRoom, Dictionary<RoomEventType, Action<IRoom>>> _events;
     private Dictionary<RoomEventType, Action<IRoom>> _allRoomsEvents;
 
-    private int RoomEventTypeCount = Enum.GetValues(typeof(RoomEventType)).Length;
-
-#region dictionaries
     private Action<IRoom> this[IRoom room, RoomEventType eventType]
     {
         get

@@ -1,8 +1,6 @@
-﻿using System;
-using Components.Timer;
+﻿using Components.Timer;
 using UnityEngine;
 
-[RequireComponent(typeof(DamageSkill))]
 [RequireComponent(typeof(Rigidbody2D))]
 public class SimpleProjectile : Projectile
 {
@@ -47,7 +45,7 @@ public class SimpleProjectile : Projectile
 
     private void DespawnAction()
     {
-        SpawnManager.Instance.Despawn(this);
+        SpawnManager.Instance.Despawn(gameObject);
     }
 }
 

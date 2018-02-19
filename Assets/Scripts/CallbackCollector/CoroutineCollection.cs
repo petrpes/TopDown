@@ -12,8 +12,8 @@ public class CoroutineCollection<T>
     public CoroutineCollection()
     {
         _callbackCollector = new CallbackCollector();
-        _writersList = new List<ICoroutineCollectionWriter<T>>();
-        _coroutineList = new List<Coroutine>();
+        _writersList = new List<ICoroutineCollectionWriter<T>>(10);
+        _coroutineList = new List<Coroutine>(10);
     }
 
     public void AddCoroutine(ICoroutineCollectionWriter<T> collectionWriter)
@@ -36,13 +36,13 @@ public class CoroutineCollection<T>
 
     public void Run(Action onComplete, T arg)
     {
-
         for (int i = 0; i < _writersList.Count; i++)
         {
             _coroutineList.Add
             (
                 CoroutineInvoker.Instance.StartCoroutine(
-                    _writersList[i].Coroutine(_callbackCollector.AddCallback(), arg))
+                    _writersList[i].Coroutine(_callbackCollector.AddCallback(), arg)
+                )
             );
         }
 
@@ -51,6 +51,7 @@ public class CoroutineCollection<T>
             onComplete.SafeInvoke();
             _coroutineList.Clear();
         });
+
     }
 
     public void ForceStop()

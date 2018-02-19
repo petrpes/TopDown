@@ -13,6 +13,7 @@ public class LevelManager
 
     private ILevel _currentLevel;
     private IRoom _currentRoom;
+    private IRoom _followingRoom;
 
     private IRoomEventHandler _roomEventHandler;
     private ILevelCreator _levelCreator;
@@ -35,10 +36,7 @@ public class LevelManager
     {
         if (_currentLevel != null)
         {
-            if (OnBeforeLevelDestroyed != null)
-            {
-                OnBeforeLevelDestroyed.Invoke();
-            }//TODO safe invoke
+            OnBeforeLevelDestroyed.SafeInvoke();
 
             _levelDestroyer.DestroyCurrentLevel(_currentLevel, () =>
             {
@@ -92,13 +90,18 @@ public class LevelManager
         {
             ExecuteRoomAction(CurrentRoom, RoomEventType.OnBeforeClose);
         }
-        _roomTransition.TransitionToRoom(_currentRoom, room, () =>
-        {
-            _currentRoom = room;
 
-            ExecuteRoomAction(CurrentRoom, RoomEventType.OnAfterOpen);
-            ExecuteRoomAction(CurrentRoom, RoomEventType.OnStarted);
-        });
+        _followingRoom = room;
+
+        _roomTransition.TransitionToRoom(_currentRoom, room, RoomAfterTransitionAction);
+    }
+
+    private void RoomAfterTransitionAction()
+    {
+        _currentRoom = _followingRoom;
+
+        ExecuteRoomAction(CurrentRoom, RoomEventType.OnAfterOpen);
+        ExecuteRoomAction(CurrentRoom, RoomEventType.OnStarted);
     }
 
     private void ExecuteRoomAction(IRoom room, RoomEventType eventType)

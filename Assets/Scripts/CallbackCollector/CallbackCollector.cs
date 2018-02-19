@@ -26,7 +26,7 @@ public class CallbackCollector
     {
         if (onFinish == null)
         {
-            throw new ArgumentNullException("onFinish");
+            throw new ArgumentNullException("onFinish is null");
         }
 
         _onCallbacksFinished = onFinish;
@@ -48,6 +48,7 @@ public class CallbackCollector
         if (_pendingCallback == 0)
         {
             _onCallbacksFinished.SafeInvoke();
+            _onCallbacksFinished = null;
         }
     }
 

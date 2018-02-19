@@ -4,7 +4,7 @@ public static class CommandsExtentions
 {
     public static void Execute(this Command[] commands, GameObject actor)
     {
-        if (commands == null || commands.Length == 0)
+        if (commands == null || commands.Length <= 0)
         {
             return;
         }

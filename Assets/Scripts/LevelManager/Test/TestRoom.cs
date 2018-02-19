@@ -3,14 +3,17 @@ using System.Collections;
 using UnityEditor;
 using UnityEngine;
 
+//[RequireComponent(typeof(DoorsHolder))]
 public class TestRoom : MonoBehaviour, IRoom, ICoroutineCollectionWriter<RoomTransitionArguments>
 {
     [SerializeField] private Vector2 _size;
+    [SerializeField] private DoorsHolder _doorsHolder;
     [SerializeField] private ComponentsCache _roomBasicObjects = new ComponentsCache(typeof(RoomContainedObject).Name, true);
+    [HideInInspector]
+    [SerializeField] private WallsBase _walls;
 
     private Transform _transform;
     private Rect _rectangle;
-    private IWallsCreator _wallsCreator = new WallsCreator();
 
     private Action[] _roomActions;
     public Action this[RoomEventType eventType]
@@ -65,6 +68,14 @@ public class TestRoom : MonoBehaviour, IRoom, ICoroutineCollectionWriter<RoomTra
         }
     }
 
+    public IDoorsHolder DoorsHolder
+    {
+        get
+        {
+            return _doorsHolder;
+        }
+    }
+
     public IEnumerator Coroutine(Action onComplete, RoomTransitionArguments args)
     {
         if (args.OldRoom != null && Equals(args.OldRoom))
@@ -84,12 +95,6 @@ public class TestRoom : MonoBehaviour, IRoom, ICoroutineCollectionWriter<RoomTra
     {
         RoomTransitionInvoker.Instance.SubscribeCoroutine(this);
     }
-
-    //TODO in Editor
-    public void BuildWallsInEditor()
-    {
-        _wallsCreator.CreateWalls(Rectangle, RoomConsts.WallsSize, transform);
-    }
 }
 
 
@@ -97,6 +102,7 @@ public class TestRoom : MonoBehaviour, IRoom, ICoroutineCollectionWriter<RoomTra
 public class TestRoomEditor : Editor
 {
     private int _previousCount = 0;
+    private IWallsCreator _wallsCreator = new WallsCreator();
 
     public override void OnInspectorGUI()
     {
@@ -113,8 +119,23 @@ public class TestRoomEditor : Editor
 
         if (GUILayout.Button("Build Walls"))
         {
-            (target as TestRoom).BuildWallsInEditor();
+            BuildWalls();
         }
+    }
+
+    private void BuildWalls()
+    {
+        var walls = this.Property("_walls");
+        var room = target as TestRoom;
+
+        if (walls.objectReferenceValue != null)
+        {
+            DestroyImmediate((walls.objectReferenceValue as MonoBehaviour).gameObject);
+        }
+        walls.objectReferenceValue = _wallsCreator.CreateWalls(room.Rectangle, RoomConsts.WallsSize, 
+            room.gameObject.transform);
+
+        serializedObject.ApplyModifiedProperties();
     }
 }
 

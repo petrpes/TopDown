@@ -7,6 +7,15 @@ public class TestLevelMap : MonoBehaviour, ILevelMap
     public static TestLevelMap Instance;
 
     [SerializeField] private TestRoom[] _rooms;
+    [SerializeField] private Transform _player;//todo not in here
+
+    public Transform Player
+    {
+        get
+        {
+            return _player;
+        }
+    }
 
     public int RoomsCount
     {

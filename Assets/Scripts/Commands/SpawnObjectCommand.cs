@@ -1,20 +1,14 @@
 ﻿using UnityEngine;
-using Components.Spawner.Pool;
 
 public class SpawnObjectCommand : Command
 {
-    [SerializeField] private GameObject _object;
+    [SerializeField] private SpawnPointBase _spawnPoint;
 
-    private PoolSpawner _spawner;
+    private Transform _transform;
 
     public override void Execute(GameObject actor)
     {
-        if (_spawner == null)
-        {
-            _spawner = new PoolSpawner(1);
-        }
-        GameObject gameObject = _spawner.Spawn(_object);
-        gameObject.transform.position = transform.position;
+        _spawnPoint.Spawn();
     }
 }
 

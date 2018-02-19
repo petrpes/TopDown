@@ -11,11 +11,16 @@ public abstract class LinearPropertyDrawer<T> : PropertyDrawer where T : class
 
     protected T BaseObject { get; private set; }
     protected MonoBehaviour MonoBehaviour { get; private set; }
+    protected SerializedProperty SerializedProperty { get; private set; }
+    protected SerializedProperty GetProperty(string name)
+    {
+        return SerializedProperty == null ? null : 
+            SerializedProperty.FindPropertyRelative(name);
+    }
 
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
-        MonoBehaviour = property.serializedObject.targetObject as MonoBehaviour;
-        BaseObject = fieldInfo.GetValue(property.serializedObject.targetObject) as T;
+        SetBasicObjects(property);
 
         EditorGUI.BeginProperty(position, label, property);
         position = EditorGUI.PrefixLabel(position, GUIUtility.GetControlID(FocusType.Passive), label);
@@ -39,25 +44,31 @@ public abstract class LinearPropertyDrawer<T> : PropertyDrawer where T : class
             previousHeight += Properties[i].Height + Distance;
         }
 
-        for (int i = 0; i < visibleProperties.Length; i++)
+        int j = 0;
+        for (int i = 0; i < Properties.Length; i++)
         {
-            bool isChanged = false;
-            SerializedProperty serializedProperty = null;
-            if (Properties[i].PropertyName != "")
+            if (Properties[i].IsVisible)
             {
-                serializedProperty = property.FindPropertyRelative(Properties[i].PropertyName);
-                isChanged = EditorGUI.PropertyField(rects[i],
-                    serializedProperty,
-                    new GUIContent(Properties[i].Caption));
-            }
-            else
-            {
-                isChanged = GUI.Button(rects[i], Properties[i].Caption);
-            }
+                bool isChanged = false;
+                SerializedProperty serializedProperty = null;
 
-            if (isChanged && Properties[i].OnChangeAction != null)
-            {
-                Properties[i].OnChangeAction.Invoke(serializedProperty);
+                if (Properties[i].PropertyName != "")
+                {
+                    serializedProperty = property.FindPropertyRelative(Properties[i].PropertyName);
+                    isChanged = EditorGUI.PropertyField(rects[j],
+                        serializedProperty,
+                        new GUIContent(Properties[i].Caption));
+                }
+                else
+                {
+                    isChanged = GUI.Button(rects[j], Properties[i].Caption);
+                }
+
+                if (isChanged && Properties[i].OnChangeAction != null)
+                {
+                    Properties[i].OnChangeAction.Invoke(serializedProperty);
+                }
+                j++;
             }
         }
 
@@ -67,6 +78,8 @@ public abstract class LinearPropertyDrawer<T> : PropertyDrawer where T : class
 
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
+        SetBasicObjects(property);
+
         var visibleProperties = Array.FindAll(Properties,
             (DrawableProperty) => { return DrawableProperty.IsVisible; });
         float height = 0;
@@ -83,6 +96,22 @@ public abstract class LinearPropertyDrawer<T> : PropertyDrawer where T : class
         height += Distance * (visibleProperties.Length - 1);
 
         return height;
+    }
+
+    private void SetBasicObjects(SerializedProperty property)
+    {
+        if (SerializedProperty == null)
+        {
+            SerializedProperty = property;
+        }
+        if (BaseObject == null)
+        {
+            BaseObject = fieldInfo.GetValue(property.serializedObject.targetObject) as T;
+        }
+        if (MonoBehaviour == null)
+        {
+            MonoBehaviour = property.serializedObject.targetObject as MonoBehaviour;
+        }
     }
 }
 

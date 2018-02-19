@@ -11,6 +11,10 @@ public class FollowMoveController : MoveController
         {
             _transform = transform;
         }
+        if (_pusrued == null)
+        {
+            _pusrued = TestLevelMap.Instance.Player;
+        }
         direction = new DirectionVector(_pusrued.position - _transform.position);
         return true;
     }

@@ -12,15 +12,17 @@ public class ComponentsCache
     [SerializeField] private string _assemblyQualifiedName;
     [SerializeField] private bool _shouldAlsoCountInChildren;
     [SerializeField] private bool _shouldCountSelf = false;
+    [SerializeField] private bool _showAdditionalInEditor = false;
     [SerializeField] protected Component[] _components;
 
     public ComponentsCache(string componentTypeName, bool shouldAlsoCountInChildren, 
-        bool shouldAlsoCountSelf = false, string assemblyQualifiedName = "")
+        bool shouldAlsoCountSelf = false, string assemblyQualifiedName = "", bool showAdditionalInEditor = false)
     {
         _componentTypeName = componentTypeName;
         _shouldAlsoCountInChildren = shouldAlsoCountInChildren;
         _shouldCountSelf = shouldAlsoCountSelf;
         _assemblyQualifiedName = assemblyQualifiedName;
+        _showAdditionalInEditor = showAdditionalInEditor;
     }
 
     public ComponentsCache(Type type, bool shouldAlsoCountInChildren,
@@ -134,7 +136,7 @@ public class ComponentsCacheEditor : LinearPropertyDrawer<ComponentsCache>
 {
     private DrawableProperty _typeName = new DrawableProperty("_componentTypeName", "Type name", 15, true, null);
     private DrawableProperty _countChildren = new DrawableProperty("_shouldAlsoCountInChildren", "Count children", 15, true, null);
-    private DrawableProperty _recalculateButton = new DrawableProperty("", "", 20, true, null);
+    private DrawableProperty _recalculateButton = new DrawableProperty("", "", 30, true, null);
 
     private DrawableProperty[] _properties;
     protected override DrawableProperty[] Properties
@@ -143,7 +145,12 @@ public class ComponentsCacheEditor : LinearPropertyDrawer<ComponentsCache>
         {
             if (_properties == null)
             {
-                _recalculateButton.OnChangeAction = OnButtonPressed;
+                var shouldShowAdditional = GetProperty("_showAdditionalInEditor").boolValue;
+
+                _typeName = new DrawableProperty("_componentTypeName", "Type name", 15, shouldShowAdditional, null);
+                _countChildren = new DrawableProperty("_shouldAlsoCountInChildren", "Count children", 15, shouldShowAdditional, null);
+                _recalculateButton = new DrawableProperty("", "", 20, true, OnButtonPressed);
+
                 _properties = new DrawableProperty[] { _typeName, _countChildren, _recalculateButton };
             }
             return _properties;

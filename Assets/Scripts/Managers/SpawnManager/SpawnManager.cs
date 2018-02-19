@@ -1,63 +1,79 @@
-﻿using Components.EventHandler;
+﻿using Components.Spawner;
 using Components.Spawner.Pool;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SpawnManager : ISpawnManager
 {
     public static ISpawnManager Instance = new SpawnManager();
 
-    private PoolSpawner _roomsSpawner;
-    private PoolSpawner _roomsTransferedSpawner;
     private PoolSpawner _projectileSpawner;
     private PoolSpawner _defaultSpawner;
 
+    private Dictionary<GameObject, ISpawnableObject> _spawnableObjectsCache;
+
     private SpawnManager()
     {
-        _roomsSpawner = new PoolSpawner(1);
-        _projectileSpawner = new PoolSpawner();
         _defaultSpawner = new PoolSpawner();
+        _spawnableObjectsCache = new Dictionary<GameObject, ISpawnableObject>(10);
     }
-
-    public void Despawn<T>(T spawnableObject)
-    {
-        var spawner = GetPoolSpawner(spawnableObject);
-        spawner.Despawn(spawnableObject);
-    }
-
+    /*
     public T Spawn<T>(T prefab)
     {
         var spawner = GetPoolSpawner(prefab);
-        return spawner.Spawn(prefab);
+        var spawnedObject = spawner.Spawn(prefab);
+        return spawnedObject;
+    }*/
+
+    public GameObject Spawn(GameObject prefab)
+    {
+        var spawner = GetPoolSpawner(prefab);
+        var spawnedObject = spawner.Spawn(prefab);
+
+        GetSpawnableObject(spawnedObject).SafeOnSpawned();
+
+        return spawnedObject;
     }
 
-    public void CreatePool<T>(T prefab, int poolCount)
+    public bool Despawn(GameObject despawnableObject)
+    {
+        var spawner = GetPoolSpawner(despawnableObject);
+
+        GetSpawnableObject(despawnableObject).SafeBeforeDespawned();
+
+        return spawner.Despawn(despawnableObject);
+    }
+
+    public void CreatePool(GameObject prefab, int poolCount)
     {
         var spawner = GetPoolSpawner(prefab);
         spawner.CreatePool(prefab, poolCount);
     }
 
-    public void DestroyPool<T>(T prefab)
+    public void Dispose()
     {
-        var spawner = GetPoolSpawner(prefab);
-        spawner.Dispose();
+        _defaultSpawner.Dispose();
     }
 
     private PoolSpawner GetPoolSpawner(object obj)
     {
-        if (obj is Projectile)
-        {
-            return _projectileSpawner;
-        }
         return _defaultSpawner;
     }
 
-    public bool IsSpawned<T>(T obj)
+    public bool IsSpawned(GameObject obj)
     {
-        if (obj is MonoBehaviour)
+        return obj.activeSelf;
+    }
+
+    private ISpawnableObject GetSpawnableObject(GameObject gameObject)
+    {
+        if (_spawnableObjectsCache.ContainsKey(gameObject))
         {
-            return (obj as MonoBehaviour).gameObject.activeSelf;
+            return _spawnableObjectsCache[gameObject];
         }
-        return false;
+        var component = gameObject.GetSpawnableObject();
+        _spawnableObjectsCache.Add(gameObject, component);
+        return component;
     }
 }
 

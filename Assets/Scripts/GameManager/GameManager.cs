@@ -18,21 +18,4 @@ public class GameManager : MonoBehaviour
 
         LevelManager.Instance.LoadNextLevel(null);
 	}
-
-    private void Update()
-    {
-        for (int i = 0; i < TestLevelMap.Instance.RoomsCount; i++)
-        {
-            SetRoom(i);
-        }
-    }
-
-    private void SetRoom(int index)
-    {
-        KeyCode keyCode = KeyCode.Alpha1 + index;
-        if (Input.GetKeyDown(keyCode))
-        {
-            LevelManager.Instance.CurrentRoom = _rooms[index];
-        }
-    }
 }

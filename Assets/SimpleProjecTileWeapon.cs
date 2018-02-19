@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SimpleProjecTileWeapon : Weapon
 {
-    [SerializeField] private Projectile _projecTile;
+    [SerializeField] private Projectile _projectile;
     [SerializeField] private MobSkillSet _skillSet;
     [SerializeField] private DamageSkill _damageSkill;
     [SerializeField] private ClassInformation _classInformation;
@@ -25,11 +25,11 @@ public class SimpleProjecTileWeapon : Weapon
 
         if (_isCanAttack)
         {
-            Projectile projecTile = SpawnManager.Instance.Spawn(_projecTile);
+            Projectile projectile = SpawnManager.Instance.Spawn(_projectile.gameObject).GetComponent<Projectile>();
             float rotation = direction.Value.VectorAngle();
             float projectileSpeed = _skillSet.ProjectileSpeed;
 
-            projecTile.Shoot(transform.position, rotation, 1, direction.Value * projectileSpeed, 
+            projectile.Shoot(transform.position, rotation, 1, direction.Value * projectileSpeed, 
                 _damageSkill.DamageValue, _classInformation.CurrentFraction);
             _isCanAttack = false;
             _shootTimer.Start();

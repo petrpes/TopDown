@@ -2,11 +2,17 @@
 
 public class DespawnCommand : Command
 {
-    [SerializeField] private Projectile _component;
+    [SerializeField] private GameObject _parent;
+    [SerializeField] private bool _despawnSelf = true;
 
     public override void Execute(GameObject actor)
     {
-        SpawnManager.Instance.Despawn(_component);
+        var despawnableObject = _despawnSelf ? (_parent == null ? gameObject : _parent) : actor;
+
+        if (despawnableObject.activeSelf)
+        {
+            SpawnManager.Instance.Despawn(despawnableObject);
+        }
     }
 }
 
