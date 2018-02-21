@@ -9,7 +9,7 @@ public class PutInARoomCommand : Command
         Mover mover = actor.GetMover();
         if (mover != null)
         {
-            Rect roomRectangle = LevelManager.Instance.CurrentRoom.Rectangle;
+            Rect roomRectangle = LevelManager.Instance.CurrentRoom.Shape.Rectangle;
 
             mover.Position = roomRectangle.min +
                 (roomRectangle.max - roomRectangle.min).Multiply(_positionInARoom);

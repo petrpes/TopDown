@@ -30,7 +30,7 @@ public class OrderInLayerDefiner : MonoBehaviour
         float positionY = _transform.position.y;
         if (_lastPositionY != positionY && CurrentRoom != null)
         {
-            Rect sceneRect = CurrentRoom.Rectangle;
+            Rect sceneRect = CurrentRoom.Shape.Rectangle; //--? TODO not scene
             float localPointY = positionY - sceneRect.y;
             _spriteRenderer.sortingOrder = (int)((sceneRect.height - localPointY) / UnitsCount);
             _lastPositionY = positionY;

@@ -2,7 +2,7 @@
 
 public interface IRoom
 {
-    Rect Rectangle { get; }
+    IShape Shape { get; }
     IDoorsHolder DoorsHolder { get; }
 }
 

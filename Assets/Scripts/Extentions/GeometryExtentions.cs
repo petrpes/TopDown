@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using Axis = UnityEngine.RectTransform.Axis;
 
 public static class GeometryExtentions
@@ -48,141 +49,57 @@ public static class GeometryExtentions
                     Axis.Vertical;
     }
 
-    public static Rect GetWallRectangle(Rect roomRect, Orientation orientation)
-    {
-        var axis = orientation.ToAxis();
-        var wallsSize = RoomConsts.WallsSize;
-        var oversize = RoomConsts.ColliderOversize[(int)orientation];
-
-        float xMin = 0;
-        float yMin = 0;
-        float width = 0;
-        float height = 0;
-        float oversizeValue = oversize ? 1 : 0;
-
-        switch (orientation)
-        {
-            case Orientation.Top:
-                xMin = roomRect.xMin - wallsSize.x * oversizeValue;
-                yMin = roomRect.yMax;
-                width = roomRect.width + wallsSize.x * 2f * oversizeValue;
-                height = wallsSize.y;
-                break;
-            case Orientation.Right:
-                xMin = roomRect.xMax;
-                yMin = roomRect.yMin - wallsSize.y * oversizeValue;
-                width = wallsSize.x;
-                height = roomRect.height + wallsSize.y * 2f * oversizeValue;
-                break;
-            case Orientation.Bottom:
-                xMin = roomRect.xMin - wallsSize.x * oversizeValue;
-                yMin = roomRect.yMin - wallsSize.y;
-                width = roomRect.width + wallsSize.x * 2f * oversizeValue;
-                height = wallsSize.y;
-                break;
-            case Orientation.Left:
-                xMin = roomRect.xMin - wallsSize.x;
-                yMin = roomRect.yMin - wallsSize.y * oversizeValue;
-                width = wallsSize.x;
-                height = roomRect.height + wallsSize.y * 2f * oversizeValue;
-                break;
-        }
-
-        return new Rect(new Vector2(xMin, yMin), new Vector2(width, height));
-    }
-
     public static Rect Rotate(this Rect rect)
     {
         var position = new Vector2(rect.xMax, rect.yMin);
         var size = new Vector2(rect.height, rect.width);
         return new Rect();
     }
-}
 
-public struct AxisLine
-{
-    public Axis Axis { get; set; }
-    public Vector2 StartPosition { get; set; }
-    public float Length { get; set; }
-
-    public AxisLine(Axis axis, Vector2 startPosition, float length)
+    public static float ToAngle(this Orientation orientation)
     {
-        Axis = axis;
-        StartPosition = startPosition;
-        Length = length;
+        float angleBetween = 360f / orientation.EnumLength();
+        return ((int)orientation - 1) * -angleBetween;
     }
 
-    public Vector2 StartPoint
+    public static Orientation ToOrientation(this float angle)
     {
-        get
+        int count = Orientation.Top.EnumLength();
+        float angleBetween = 360 / count;
+
+        angle %= 360f;
+        if (angle < 0)
         {
-            return StartPosition;
-        }
-    }
-
-    public Vector2 EndPoint
-    {
-        get
-        {
-            return AddLength(Length);
-        }
-    }
-
-    private Vector2 AddLength(float length)
-    {
-        var positionOffset = Axis == Axis.Horizontal ?
-                             new Vector2(length, 0) :
-                             new Vector2(0, length);
-        return StartPosition + positionOffset;
-    }
-
-    public AxisLine CutLine(float position, float length)
-    {
-        var positionOffset = AddLength(position) ;
-        var newStartPosition = StartPosition + positionOffset;
-        return new AxisLine(Axis, newStartPosition, length);
-    }
-
-    public bool IsPointOnLine(float position)
-    {
-        return Axis == Axis.Horizontal ?
-               StartPoint.x >= position && EndPoint.x <= position :
-               StartPoint.y >= position && EndPoint.y <= position;
-    }
-}
-
-public struct AxisRect
-{
-    public AxisLine AxisLine { get; set; }
-    public float Width { get; set; }
-
-    public AxisRect(AxisLine axisLine, float width)
-    {
-        AxisLine = axisLine;
-        Width = width;
-    }
-    /*
-    public AxisRect(Axis axis, Rect rect)
-    {
-        if (axis == Axis.Vertical)
-        {
-            rect = rect.Rotate();
+            angle = (angle + 360f);
         }
 
-        AxisLine = new AxisLine(axis, new Vector2(rect.xMin, rect.center.y));
-    }*/
+        var anglePart = (int)((360f - angle) / angleBetween);
+        return (Orientation)((anglePart + 1) % count);
+    }
 
-    public Rect Rectangle
+    public static Vector2 GetPointOnAPerimeter(this IShape shape, int lineId, float linePosition, 
+        float lineOffset, out float angle)
     {
-        get
-        {
-            var wallsSize = RoomConsts.WallsSize;
-            var vectorOffset = AxisLine.Axis == Axis.Horizontal ?
-                               new Vector2(0, wallsSize.y / 2f) :
-                               new Vector2(wallsSize.x / 2f, 0);
-            return new Rect(AxisLine.StartPoint - vectorOffset,
-                            AxisLine.EndPoint + vectorOffset);
-        }
+        var line = shape[lineId];
+        var lineLine = line.Line;
+        lineLine.Length = linePosition;
+
+        angle = line.Normale.VectorAngle();
+        return lineLine.PointEnd + line.Normale * lineOffset;
+    }
+
+    public static Rect ToRect(this OrientedLine line, float width)
+    {
+        var lineBegin = line.Line + line.Normale * (width / 2f);
+        var lineEnd = line.Line + line.Normale * -(width / 2f);
+
+        float xMin = Mathf.Min(lineBegin.PointBegin.x, lineBegin.PointEnd.x, lineEnd.PointEnd.x, lineEnd.PointEnd.x);
+        float xMax = Mathf.Max(lineBegin.PointBegin.x, lineBegin.PointEnd.x, lineEnd.PointEnd.x, lineEnd.PointEnd.x);
+
+        float yMin = Mathf.Min(lineBegin.PointBegin.y, lineBegin.PointEnd.y, lineEnd.PointEnd.y, lineEnd.PointEnd.y);
+        float yMax = Mathf.Max(lineBegin.PointBegin.y, lineBegin.PointEnd.y, lineEnd.PointEnd.y, lineEnd.PointEnd.y);
+
+        return new Rect(xMin, yMin, xMax - xMin, yMax - yMin);
     }
 }
 
@@ -192,5 +109,112 @@ public enum Orientation : byte
     Right = 1,
     Bottom = 2,
     Left = 3
+}
+
+public enum ClockRotation : byte
+{
+    ClockWise = 0,
+    CounterClockWise = 1
+}
+
+public struct Line
+{
+    public Vector2 PointBegin;
+    public Vector2 PointEnd;
+
+    public float Length
+    {
+        get { return ToVector.magnitude; }
+        set
+        {
+            var vector = ToVector * (value / ToVector.magnitude);
+            PointEnd = PointBegin + vector;
+        }
+    }
+
+    public void Expand(float newLength)
+    {
+        var lengthAddition = (newLength - Length) / 2f;
+        var vectorAddition = ToVector.normalized * lengthAddition;
+
+        PointBegin -= vectorAddition;
+        PointEnd += vectorAddition;
+    }
+
+    public Line(Vector2 point1, Vector2 point2)
+    {
+        PointBegin = point1;
+        PointEnd = point2;
+    }
+
+    public bool Contains(Vector2 point)
+    {
+        return (point.x - PointBegin.x) / (PointEnd.x - PointBegin.x) ==
+            (point.y - PointBegin.y) / (PointEnd.y - PointBegin.y);
+    }
+
+    public void CutLine(float position, out Line line1, out Line line2)
+    {
+        line1 = this;
+        line1.Length = position;
+
+        line2 = new Line(line1.PointEnd, PointEnd);
+    }
+
+    public Vector2 ToVector
+    {
+        get
+        {
+            return new Vector2(PointEnd.x - PointBegin.x, PointEnd.y - PointBegin.y);
+        }
+    }
+
+    public Vector2 Center
+    {
+        get
+        {
+            return (PointBegin + PointEnd) / 2f;
+        }
+    }
+
+    public static Line operator +(Line line, Vector2 offset)
+    {
+        return new Line(line.PointBegin + offset, line.PointEnd + offset);
+    }
+
+    public override string ToString()
+    {
+        return PointBegin.ToString() + " | " + PointEnd.ToString();
+    }
+}
+
+public struct OrientedLine
+{
+    public readonly Line Line;
+    public readonly Vector2 Normale;
+    public readonly ClockRotation NormaleRotation;
+
+    /// <summary>
+    /// Line with the normale vector
+    /// </summary>
+    /// <param name="line">Line</param>
+    /// <param name="normaleRotation">How the normal is rotated relative to the line</param>
+    public OrientedLine(Line line, ClockRotation normaleRotation)
+    {
+        Line = line;
+        NormaleRotation = normaleRotation;
+
+        var vector = line.ToVector;
+        Normale = (
+                    normaleRotation == ClockRotation.ClockWise ? 
+                    new Vector2(vector.y, -vector.x) : 
+                    new Vector2(-vector.y, vector.x)
+                  ).normalized;
+    }
+
+    public override string ToString()
+    {
+        return "Line = " + Line.ToString() + "; Normale = " + Normale.ToString();
+    }
 }
 

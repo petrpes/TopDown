@@ -7,7 +7,7 @@ public class DoorsHolder : MonoBehaviour, IDoorsHolder
 {
     [SerializeField] private Door _doorPrefab;
     [HideInInspector]
-    [SerializeField] private Door[] _doors;
+    [SerializeField] private IDoor[] _doors;
 
     private IRoom _room;
 
@@ -23,11 +23,11 @@ public class DoorsHolder : MonoBehaviour, IDoorsHolder
         }
     }
 
-    public IEnumerator<IDoor> GetDoors(Func<IDoor, bool> predicate)
+    public IEnumerable<IDoor> GetDoors(Func<IDoor, bool> predicate = null)
     {
         foreach (var door in _doors)
         {
-            if (predicate(door))
+            if (predicate == null || predicate(door))
             {
                 yield return door;
             }
@@ -141,23 +141,24 @@ public class DoorsHolderEditor : Editor
         _isStarted = true;
         _previousOrientation = _defaultOrientation;
         float holderOffset;
+        var rect = Room.Shape.Rectangle;
 
         switch (_defaultOrientation)
         {
             case Orientation.Top:
-                holderOffset = Room.Rectangle.yMax;
+                holderOffset = rect.yMax;
                 position.y = holderOffset;
                 break;
             case Orientation.Right:
-                holderOffset = Room.Rectangle.xMax;
+                holderOffset = rect.xMax;
                 position.x = holderOffset;
                 break;
             case Orientation.Bottom:
-                holderOffset = Room.Rectangle.yMin;
+                holderOffset = rect.yMin;
                 position.y = holderOffset;
                 break;
             case Orientation.Left:
-                holderOffset = Room.Rectangle.xMin;
+                holderOffset = rect.xMin;
                 position.x = holderOffset;
                 break;
         }
@@ -169,7 +170,6 @@ public class DoorsHolderEditor : Editor
     {
         var door = Instantiate(prefab.gameObject, position, Quaternion.identity, 
             Holder.gameObject.transform).GetComponent<Door>();
-        door.Orientation = orient;
         var doorsList = new List<Door>(Doors);
         doorsList.Add(door);
         Doors = doorsList.ToArray();

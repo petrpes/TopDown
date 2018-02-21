@@ -18,11 +18,11 @@ public class WallsCreator : IWallsCreator
         for (int i = 0; i < 4; i++)
         {
             var orient = (Orientation)i;
-            var roomRect = GeometryExtentions.GetWallRectangle(rect, orient);
+            /*var roomRect = GeometryExtentions.GetWallRectangle(rect, orient);
             var collider = 
                 CollidersExtentions.CreateCollider(wallGameObject, roomRect, false);
 
-            wallMono.AddWall(orient, collider);
+            wallMono.AddWall(orient, collider);*/
         }
 
         return wallMono;

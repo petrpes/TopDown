@@ -6,7 +6,7 @@ public class OnLevelOpenPutInACenter : MonoBehaviour, ICoroutineCollectionWriter
 {
     public IEnumerator Coroutine(Action onComplete, RoomTransitionArguments args)
     {
-        transform.position = args.NewRoom.Rectangle.center;
+        transform.position = args.NewRoom.Shape.Rectangle.center;
         yield return null;
         onComplete.SafeInvoke();
     }
@@ -25,7 +25,7 @@ public class OnLevelOpenPutInACenter : MonoBehaviour, ICoroutineCollectionWriter
 
     private void OnLevelStarted()
     {
-        transform.position = LevelManager.Instance.CurrentRoom.Rectangle.center;
+        transform.position = LevelManager.Instance.CurrentRoom.Shape.Rectangle.center;
     }
 }
 

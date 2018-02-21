@@ -136,6 +136,8 @@
     <Compile Include="Assets\Scripts\Extentions\UnityEditorExtentions.cs" />
     <Compile Include="Assets\Scripts\Fraction.cs" />
     <Compile Include="Assets\Scripts\GameManager\GameManager.cs" />
+    <Compile Include="Assets\Scripts\Geometry\IShape.cs" />
+    <Compile Include="Assets\Scripts\Geometry\ShapeRectangle.cs" />
     <Compile Include="Assets\Scripts\InputManager\InputAttributesSet.cs" />
     <Compile Include="Assets\Scripts\InputManager\InputManager.cs" />
     <Compile Include="Assets\Scripts\InvokeableEvent\InvokeableEvent.cs" />
@@ -148,6 +150,7 @@
     <Compile Include="Assets\Scripts\LevelManager\DoorsHolder.cs" />
     <Compile Include="Assets\Scripts\LevelManager\IDoor.cs" />
     <Compile Include="Assets\Scripts\LevelManager\IDoorsHolder.cs" />
+    <Compile Include="Assets\Scripts\LevelManager\IWallsColliderCreator.cs" />
     <Compile Include="Assets\Scripts\LevelManager\LevelManager.cs" />
     <Compile Include="Assets\Scripts\LevelManager\NewBehaviourScript.cs" />
     <Compile Include="Assets\Scripts\LevelManager\RoomConsts.cs" />
@@ -177,6 +180,7 @@
     <Compile Include="Assets\Scripts\LevelManager\Test\TestRoom.cs" />
     <Compile Include="Assets\Scripts\LevelManager\Walls.cs" />
     <Compile Include="Assets\Scripts\LevelManager\WallsBase.cs" />
+    <Compile Include="Assets\Scripts\LevelManager\WallsColliderCreator.cs" />
     <Compile Include="Assets\Scripts\Managers\SpawnManager\ISpawnManager.cs" />
     <Compile Include="Assets\Scripts\Managers\SpawnManager\SpawnManager.cs" />
     <Compile Include="Assets\Scripts\Modules\Common\ErrorMessages\ErrorMessages.cs" />

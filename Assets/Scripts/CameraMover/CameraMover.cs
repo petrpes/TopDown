@@ -54,8 +54,8 @@ public class CameraMover : MonoBehaviour, ICoroutineCollectionWriter<RoomTransit
             {
                 return Rect.zero;
             }
-            var room = _currentRoom.Rectangle;
-            var rect = new Rect(room.position - RoomConsts.WallsSize - RoomConsts.VisibleEdgeSize, 
+            var room = _currentRoom.Shape.Rectangle;
+            var rect = new Rect(room.position - RoomConsts.WallsSize - RoomConsts.VisibleEdgeSize,
                 room.size + (RoomConsts.WallsSize + RoomConsts.VisibleEdgeSize) * 2f);
             return rect;
         }

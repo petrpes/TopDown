@@ -14,6 +14,8 @@ public class TestRoom : MonoBehaviour, IRoom, ICoroutineCollectionWriter<RoomTra
 
     private Transform _transform;
     private Rect _rectangle;
+    private Vector2 _perviousSize;
+    private IShape _shape;
 
     private Action[] _roomActions;
     public Action this[RoomEventType eventType]
@@ -48,7 +50,7 @@ public class TestRoom : MonoBehaviour, IRoom, ICoroutineCollectionWriter<RoomTra
         }
     }
 
-    public Rect Rectangle
+    public IShape Shape
     {
         get
         {
@@ -56,15 +58,18 @@ public class TestRoom : MonoBehaviour, IRoom, ICoroutineCollectionWriter<RoomTra
             {
                 _transform = transform;
             }
-            if (_rectangle == Rect.zero)
+            if (_shape == null || _rectangle == Rect.zero || 
+                !_size.Equals(_perviousSize))
             {
+                _perviousSize = _size;
                 _rectangle = new Rect(_transform.position.x - _size.x / 2,
                                       _transform.position.y - _size.y / 2,
                                       _size.x,
                                       _size.y);
+                _shape = new ShapeRectangle(_rectangle);
             }
 
-            return _rectangle;
+            return _shape;
         }
     }
 
@@ -102,7 +107,7 @@ public class TestRoom : MonoBehaviour, IRoom, ICoroutineCollectionWriter<RoomTra
 public class TestRoomEditor : Editor
 {
     private int _previousCount = 0;
-    private IWallsCreator _wallsCreator = new WallsCreator();
+    private IWallsColliderCreator _collidersCreator = new WallsColliderCreator();
 
     public override void OnInspectorGUI()
     {
@@ -127,15 +132,34 @@ public class TestRoomEditor : Editor
     {
         var walls = this.Property("_walls");
         var room = target as TestRoom;
+        var wallsCreator = new WallsColliderCreator();
+
+        var gameObject = CreateGameObject(room.gameObject);
+        wallsCreator.CreateColliders(room.Shape, null, gameObject);
+        return;
 
         if (walls.objectReferenceValue != null)
         {
             DestroyImmediate((walls.objectReferenceValue as MonoBehaviour).gameObject);
         }
-        walls.objectReferenceValue = _wallsCreator.CreateWalls(room.Rectangle, RoomConsts.WallsSize, 
-            room.gameObject.transform);
+        /*walls.objectReferenceValue = _wallsCreator.CreateWalls(room.Shape, RoomConsts.WallsSize, 
+            room.gameObject.transform);*/
 
         serializedObject.ApplyModifiedProperties();
+    }
+
+    private GameObject CreateGameObject(GameObject parent)
+    {
+        var wallGameObject = new GameObject("Walls");
+
+        wallGameObject.transform.parent = parent.transform;
+        wallGameObject.tag = "Wall";
+        wallGameObject.layer = LayerMask.NameToLayer("Walls");
+
+        var rigidbody = wallGameObject.AddComponent<Rigidbody2D>();
+        rigidbody.bodyType = RigidbodyType2D.Static;
+
+        return wallGameObject;
     }
 }
 

@@ -2,11 +2,11 @@
 
 public class Door : MonoBehaviour, IDoor
 {
-    [SerializeField] private Orientation _defaultOrientation;
+    [SerializeField] private DirectionVector _defaultOrientation;
     [SerializeField] private Collider2D _openedCollider;
     [SerializeField] private Collider2D _closedCollider;
     [HideInInspector]
-    [SerializeField] private Orientation _orientation;
+    [SerializeField] private DoorPosition _position;
 
     private Transform _transform;
 
@@ -46,18 +46,16 @@ public class Door : MonoBehaviour, IDoor
         }
     }
 
-    public Orientation Orientation
+    public DoorPosition Position
     {
         get
         {
-            return _orientation;
+            return _position;
         }
 #if UNITY_EDITOR
         set
         {
-            _orientation = value;
-            var rotationOffset = (int)_defaultOrientation - (int)_orientation;
-            transform.Rotate(0, 0, 90f * rotationOffset);
+            _position = value;
         }
 #endif
     }
