@@ -2,11 +2,10 @@
 
 public class Door : MonoBehaviour, IDoor
 {
-    [SerializeField] private DirectionVector _defaultOrientation;
+    [SerializeField] private Vector2 _defaultOrientation;
     [SerializeField] private Collider2D _openedCollider;
     [SerializeField] private Collider2D _closedCollider;
-    [HideInInspector]
-    [SerializeField] private DoorPosition _position;
+    [SerializeField] private InterfaceComponentCache _targetRoom;
 
     private Transform _transform;
 
@@ -18,7 +17,11 @@ public class Door : MonoBehaviour, IDoor
         }
     }
 
-    public IRoom RoomTo { get; set; }
+    public IRoom RoomTo
+    {
+        get { return _targetRoom.GetChachedComponent<IRoom>(); }
+        set { _targetRoom.SetValue(value); }
+    }
 
     public bool IsOpened
     {
@@ -45,19 +48,9 @@ public class Door : MonoBehaviour, IDoor
             }
         }
     }
-
-    public DoorPosition Position
+    public Vector2 DefaultOrientation
     {
-        get
-        {
-            return _position;
-        }
-#if UNITY_EDITOR
-        set
-        {
-            _position = value;
-        }
-#endif
+        get { return _defaultOrientation; }
     }
 }
 

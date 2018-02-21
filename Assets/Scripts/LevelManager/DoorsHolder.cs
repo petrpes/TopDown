@@ -7,7 +7,9 @@ public class DoorsHolder : MonoBehaviour, IDoorsHolder
 {
     [SerializeField] private Door _doorPrefab;
     [HideInInspector]
-    [SerializeField] private IDoor[] _doors;
+    [SerializeField] private Door[] _doors;
+    [HideInInspector]
+    [SerializeField] private DoorPosition[] _doorsPositions;
 
     private IRoom _room;
 
@@ -23,55 +25,94 @@ public class DoorsHolder : MonoBehaviour, IDoorsHolder
         }
     }
 
-    public IEnumerable<IDoor> GetDoors(Func<IDoor, bool> predicate = null)
+    public IEnumerable<IDoor> GetDoors(Func<IDoor, DoorPosition, bool> predicate = null)
     {
-        foreach (var door in _doors)
+        if (_doors != null)
         {
-            if (predicate == null || predicate(door))
+            for (int i = 0; i < _doors.Length; i++)
             {
-                yield return door;
+                if (predicate == null || predicate(_doors[i], _doorsPositions[i]))
+                {
+                    yield return _doors[i];
+                }
             }
         }
     }
+
+    public DoorPosition GetDoorPosition(IDoor door)
+    {
+        return _doorsPositions[Array.IndexOf(_doors, door)];
+    }
+
+#if UNITY_EDITOR
+    public void AddDoor(Door door, DoorPosition position)
+    {
+        if (_doors == null)
+        {
+            _doors = new Door[] { door };
+        }
+        else
+        {
+            var list = new List<Door>(_doors);
+            list.Add(door);
+            _doors = list.ToArray();
+        }
+
+
+        if (_doorsPositions == null)
+        {
+            _doorsPositions = new DoorPosition[] { position };
+        }
+        else
+        {
+            var listPosition = new List<DoorPosition>(_doorsPositions);
+            listPosition.Add(position);
+            _doorsPositions = listPosition.ToArray();
+        }
+    }
+
+    public void RemoveDoor(Door door)
+    {
+        if (_doors == null)
+        {
+            return;
+        }
+
+        var list = new List<Door>(_doors);
+        var index = Array.IndexOf(_doors, door);
+        list.Remove(door);
+        _doors = list.ToArray();
+
+        var listPosition = new List<DoorPosition>(_doorsPositions);
+        listPosition.RemoveAt(index);
+        _doorsPositions = listPosition.ToArray();
+
+        DestroyImmediate(door.gameObject);
+    }
+
+    public void RemoveAll()
+    {
+        for (int i = 0; i < _doors.Length; i++)
+        {
+            if (_doors[i] != null)
+            {
+            DestroyImmediate((_doors[i] as Door).gameObject);
+            }
+        }
+
+        _doors = null;
+        _doorsPositions = null;
+    }
+#endif
 }
 
 [CustomEditor(typeof(DoorsHolder))]
 public class DoorsHolderEditor : Editor
 {
     private Door _defaultDoor;
-    private Orientation _defaultOrientation;
-    private Vector3 _holderPosition;
-    private Vector3 _editorPosition;
-
-    private Door[] Doors
-    {
-#region doors
-        get
-        {
-            var arrayProperty = serializedObject.FindProperty("_doors");
-            var length = arrayProperty.arraySize;
-            var doors = new Door[length];
-            for (int i = 0; i < length; i++)
-            {
-                doors[i] = arrayProperty.GetArrayElementAtIndex(i).
-                    objectReferenceValue as Door;
-            }
-            return doors;
-        }
-        set
-        {
-            var arrayProperty = serializedObject.FindProperty("_doors");
-            var length = arrayProperty.arraySize = value.Length;
-
-            for (int i = 0; i < length; i++)
-            {
-                arrayProperty.GetArrayElementAtIndex(i).
-                    objectReferenceValue = value[i];
-            }
-            serializedObject.ApplyModifiedProperties();
-        }
-#endregion
-    }
+    private int _lineId;
+    private float _positionOnTheLine;
+    private TestRoom _targetRoom;
 
     private DoorsHolder Holder
     {
@@ -105,14 +146,28 @@ public class DoorsHolderEditor : Editor
                 objectReferenceValue as Door;
         }
 
-        _defaultDoor = EditorGUILayout.ObjectField(_defaultDoor, typeof(Door), true) as Door;
-        _defaultOrientation = (Orientation)EditorGUILayout.EnumPopup(_defaultOrientation);
-        var holderPosition = EditorGUILayout.Vector3Field("", _holderPosition);
-        ChangeHolderPosition(holderPosition);
+        if (_defaultDoor == null)
+        {
+            return;
+        }
+
+        var prevLineId = _lineId;
+        _lineId = EditorGUILayout.IntSlider("Wall id", _lineId, 0, Room.Shape.LinesCount - 1);
+
+        var prevPositionOnTheLine = _positionOnTheLine;
+        var lowestPosition = _defaultDoor.Width / 2f;
+        var longestPosition = Room.Shape[_lineId].Line.Length - _defaultDoor.Width / 2f;
+        _positionOnTheLine = EditorGUILayout.Slider("Position on the line", _positionOnTheLine, lowestPosition, longestPosition);
+        _targetRoom = EditorGUILayout.ObjectField("Target Room", _targetRoom, typeof(TestRoom), true) as TestRoom;
+
+        if (prevLineId != _lineId || prevPositionOnTheLine != _positionOnTheLine)
+        {
+            SceneView.RepaintAll();
+        }
 
         if (GUILayout.Button("Add door"))
         {
-            AddDoor(_defaultDoor, _defaultOrientation, _holderPosition);
+            AddDoor(_defaultDoor, _lineId, _positionOnTheLine, 0, _targetRoom);
         }
 
         serializedObject.ApplyModifiedProperties();
@@ -120,73 +175,58 @@ public class DoorsHolderEditor : Editor
 
     private void OnSceneGUI()
     {
-        EditorGUI.BeginChangeCheck();
+        Vector3 position;
+        Quaternion rotation;
+        GetPositionRotation(_lineId, _positionOnTheLine, 0, Vector2.right, out position, out rotation);
 
-        var holderPosition = Handles.PositionHandle(_holderPosition, Quaternion.identity);
-        ChangeHolderPosition(holderPosition);
+        var holderPosition = Handles.PositionHandle(position, rotation);
     }
 
-    private Orientation _previousOrientation;
-    private bool _isStarted = false;
-
-    private void ChangeHolderPosition(Vector3 position)
+    private void AddDoor(Door prefab, int lineId, float positionOnTheLine, float offset, IRoom room)
     {
-        if (_holderPosition.Equals(position) &&
-            _previousOrientation.Equals(_defaultOrientation) &&
-            _isStarted)
-        {
-            return;
-        }
+        Vector3 position;
+        Quaternion rotation;
+        GetPositionRotation(lineId, positionOnTheLine, offset, prefab.DefaultOrientation, out position, out rotation);
 
-        _isStarted = true;
-        _previousOrientation = _defaultOrientation;
-        float holderOffset;
-        var rect = Room.Shape.Rectangle;
-
-        switch (_defaultOrientation)
-        {
-            case Orientation.Top:
-                holderOffset = rect.yMax;
-                position.y = holderOffset;
-                break;
-            case Orientation.Right:
-                holderOffset = rect.xMax;
-                position.x = holderOffset;
-                break;
-            case Orientation.Bottom:
-                holderOffset = rect.yMin;
-                position.y = holderOffset;
-                break;
-            case Orientation.Left:
-                holderOffset = rect.xMin;
-                position.x = holderOffset;
-                break;
-        }
-        _holderPosition = position;
-        Repaint();
-    }
-
-    private void AddDoor(Door prefab, Orientation orient, Vector3 position)
-    {
-        var door = Instantiate(prefab.gameObject, position, Quaternion.identity, 
+        var door = Instantiate(prefab.gameObject, position, rotation, 
             Holder.gameObject.transform).GetComponent<Door>();
-        var doorsList = new List<Door>(Doors);
-        doorsList.Add(door);
-        Doors = doorsList.ToArray();
+        var doorPosition = new DoorPosition() { LineId = lineId, PartOfTheLine = positionOnTheLine };
+        door.RoomTo = room;
+
+        Holder.AddDoor(door, doorPosition);
+    }
+
+    private void GetPositionRotation(int lineId, float positionOnTheLine, float offset, 
+        Vector2 defaultOrientation, out Vector3 position, out Quaternion rotation)
+    {
+        Vector2 normale;
+        position = Room.Shape.GetPointOnAPerimeter(lineId, positionOnTheLine, offset, out normale);
+        rotation = Quaternion.Euler(0, 0, defaultOrientation.AngleBetween(normale));
     }
 
     private void DrawDoors()
     {
-        var doors = Doors;
-        for (int i = 0; i < doors.Length; i++)
+        int count = 0;
+
+        foreach (var door in Holder.GetDoors())
         {
-            DrawDoor(doors[i], i);
+            count++;
+            DrawDoor(door as Door);
+        }
+
+        if (count > 0 && GUILayout.Button("Delete all doors"))
+        {
+            Holder.RemoveAll();
         }
     }
 
-    private void DrawDoor(Door door, int doorId)
+    private void DrawDoor(Door door)
     {
-        EditorGUILayout.LabelField("1");
+        EditorGUILayout.LabelField(Holder.GetDoorPosition(door).ToString());
+        if (GUILayout.Button("Delete"))
+        {
+            Holder.RemoveDoor(door);
+        }
     }
 }
 

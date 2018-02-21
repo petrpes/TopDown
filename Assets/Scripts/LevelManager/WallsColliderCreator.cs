@@ -3,6 +3,12 @@ using UnityEngine;
 
 public class WallsColliderCreator : IWallsColliderCreator
 {
+    private class DoorPositionPair
+    {
+        public IDoor Door;
+        public DoorPosition Position;
+    }
+
     public bool CreateColliders(IShape shape, IDoorsHolder holder, GameObject gameObject)
     {
         if (shape is ShapeRectangle)
@@ -17,7 +23,7 @@ public class WallsColliderCreator : IWallsColliderCreator
     {
         var wallRects = new List<Rect>();
         var wallWidth = RoomConsts.WallsWidth;
-        var doorsSortList = new List<IDoor>(10);
+        var doorsSortList = new List<DoorPositionPair>(10);
 
         for (int i = 0; i < shape.LinesCount; i++)
         {
@@ -27,29 +33,29 @@ public class WallsColliderCreator : IWallsColliderCreator
 
             var offsetLine = new OrientedLine(lineLine, line.NormaleRotation);
 
-            if (holder == null)
+            if (holder != null)
+            {
+                foreach (var door in holder.GetDoors((door, doorPosition) => { return doorPosition.LineId == i; }))
+                {
+                    doorsSortList.Add(new DoorPositionPair() { Door = door, Position = holder.GetDoorPosition(door) });
+                }
+            }
+
+            if (doorsSortList.Count == 0)
             {
                 wallRects.Add(offsetLine.ToRect(wallWidth));
             }
             else
             {
-                doorsSortList.InsertRange(0, holder.GetDoors((door) => 
-                    { return door.Position.LineId == i; }));
-                doorsSortList.Sort(delegate (IDoor x, IDoor y) 
+                doorsSortList.Sort(delegate (DoorPositionPair x, DoorPositionPair y) 
                     { return x.Position.PartOfTheLine < y.Position.PartOfTheLine ? -1 : 1; });
-
-                foreach (var d in doorsSortList)
-                {
-                    Debug.Log(d.Position.PartOfTheLine);
-                }
-                return true;
 
                 var lineNew = offsetLine.Line;
                 var positionOffset = wallWidth;
 
                 foreach (var doorSorted in doorsSortList)
                 {
-                    var doorWidth = doorSorted.Width;
+                    var doorWidth = doorSorted.Door.Width;
                     var newPosition = doorSorted.Position.PartOfTheLine +
                         positionOffset;
                     Line line1;
@@ -62,6 +68,9 @@ public class WallsColliderCreator : IWallsColliderCreator
                     lineNew.CutLine(newPosition + doorWidth / 2f, out line1, out line2);
                     lineNew = line2;
                 }
+
+                wallRects.Add(new OrientedLine(lineNew, line.NormaleRotation).ToRect(wallWidth));
+                doorsSortList.Clear();
             }
         }
 

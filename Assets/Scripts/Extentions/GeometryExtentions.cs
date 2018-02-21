@@ -78,13 +78,13 @@ public static class GeometryExtentions
     }
 
     public static Vector2 GetPointOnAPerimeter(this IShape shape, int lineId, float linePosition, 
-        float lineOffset, out float angle)
+        float lineOffset, out Vector2 normale)
     {
         var line = shape[lineId];
         var lineLine = line.Line;
         lineLine.Length = linePosition;
 
-        angle = line.Normale.VectorAngle();
+        normale = line.Normale;
         return lineLine.PointEnd + line.Normale * lineOffset;
     }
 
@@ -100,6 +100,25 @@ public static class GeometryExtentions
         float yMax = Mathf.Max(lineBegin.PointBegin.y, lineBegin.PointEnd.y, lineEnd.PointEnd.y, lineEnd.PointEnd.y);
 
         return new Rect(xMin, yMin, xMax - xMin, yMax - yMin);
+    }
+
+    public static float AngleBetween(this Vector2 vector1, Vector2 vector2)
+    {
+        var defaultVector = Vector2.right;
+        if (vector1.Equals(Vector2.zero))
+        {
+            vector1 = defaultVector;
+        }
+        if (vector2.Equals(Vector2.zero))
+        {
+            vector2 = defaultVector;
+        }
+
+        /*
+        var value = vector1.x * vector2.x + vector1.y * vector2.y;
+        value /= vector1.magnitude * vector2.magnitude;
+        */
+        return Vector2.SignedAngle(vector1, vector2);
     }
 }
 

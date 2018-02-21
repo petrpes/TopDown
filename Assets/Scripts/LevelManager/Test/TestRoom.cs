@@ -135,17 +135,7 @@ public class TestRoomEditor : Editor
         var wallsCreator = new WallsColliderCreator();
 
         var gameObject = CreateGameObject(room.gameObject);
-        wallsCreator.CreateColliders(room.Shape, null, gameObject);
-        return;
-
-        if (walls.objectReferenceValue != null)
-        {
-            DestroyImmediate((walls.objectReferenceValue as MonoBehaviour).gameObject);
-        }
-        /*walls.objectReferenceValue = _wallsCreator.CreateWalls(room.Shape, RoomConsts.WallsSize, 
-            room.gameObject.transform);*/
-
-        serializedObject.ApplyModifiedProperties();
+        wallsCreator.CreateColliders(room.Shape, room.DoorsHolder, gameObject);
     }
 
     private GameObject CreateGameObject(GameObject parent)
