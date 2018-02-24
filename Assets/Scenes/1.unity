@@ -1278,7 +1278,7 @@ MonoBehaviour:
     _shouldCountSelf: 0
     _showAdditionalInEditor: 0
     _components:
-    - {fileID: 0}
+    - {fileID: 1371914205}
   _walls: {fileID: 0}
 --- !u!4 &1259708292
 Transform:
@@ -1326,6 +1326,24 @@ Transform:
   m_Father: {fileID: 1666126802}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1371914203 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1335264296905656, guid: 46a341b9ea92b874184b4a158b5a6ea5,
+    type: 2}
+  m_PrefabInternal: {fileID: 2140991773}
+--- !u!114 &1371914205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1371914203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22af072b208fd8244b09262a610f6f3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _defaultRoom:
+    _component: {fileID: 1259708291}
 --- !u!4 &1392571301 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4915739552408544, guid: b50cbfa3020089a45a9a934d39fbf950,
@@ -1631,7 +1649,7 @@ Prefab:
         type: 2}
       propertyPath: _roomObject
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1371914205}
     m_RemovedComponents:
     - {fileID: 114241808759481708, guid: 46a341b9ea92b874184b4a158b5a6ea5, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 46a341b9ea92b874184b4a158b5a6ea5, type: 2}
