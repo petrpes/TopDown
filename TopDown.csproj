@@ -123,6 +123,9 @@
     <Compile Include="Assets\Scripts\ComponentsCache\ParentObjectsComponentCache.cs" />
     <Compile Include="Assets\Scripts\ComponentsCache\PublicComponentCache.cs" />
     <Compile Include="Assets\Scripts\ComponentsCache\PublicComponentsCacheBase.cs" />
+    <Compile Include="Assets\Scripts\ComponentsCache\Test\ITestCache.cs" />
+    <Compile Include="Assets\Scripts\ComponentsCache\Test\SetValueTest.cs" />
+    <Compile Include="Assets\Scripts\ComponentsCache\Test\TestCache.cs" />
     <Compile Include="Assets\Scripts\DoorsEditor\DoorsEditor.cs" />
     <Compile Include="Assets\Scripts\DoorsEditor\IDoorsEditor.cs" />
     <Compile Include="Assets\Scripts\Extentions\ActionExtentions.cs" />

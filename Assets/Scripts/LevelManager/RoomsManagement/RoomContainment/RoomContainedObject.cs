@@ -2,6 +2,7 @@
 using System;
 using UnityEngine;
 
+[RequireComponent(typeof(RoomEventListenerProxy))]
 public class RoomContainedObject : MonoBehaviour, IRoomContainedObject, ISpawnableObject
 {
     [SerializeField] private InterfaceComponentCache _defaultRoom;

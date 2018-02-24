@@ -8,6 +8,7 @@ public class TestRoom : MonoBehaviour, IRoom, ICoroutineCollectionWriter<RoomTra
 {
     [SerializeField] private Vector2 _size;
     [SerializeField] private DoorsHolder _doorsHolder;
+    [HideInInspector]
     [SerializeField] private ComponentsCache _roomBasicObjects = new ComponentsCache(typeof(RoomContainedObject).Name, true);
     [HideInInspector]
     [SerializeField] private WallsBase _walls;
@@ -33,6 +34,11 @@ public class TestRoom : MonoBehaviour, IRoom, ICoroutineCollectionWriter<RoomTra
     }
 
     public int ComponentsCount { get { return _roomBasicObjects.Count; } }
+
+    public void RecalculateObject()
+    {
+        _roomBasicObjects.RecalculateComponents(gameObject, this);
+    }
 
     public void SubscribeAllObjects()
     {
@@ -114,13 +120,13 @@ public class TestRoomEditor : Editor
         base.OnInspectorGUI();
 
         var basicContent = serializedObject.targetObject as TestRoom;
-        int newCount = basicContent.ComponentsCount;
-        if (newCount != _previousCount)
+        if (GUILayout.Button("Subscribe objects to room (" + basicContent.ComponentsCount + ")"))
         {
+            basicContent.RecalculateObject();
             basicContent.SubscribeAllObjects();
-
-            _previousCount = newCount;
         }
+
+        GUILayout.Space(10);
 
         if (GUILayout.Button("Build Walls"))
         {
