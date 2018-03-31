@@ -60,17 +60,11 @@ public class LevelManager
         {
             _currentLevel = level;
 
-            if (OnAfterLevelCreated != null)
-            {
-                OnAfterLevelCreated.Invoke();
-            }
+            OnAfterLevelCreated.SafeInvoke();
 
             _levelStarter.StartLevel(_currentLevel, () =>
             {
-                if (OnAfterLevelStarted != null)
-                {
-                    OnAfterLevelStarted.Invoke();
-                }
+                OnAfterLevelStarted.SafeInvoke();
             });
         });
     }

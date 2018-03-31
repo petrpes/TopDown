@@ -7,8 +7,6 @@ public class RoomContainedObject : MonoBehaviour, IRoomContainedObject, ISpawnab
 {
     [SerializeField] private InterfaceComponentCache _defaultRoom;
 
-    [NonSerialized] private bool _isRoomSet = false;
-
     public event Action<IRoom, IRoom> RoomChanged;
 
     //TODO in inspector
@@ -24,6 +22,7 @@ public class RoomContainedObject : MonoBehaviour, IRoomContainedObject, ISpawnab
 
     public void OnBeforeDespawn()
     {
+        CurrentRoom = null;
     }
 
     private IRoom _currentRoom;
@@ -31,24 +30,34 @@ public class RoomContainedObject : MonoBehaviour, IRoomContainedObject, ISpawnab
     {
         get
         {
-            if (!_isRoomSet && _defaultRoom != null && 
+            if (_currentRoom == null && _defaultRoom != null && 
                 _defaultRoom.GetChachedComponent<IRoom>() != null)
             {
                 _currentRoom = _defaultRoom.GetChachedComponent<IRoom>();
+                LevelManager.Instance.RoomContentManager.AddObject(_currentRoom, this);
             }
 
-            _isRoomSet = true;
             return _currentRoom;
         }
 
         private set
         {
-            if (value.Equals(CurrentRoom))
+            if (value.SafeEquals(CurrentRoom))
             {
                 return;
             }
 
             RoomChanged.SafeInvoke(_currentRoom, value);
+
+            if (value == null)
+            {
+                LevelManager.Instance.RoomContentManager.RemoveObject(_currentRoom, this);
+            }
+            else
+            {
+                LevelManager.Instance.RoomContentManager.AddObject(value, this);
+            }
+
             _currentRoom = value;
         }
     }

@@ -24,8 +24,8 @@ TagManager:
   - HittableBody
   - Walls
   - Blast
-  - 
-  - 
+  - VisionFriend
+  - VisionEnemy
   - 
   - 
   - 

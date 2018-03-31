@@ -11,7 +11,5 @@ public class ParentObjectsComponentCache : PublicComponentsCacheBase
     public override HealthChanger HealthChanger { get { return _componentsCache.HealthChanger; } }
 
     public override ClassInformation ClassInformation { get { return _componentsCache.ClassInformation; } }
-
-    public override ObjectStatesContainerBase StatesContainer { get { return _componentsCache.StatesContainer; } }
 }
 

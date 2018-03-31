@@ -39,7 +39,7 @@ public class SimpleProjectile : Projectile
         _classInformation.CurrentFraction = currentFraction;
 
         _rigidbody2D.position = position;
-        _rigidbody2D.rotation = rotation;
+        //_rigidbody2D.rotation = rotation;
         _rigidbody2D.velocity = speed;
     }
 

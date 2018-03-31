@@ -49,13 +49,6 @@ public static class GeometryExtentions
                     Axis.Vertical;
     }
 
-    public static Rect Rotate(this Rect rect)
-    {
-        var position = new Vector2(rect.xMax, rect.yMin);
-        var size = new Vector2(rect.height, rect.width);
-        return new Rect();
-    }
-
     public static float ToAngle(this Orientation orientation)
     {
         float angleBetween = 360f / orientation.EnumLength();
