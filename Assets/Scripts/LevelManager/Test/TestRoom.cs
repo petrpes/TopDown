@@ -3,19 +3,17 @@ using System.Collections;
 using UnityEditor;
 using UnityEngine;
 
-//[RequireComponent(typeof(DoorsHolder))]
 public class TestRoom : MonoBehaviour, IRoom, ICoroutineCollectionWriter<RoomTransitionArguments>
 {
     [SerializeField] private Vector2 _size;
     [SerializeField] private DoorsHolder _doorsHolder;
     [HideInInspector]
     [SerializeField] private ComponentsCache _roomBasicObjects = new ComponentsCache(typeof(RoomContainedObject).Name, true);
-    [HideInInspector]
-    [SerializeField] private WallsBase _walls;
 
     private Transform _transform;
     private Rect _rectangle;
     private Vector2 _perviousSize;
+    private Vector2 _perviousPosition;
     private IShape _shape;
 
     private Action[] _roomActions;
@@ -44,7 +42,7 @@ public class TestRoom : MonoBehaviour, IRoom, ICoroutineCollectionWriter<RoomTra
     {
         foreach (var roomObject in _roomBasicObjects.GetCachedComponets<RoomContainedObject>())
         {
-            roomObject.SetRoomInInspector(this);
+            roomObject.DefaultRoom = this;
         }
     }
 
@@ -65,11 +63,13 @@ public class TestRoom : MonoBehaviour, IRoom, ICoroutineCollectionWriter<RoomTra
                 _transform = transform;
             }
             if (_shape == null || _rectangle == Rect.zero || 
-                !_size.Equals(_perviousSize))
+                !_size.Equals(_perviousSize) || !_perviousPosition.Equals(_transform.position))
             {
                 _perviousSize = _size;
-                _rectangle = new Rect(_transform.position.x - _size.x / 2,
-                                      _transform.position.y - _size.y / 2,
+                _perviousPosition = _transform.position;
+
+                _rectangle = new Rect(_perviousPosition.x - _size.x / 2,
+                                      _perviousPosition.y - _size.y / 2,
                                       _size.x,
                                       _size.y);
                 _shape = new ShapeRectangle(_rectangle);
@@ -85,6 +85,12 @@ public class TestRoom : MonoBehaviour, IRoom, ICoroutineCollectionWriter<RoomTra
         {
             return _doorsHolder;
         }
+#if UNITY_EDITOR
+        set
+        {
+            _doorsHolder = value as DoorsHolder;
+        }
+#endif
     }
 
     public IEnumerator Coroutine(Action onComplete, RoomTransitionArguments args)
@@ -119,7 +125,7 @@ public class TestRoomEditor : Editor
     {
         base.OnInspectorGUI();
 
-        var basicContent = serializedObject.targetObject as TestRoom;
+        var basicContent = this.BasicObject<TestRoom>();
         if (GUILayout.Button("Subscribe objects to room (" + basicContent.ComponentsCount + ")"))
         {
             basicContent.RecalculateObject();
@@ -138,10 +144,23 @@ public class TestRoomEditor : Editor
     {
         var walls = this.Property("_walls");
         var room = target as TestRoom;
-        var wallsCreator = new WallsColliderCreator();
+
+        if (room.DoorsHolder == null)
+        {
+            var doorsHolder = this.BasicObject<TestRoom>().gameObject.GetComponent<DoorsHolder>();
+
+            if (doorsHolder != null && 
+                EditorUtility.DisplayDialog("DoorsHolder", 
+                    "There is seems to be a DoorsHolder component attached to this object. " +
+                    "Do you like to set it to this room's DoorsHolder property?",
+                    "OK", "Nevermind"))
+            {
+                room.DoorsHolder = doorsHolder;
+            }
+        }
 
         var gameObject = CreateGameObject(room.gameObject);
-        wallsCreator.CreateColliders(room.Shape, room.DoorsHolder, gameObject);
+        _collidersCreator.CreateColliders(room.Shape, room.DoorsHolder, gameObject);
     }
 
     private GameObject CreateGameObject(GameObject parent)
