@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 public class RoomTransitionProxy : IRoomTransition
 {
+    public static RoomTransitionProxy Instance = new RoomTransitionProxy();
+
     private CallbackCollector _callbackCollector;
     private List<IRoomTransition> _objectsList;
 

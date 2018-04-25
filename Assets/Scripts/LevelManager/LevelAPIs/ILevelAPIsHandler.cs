@@ -4,6 +4,6 @@ using UnityEngine;
 
 public interface ILevelAPIsHandler
 {
-    RoomTr RoomTransition { get; }
+    //RoomTr RoomTransition { get; }
 }
 

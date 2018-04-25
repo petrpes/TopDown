@@ -1,4 +1,5 @@
 ﻿using Components.Spawner;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -33,6 +34,50 @@ public static class GameObjectExtentions
     {
         var spawnableObject = gameObject.GetComponent<SpawnableObjectsProxy>();
         return spawnableObject;
+    }
+
+    public static T[] GetComponentsExtended<T>(this GameObject gameObject, bool shouldCountChildren = false, 
+        Predicate<T> predicate = null)
+    {
+        T[] result;
+
+        if (shouldCountChildren)
+        {
+            result = gameObject.GetComponentsInChildren<T>();
+        }
+        else
+        {
+            result = gameObject.GetComponents<T>();
+        }
+
+        if (result != null && predicate != null)
+        {
+            result = Array.FindAll(result, predicate);
+        }
+
+        return result;
+    }
+
+    public static Component[] GetComponentsExtended(this GameObject gameObject, Type componentType,
+        bool shouldCountChildren = false, Predicate<Component> predicate = null)
+    {
+        Component[] result;
+
+        if (shouldCountChildren)
+        {
+            result = gameObject.GetComponentsInChildren(componentType);
+        }
+        else
+        {
+            result = gameObject.GetComponents(componentType);
+        }
+
+        if (result != null && predicate != null)
+        {
+            result = Array.FindAll(result, predicate);
+        }
+
+        return result;
     }
 }
 

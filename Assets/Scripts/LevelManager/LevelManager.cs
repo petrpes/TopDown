@@ -27,7 +27,7 @@ public class LevelManager
         _levelDestroyer = new TestLevelDestroyer();
         _levelStarter = new TestLevelStarter();
 
-        _roomTransition = RoomTransitionInvoker.Instance;
+        _roomTransition = RoomTransitionProxy.Instance;
         RoomContentManager = new RoomContentManangerDictionary();
         _roomEventHandler = RoomEventHandler.Instance;
     }

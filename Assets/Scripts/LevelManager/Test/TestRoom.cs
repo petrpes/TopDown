@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections;
 using UnityEditor;
 using UnityEngine;
 
-public class TestRoom : MonoBehaviour, IRoom, ICoroutineCollectionWriter<RoomTransitionArguments>
+public class TestRoom : MonoBehaviour, IRoom, IRoomTransition
 {
     [SerializeField] private Vector2 _size;
     [SerializeField] private DoorsHolder _doorsHolder;
-    [HideInInspector]
-    [SerializeField] private ComponentsCache _roomBasicObjects = new ComponentsCache(typeof(RoomContainedObject).Name, true);
 
     private Transform _transform;
     private Rect _rectangle;
@@ -28,21 +25,6 @@ public class TestRoom : MonoBehaviour, IRoom, ICoroutineCollectionWriter<RoomTra
         {
             CreateRoomActionsArrayIfNull();
             _roomActions[(int)eventType] = value;
-        }
-    }
-
-    public int ComponentsCount { get { return _roomBasicObjects.Count; } }
-
-    public void RecalculateObject()
-    {
-        _roomBasicObjects.RecalculateComponents(gameObject, this);
-    }
-
-    public void SubscribeAllObjects()
-    {
-        foreach (var roomObject in _roomBasicObjects.GetCachedComponets<RoomContainedObject>())
-        {
-            roomObject.DefaultRoom = this;
         }
     }
 
@@ -93,24 +75,27 @@ public class TestRoom : MonoBehaviour, IRoom, ICoroutineCollectionWriter<RoomTra
 #endif
     }
 
-    public IEnumerator Coroutine(Action onComplete, RoomTransitionArguments args)
+    private void Awake()
     {
-        if (args.OldRoom != null && Equals(args.OldRoom))
+        RoomTransitionProxy.Instance.SubscribeTransitionObject(this);
+    }
+
+    private void OnDestroy()
+    {
+        RoomTransitionProxy.Instance.UnsubscribeTransitionObject(this);
+    }
+
+    public void TransitionToRoom(IRoom oldRoom, IRoom newRoom, Action onComplete)
+    {
+        if (oldRoom != null && Equals(oldRoom))
         {
             gameObject.SetActive(false);
         }
-        if (args.NewRoom != null && Equals(args.NewRoom))
+        if (newRoom != null && Equals(newRoom))
         {
             gameObject.SetActive(true);
         }
         onComplete.Invoke();
-
-        yield return null;
-    }
-
-    private void Awake()
-    {
-        RoomTransitionInvoker.Instance.SubscribeCoroutine(this);
     }
 }
 
@@ -120,16 +105,15 @@ public class TestRoomEditor : Editor
 {
     private int _previousCount = 0;
     private IWallsColliderCreator _collidersCreator = new WallsColliderCreator();
+    private TestRoom BasicObject { get { return this.BasicObject<TestRoom>(); } }
 
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
 
-        var basicContent = this.BasicObject<TestRoom>();
-        if (GUILayout.Button("Subscribe objects to room (" + basicContent.ComponentsCount + ")"))
+        if (GUILayout.Button("Subscribe objects to room"))
         {
-            basicContent.RecalculateObject();
-            basicContent.SubscribeAllObjects();
+            SubscribeObjects();
         }
 
         GUILayout.Space(10);
@@ -140,6 +124,22 @@ public class TestRoomEditor : Editor
         }
     }
 
+    private void SubscribeObjects()
+    {
+        int objectSubscribed = 0;
+
+        foreach (var component in
+            BasicObject.gameObject.GetComponentsExtended<IRoomContainedObject>(true))
+        {
+            component.DefaultRoom = BasicObject;
+            EditorUtility.SetDirty(component as Component);
+
+            objectSubscribed++;
+        }
+
+        Debug.Log(objectSubscribed + " objects was successfully subscribed");
+    }
+
     private void BuildWalls()
     {
         var walls = this.Property("_walls");
@@ -147,7 +147,7 @@ public class TestRoomEditor : Editor
 
         if (room.DoorsHolder == null)
         {
-            var doorsHolder = this.BasicObject<TestRoom>().gameObject.GetComponent<DoorsHolder>();
+            var doorsHolder = BasicObject.gameObject.GetComponent<DoorsHolder>();
 
             if (doorsHolder != null && 
                 EditorUtility.DisplayDialog("DoorsHolder", 

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -54,19 +52,12 @@ public class ComponentsCache
 
     public void RecalculateComponents<T>(GameObject parent, Component self)
     {
-        if (_shouldAlsoCountInChildren)
-        {
-            _components = Array.ConvertAll(parent.GetComponentsInChildren<T>(), item => item as Component);
-        }
-        else
-        {
-            _components = Array.ConvertAll(parent.GetComponents<T>(), item => item as Component);
-        }
-
-        if (self is T)
-        {
-            RemoveSelf(self);
-        }
+        _components = Array.ConvertAll(parent.GetComponentsExtended<T>(_shouldAlsoCountInChildren, 
+            (comp) => 
+            {
+                return _shouldCountSelf || (!_shouldCountSelf && comp.Equals(self));
+            }), 
+            item => item as Component);
     }
 
     public void RecalculateComponents(GameObject parent, Component self)
@@ -76,58 +67,14 @@ public class ComponentsCache
             return;
         }
 
-        Type parentType = FindType(_componentTypeName, _assemblyQualifiedName);
+        Type parentType = SystemExtentions.FindType(_componentTypeName, _assemblyQualifiedName);
 
-        if (_shouldAlsoCountInChildren)
-        {
-            _components = Array.ConvertAll(parent.GetComponentsInChildren(parentType), item => item as Component);
-        }
-        else
-        {
-            _components = Array.ConvertAll(parent.GetComponents(parentType), item => item as Component);
-        }
-
-        RemoveSelf(self);
-    }
-
-    public static Type FindType(string typeName, string assemblyQualifiedName)
-    {
-        Type type = Type.GetType(typeName);
-
-        if (type != null)
-        {
-            return type;
-        }
-
-        if (assemblyQualifiedName != "")
-        {
-            type = Type.GetType(assemblyQualifiedName);
-            if (type != null)
+        _components = Array.ConvertAll(parent.GetComponentsExtended(parentType, _shouldAlsoCountInChildren,
+            (comp) =>
             {
-                return type;
-            }
-        }
-        foreach (Assembly asm in AppDomain.CurrentDomain.GetAssemblies())
-        {
-            type = asm.GetType(typeName);
-            if (type != null)
-            {
-                return type;
-            }
-        }
-        return null;
-    }
-
-    private void RemoveSelf(Component self)
-    {
-        if (_components == null || self == null || _shouldCountSelf)
-        {
-            return;
-        }
-
-        _components =
-            _components.Where((component) =>
-            { return !component.Equals(self); }).ToArray();
+                return _shouldCountSelf || (!_shouldCountSelf && comp.Equals(self));
+            }),
+            item => item as Component);
     }
 }
 
@@ -164,9 +111,9 @@ public class ComponentsCacheEditor : LinearPropertyDrawer<ComponentsCache>
 
     private void OnButtonPressed(SerializedProperty property)
     {
-        if (BaseObject != null && MonoBehaviour != null)
+        if (BaseObject != null && MonoComponent != null)
         {
-            BaseObject.RecalculateComponents(MonoBehaviour.gameObject, MonoBehaviour);
+            BaseObject.RecalculateComponents(MonoComponent.gameObject, MonoComponent);
         }
     }
 

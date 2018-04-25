@@ -138,6 +138,7 @@
     <Compile Include="Assets\Scripts\Extentions\RoomsExtentions.cs" />
     <Compile Include="Assets\Scripts\Extentions\SpawnerExtentions.cs" />
     <Compile Include="Assets\Scripts\Extentions\StructsExtentions.cs" />
+    <Compile Include="Assets\Scripts\Extentions\SystemExtentions.cs" />
     <Compile Include="Assets\Scripts\Extentions\UnityEditorExtentions.cs" />
     <Compile Include="Assets\Scripts\Fraction.cs" />
     <Compile Include="Assets\Scripts\GameManager\GameManager.cs" />
@@ -156,12 +157,12 @@
     <Compile Include="Assets\Scripts\LevelManager\IDoor.cs" />
     <Compile Include="Assets\Scripts\LevelManager\IDoorsHolder.cs" />
     <Compile Include="Assets\Scripts\LevelManager\IWallsColliderCreator.cs" />
+    <Compile Include="Assets\Scripts\LevelManager\LevelAPIs\ILevelAPIsHandler.cs" />
     <Compile Include="Assets\Scripts\LevelManager\LevelManager.cs" />
     <Compile Include="Assets\Scripts\LevelManager\NewBehaviourScript.cs" />
     <Compile Include="Assets\Scripts\LevelManager\RoomConsts.cs" />
     <Compile Include="Assets\Scripts\LevelManager\RoomEventListenerProxy.cs" />
     <Compile Include="Assets\Scripts\LevelManager\RoomsManagement\Basic\IRoom.cs" />
-    <Compile Include="Assets\Scripts\LevelManager\RoomsManagement\Basic\IRoomTransition.cs" />
     <Compile Include="Assets\Scripts\LevelManager\RoomsManagement\EventsHandling\IRoomEventHandler.cs" />
     <Compile Include="Assets\Scripts\LevelManager\RoomsManagement\EventsHandling\RoomEventHandler.cs" />
     <Compile Include="Assets\Scripts\LevelManager\RoomsManagement\RoomContainment\Basic\IRoomContainedObject.cs" />
@@ -174,7 +175,6 @@
     <Compile Include="Assets\Scripts\LevelManager\RoomsManagement\RoomEventListener\RoomsEventListenerCommand.cs" />
     <Compile Include="Assets\Scripts\LevelManager\RoomsManagement\WallsCreator\IWallsCreator.cs" />
     <Compile Include="Assets\Scripts\LevelManager\RoomsManagement\WallsCreator\WallsCreator.cs" />
-    <Compile Include="Assets\Scripts\LevelManager\RoomTransitionInvoker.cs" />
     <Compile Include="Assets\Scripts\LevelManager\Test\OnLevelOpenPutInACenter.cs" />
     <Compile Include="Assets\Scripts\LevelManager\Test\SetActiveOnRoomOpen.cs" />
     <Compile Include="Assets\Scripts\LevelManager\Test\TestLevel.cs" />
@@ -183,6 +183,9 @@
     <Compile Include="Assets\Scripts\LevelManager\Test\TestLevelMap.cs" />
     <Compile Include="Assets\Scripts\LevelManager\Test\TestLevelStarter.cs" />
     <Compile Include="Assets\Scripts\LevelManager\Test\TestRoom.cs" />
+    <Compile Include="Assets\Scripts\LevelManager\Transition\IRoomTransition.cs" />
+    <Compile Include="Assets\Scripts\LevelManager\Transition\RoomTransitionInvoker.cs" />
+    <Compile Include="Assets\Scripts\LevelManager\Transition\RoomTransitionProxy.cs" />
     <Compile Include="Assets\Scripts\LevelManager\Walls.cs" />
     <Compile Include="Assets\Scripts\LevelManager\WallsBase.cs" />
     <Compile Include="Assets\Scripts\LevelManager\WallsColliderCreator.cs" />

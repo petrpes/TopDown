@@ -2,25 +2,22 @@
 using System.Collections;
 using UnityEngine;
 
-public class OnLevelOpenPutInACenter : MonoBehaviour, ICoroutineCollectionWriter<RoomTransitionArguments>
+public class OnLevelOpenPutInACenter : MonoBehaviour, IRoomTransition
 {
-    public IEnumerator Coroutine(Action onComplete, RoomTransitionArguments args)
+    public void TransitionToRoom(IRoom oldRoom, IRoom newRoom, Action onComplete)
     {
-        transform.position = args.NewRoom.Shape.Rectangle.center;
-        yield return null;
+        transform.position = newRoom.Shape.Rectangle.center;
         onComplete.SafeInvoke();
     }
 
     private void Awake()
     {
-        //LevelManager.Instance.OnAfterLevelStarted += OnLevelStarted;
-        RoomTransitionInvoker.Instance.SubscribeCoroutine(this);
+        RoomTransitionProxy.Instance.SubscribeTransitionObject(this);
     }
 
     private void OnDestroy()
     {
-        //LevelManager.Instance.OnAfterLevelStarted -= OnLevelStarted;
-        RoomTransitionInvoker.Instance.UnsubscribeCoroutine(this);
+        RoomTransitionProxy.Instance.UnsubscribeTransitionObject(this);
     }
 
     private void OnLevelStarted()

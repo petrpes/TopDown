@@ -41,10 +41,8 @@ public class CallbackCollector
 
     private void CheckCallback()
     {
-        if (_pendingCallback < 0)
-        {
-            Debug.LogError("");
-        }
+        Debug.Assert(_pendingCallback >= 0, "Number of callbacks should be more or equals than zero");
+
         if (_pendingCallback == 0)
         {
             _onCallbacksFinished.SafeInvoke();

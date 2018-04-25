@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class CameraMover : MonoBehaviour, ICoroutineCollectionWriter<RoomTransitionArguments>
+public class CameraMover : MonoBehaviour, IRoomTransition
 {
     [SerializeField] private Transform _pursuitedTransform;
     [SerializeField] private float _speed = 0.5f;
@@ -34,9 +34,14 @@ public class CameraMover : MonoBehaviour, ICoroutineCollectionWriter<RoomTransit
         _transform.position = new Vector3(newPosition.x, newPosition.y, _transform.position.z);
     }
 
-    public IEnumerator Coroutine(Action onComplete, RoomTransitionArguments args)
+    public void TransitionToRoom(IRoom oldRoom, IRoom newRoom, Action onComplete)
     {
-        _currentRoom = args.NewRoom;
+        StartCoroutine(CoroutineTransition(oldRoom, newRoom, onComplete));
+    }
+
+    public IEnumerator CoroutineTransition(IRoom oldRoom, IRoom newRoom, Action onComplete)
+    {
+        _currentRoom = newRoom;
         Vector2 currentPosition = _transform.position;
         while (Mathf.Abs((currentPosition - _lastPosition).magnitude) >= 1f)//TODO const + test if no game break
         {

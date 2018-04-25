@@ -1,5 +1,6 @@
 ﻿using Components.Spawner;
 using System;
+using UnityEditor;
 using UnityEngine;
 
 [RequireComponent(typeof(RoomEventListenerProxy))]
@@ -9,10 +10,22 @@ public class RoomContainedObject : MonoBehaviour, IRoomContainedObject, ISpawnab
 
     public event Action<IRoom, IRoom> RoomChanged;
 
-    //TODO in inspector
-    public void SetRoomInInspector(IRoom room)
+    public IRoom DefaultRoom
     {
-        _defaultRoom.SetValue(room);
+        private get
+        {
+            return _defaultRoom.GetChachedComponent<IRoom>();
+        }
+#if UNITY_EDITOR
+        set
+        {
+            if (_defaultRoom == null)
+            {
+                _defaultRoom = new InterfaceComponentCache();
+            }
+            _defaultRoom.SetValue(value);
+        }
+#endif
     }
 
     public void OnAfterSpawn()
@@ -30,10 +43,10 @@ public class RoomContainedObject : MonoBehaviour, IRoomContainedObject, ISpawnab
     {
         get
         {
-            if (_currentRoom == null && _defaultRoom != null && 
-                _defaultRoom.GetChachedComponent<IRoom>() != null)
+            if (_currentRoom == null && _defaultRoom != null &&
+                DefaultRoom != null)
             {
-                _currentRoom = _defaultRoom.GetChachedComponent<IRoom>();
+                _currentRoom = DefaultRoom;
                 LevelManager.Instance.RoomContentManager.AddObject(_currentRoom, this);
             }
 
@@ -62,4 +75,22 @@ public class RoomContainedObject : MonoBehaviour, IRoomContainedObject, ISpawnab
         }
     }
 }
+
+[CustomEditor(typeof(RoomContainedObject))]
+public class RoomContainedObjectEditor : Editor
+{
+    SerializedProperty _lastProp;
+
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+
+        if (_lastProp == null || !_lastProp.Equals(this.Property("_defaultRoom")))
+        {
+            _lastProp = this.Property("_defaultRoom");
+        }
+    }
+}
+
+
 

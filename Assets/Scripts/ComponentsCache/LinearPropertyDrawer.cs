@@ -10,7 +10,7 @@ public abstract class LinearPropertyDrawer<T> : PropertyDrawer where T : class
     protected abstract float Distance { get; }
 
     protected T BaseObject { get; private set; }
-    protected MonoBehaviour MonoBehaviour { get; private set; }
+    protected MonoBehaviour MonoComponent { get; private set; }
     protected SerializedProperty SerializedProperty { get; private set; }
     protected SerializedProperty GetProperty(string name)
     {
@@ -108,9 +108,9 @@ public abstract class LinearPropertyDrawer<T> : PropertyDrawer where T : class
         {
             BaseObject = fieldInfo.GetValue(property.serializedObject.targetObject) as T;
         }
-        if (MonoBehaviour == null)
+        if (MonoComponent == null)
         {
-            MonoBehaviour = property.serializedObject.targetObject as MonoBehaviour;
+            MonoComponent = property.serializedObject.targetObject as MonoBehaviour;
         }
     }
 }
