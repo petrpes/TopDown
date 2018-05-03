@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CameraMover : MonoBehaviour, IRoomTransition
 {
+    [SerializeField] private Mover _pursuitedMover;
     [SerializeField] private Transform _pursuitedTransform;
     [SerializeField] private float _speed = 0.5f;
     [SerializeField] private float _timeOfTransition = 0.5f;
@@ -12,49 +13,94 @@ public class CameraMover : MonoBehaviour, IRoomTransition
     private Camera _camera;
     private IRoom _currentRoom;
 
-    private Vector2 _lastPosition;
+    private Vector2 _desiredPosition;
+    private bool _isInProcess = false;
+    private bool _isPaused = false;
+    private Coroutine _coroutine;
 
     private void Awake()
     {
         _transform = transform;
         _camera = GetComponent<Camera>();
-        //RoomTransitionInvoker.Instance.SubscribeCoroutine(this);
+        LevelAPIs.TransitionHandler.SubscribeTransistor(this, null);
     }
 	
 	// Update is called once per frame
 	void FixedUpdate ()
     {
-        Vector2 cameraSize = CameraSizeGetter.GetCameraSize(_camera);
-        float positionZ = _transform.position.z;
+        if (_isPaused)
+        {
+            return;
+        }
 
-        _lastPosition = CameraPositionCalculator.CalculatePosition(cameraSize, SceneRect, 
-            _pursuitedTransform.position);
+        CalculateDesiredPosition();
 
-        Vector2 newPosition = Vector2.Lerp(_transform.position, _lastPosition, _speed);
-        _transform.position = new Vector3(newPosition.x, newPosition.y, _transform.position.z);
+        Vector3 oldPosition = _transform.position;
+        Vector2 newPosition = Vector2.Lerp(oldPosition, _desiredPosition, _speed);
+        _transform.position = new Vector3(newPosition.x, newPosition.y, oldPosition.z);
     }
 
-    public void TransitionToRoom(IRoom oldRoom, IRoom newRoom, Action onComplete)
+    private void CalculateDesiredPosition()
     {
-        StartCoroutine(CoroutineTransition(oldRoom, newRoom, onComplete));
+        Vector2 cameraSize = CameraSizeGetter.GetCameraSize(_camera);
+
+        _desiredPosition = CameraPositionCalculator.CalculatePosition(cameraSize, RoomRect, PursuedPosition);
+    }
+
+    private Vector3 PursuedPosition
+    {
+        get
+        {
+            return _pursuitedMover == null ? 
+                (_pursuitedTransform == null ? (Vector3)RoomRect.center : _pursuitedTransform.position) :
+                _pursuitedMover.Position;
+        }
+    }
+
+    public void InvokeTransitionAction(IRoom oldRoom, IRoom newRoom, Action onComplete)
+    {
+        _coroutine = StartCoroutine(CoroutineTransition(oldRoom, newRoom, onComplete));
     }
 
     public IEnumerator CoroutineTransition(IRoom oldRoom, IRoom newRoom, Action onComplete)
     {
+        _isInProcess = true;
+
         _currentRoom = newRoom;
-        Vector2 currentPosition = _transform.position;
-        while (Mathf.Abs((currentPosition - _lastPosition).magnitude) >= 1f)//TODO const + test if no game break
+        CalculateDesiredPosition();
+
+        while (Mathf.Abs(((Vector2)_transform.position - _desiredPosition).magnitude) >= 1f)//TODO const + test if no game break
         {
             yield return new WaitForSeconds(_timeOfTransition);
         }
+
+        _isInProcess = false;
         onComplete.Invoke();
     }
 
-    private Rect SceneRect
+    public void ForceStop()
+    {
+        if (_coroutine != null && _isInProcess)
+        {
+            StopCoroutine(_coroutine);
+        }
+        _isInProcess = false;
+    }
+
+    public void Pause()
+    {
+        _isPaused = true;
+    }
+
+    public void UnPause()
+    {
+        _isPaused = false;
+    }
+
+    private Rect RoomRect
     {
         get
         {
-            _currentRoom = LevelManager.Instance.CurrentRoom;
             if (_currentRoom == null)
             {
                 return Rect.zero;
@@ -65,4 +111,6 @@ public class CameraMover : MonoBehaviour, IRoomTransition
             return rect;
         }
     }
+
+    public bool IsInProcess { get { return _isInProcess; } }
 }

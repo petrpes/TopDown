@@ -10,6 +10,7 @@ public class TestLevelCreator : ILevelCreator
         {
             (room as TestRoom).gameObject.SetActive(false);
         }
+
         onLevelCreated.Invoke(newLevel);
     }
 }

@@ -30,5 +30,13 @@ public static class StructsExtentions
     {
         return Enum.GetValues(typeof(T)).Length;
     }
+
+    public static IEnumerable<T> GetEnumValues<T>() where T : struct, IConvertible
+    {
+        foreach (T value in Enum.GetValues(typeof(T)))
+        {
+            yield return value;
+        }
+    }
 }
 

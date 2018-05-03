@@ -19,7 +19,7 @@ public class AddForceCommand : Command
             _rigidbody = GetComponent<Rigidbody2D>();
         }
 
-        var actorMover = actor.GetMover();
+        var actorMover = actor.GetLevelObjectComponent<Mover>();
         if (actorMover != null)
         {
             DirectionVector direction = new DirectionVector()

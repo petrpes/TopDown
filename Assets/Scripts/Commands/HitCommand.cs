@@ -19,7 +19,7 @@ public class HitCommand : Command
 
     public override void Execute(GameObject actor)
     {
-        HealthChanger actorHealth = actor.GetHealthChanger();
+        HealthChanger actorHealth = actor.GetLevelObjectComponent<HealthChanger>();
 
         if (actorHealth != null)
         {

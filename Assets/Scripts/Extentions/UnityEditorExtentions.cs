@@ -15,7 +15,7 @@ public static class UnityEditorExtentions
         return editor.serializedObject.FindProperty(propertyName).objectReferenceValue;
     }
 
-    public static T BasicObject<T>(this Editor editor) where T : Component
+    public static T BasicComponent<T>(this Editor editor) where T : Component
     {
         return editor.serializedObject.targetObject as T;
     }

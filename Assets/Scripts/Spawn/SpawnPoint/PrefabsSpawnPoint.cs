@@ -1,5 +1,4 @@
-﻿using UnityEditor;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PrefabsSpawnPoint : SpawnPointBase
 {
@@ -16,7 +15,7 @@ public class PrefabsSpawnPoint : SpawnPointBase
             var offsetPosition = _rand ? 
                 GeometryExtentions.RandomVector(_variance) : 
                 Vector3.zero;
-            var spawnedObject = SpawnManager.Instance.Spawn(_prefab);
+            var spawnedObject = ObjectsAPI.SpawnObject(_prefab);
             var objectTranform = spawnedObject.transform;
 
             objectTranform.parent = _parentTransform.parent;

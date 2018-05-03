@@ -1,4 +1,6 @@
-﻿public class TestLevel : ILevel
+﻿using System.Collections.Generic;
+
+public class TestLevel : ILevel
 {
     private IRoom _startRoom;
 
@@ -23,6 +25,14 @@
         get
         {
             return TestLevelMap.Instance;
+        }
+    }
+
+    public IEnumerable<object> DefaultObjects
+    {
+        get
+        {
+            yield return null;
         }
     }
 }

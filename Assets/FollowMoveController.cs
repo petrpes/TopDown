@@ -2,20 +2,16 @@
 
 public class FollowMoveController : MoveController
 {
-    [SerializeField] private Transform _pusrued;
-    private Transform _transform;
+    [SerializeField] private Mover _pursued;
+    [SerializeField] private Mover _mover;
 
     public override bool GetControl(out DirectionVector direction)
     {
-        if (_transform == null)
+        if (_pursued == null)
         {
-            _transform = transform;
+            _pursued = GameManager.Instance.Player.GetLevelObjectComponent<Mover>();
         }
-        if (_pusrued == null)
-        {
-            _pusrued = TestLevelMap.Instance.Player;
-        }
-        direction = new DirectionVector(_pusrued.position - _transform.position);
+        direction = new DirectionVector(_pursued.Position - _mover.Position);
         return true;
     }
 }

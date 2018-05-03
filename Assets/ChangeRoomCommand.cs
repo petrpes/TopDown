@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ChangeRoomCommand : Command
 {
@@ -8,9 +6,9 @@ public class ChangeRoomCommand : Command
 
     public override void Execute(GameObject actor)
     {
-        if (!LevelManager.Instance.CurrentRoom.Equals(_door.RoomTo))
+        if (!LevelAPIs.CurrentRoom.Equals(_door.RoomTo))
         {
-            LevelManager.Instance.CurrentRoom = _door.RoomTo;
+            LevelAPIs.ChangeRoom(_door.RoomTo);
         }
     }
 }

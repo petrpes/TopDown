@@ -2,8 +2,10 @@
 using System.Collections;
 using UnityEngine;
 
-public class OnLevelOpenPutInACenter : MonoBehaviour, IRoomTransition
+public class OnLevelOpenPutInACenter : MonoBehaviour
 {
+    [SerializeField] private Mover _mover;
+
     public void TransitionToRoom(IRoom oldRoom, IRoom newRoom, Action onComplete)
     {
         transform.position = newRoom.Shape.Rectangle.center;
@@ -12,17 +14,17 @@ public class OnLevelOpenPutInACenter : MonoBehaviour, IRoomTransition
 
     private void Awake()
     {
-        RoomTransitionProxy.Instance.SubscribeTransitionObject(this);
+        LevelManager.Instance.OnAfterLevelCreated += OnLevelStarted;
     }
 
     private void OnDestroy()
     {
-        RoomTransitionProxy.Instance.UnsubscribeTransitionObject(this);
+        LevelManager.Instance.OnAfterLevelCreated -= OnLevelStarted;
     }
 
-    private void OnLevelStarted()
+    private void OnLevelStarted(ILevel level)
     {
-        transform.position = LevelManager.Instance.CurrentRoom.Shape.Rectangle.center;
+        _mover.Position = LevelAPIs.CurrentRoom.Shape.Rectangle.center;
     }
 }
 

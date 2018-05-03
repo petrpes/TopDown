@@ -4,7 +4,7 @@ public class TestLevelStarter : ILevelStarter
 {
     public void StartLevel(ILevel level, Action onComplete)
     {
-        LevelManager.Instance.CurrentRoom = level.StartRoom;
+        LevelAPIs.ChangeRoom(level.StartRoom);
         onComplete.Invoke();
     }
 }

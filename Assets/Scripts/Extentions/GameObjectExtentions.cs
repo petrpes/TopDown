@@ -1,39 +1,53 @@
-﻿using Components.Spawner;
-using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 
 public static class GameObjectExtentions
 {
-    public static HealthChanger GetHealthChanger(this GameObject gameObject)
+    public static T GetLevelObjectComponent<T>(this object roomObject) where T : class
     {
-        var componentsCache = gameObject.GetComponent<PublicComponentsCacheBase>();
+        if (typeof(T).Equals(typeof(PublicComponentsCacheBase)))
+        {
+            if (roomObject is PublicComponentsCacheBase)
+            {
+                return roomObject as T;
+            }
+            if (roomObject is GameObject)
+            {
+                return (roomObject as GameObject).GetComponent<PublicComponentsCacheBase>() as T;
+            }
+            return null;
+        }
 
-        return componentsCache == null ? null : componentsCache.HealthChanger;
+        var componentsCache = roomObject.GetLevelObjectComponent<PublicComponentsCacheBase>();
+        if (componentsCache == null)
+        {
+            return null;
+        }
+
+        return componentsCache.GetCachedComponent<T>();
+    }
+
+    public static Fraction GetFraction(this PublicComponentsCacheBase componentCache)
+    {
+        var componentsCache = componentCache.GetLevelObjectComponent<PublicComponentsCacheBase>();
+        if (componentsCache == null)
+        {
+            return Fraction.Neutral;
+        }
+        var classInfo = componentsCache.GetCachedComponent<ClassInformation>();
+
+        return classInfo == null ? Fraction.Neutral :
+            classInfo.CurrentFraction;
     }
 
     public static Fraction GetFraction(this GameObject gameObject)
     {
-        var componentsCache = gameObject.GetComponent<PublicComponentsCacheBase>();
-
-        return componentsCache == null ? Fraction.Neutral :
-            componentsCache.ClassInformation == null ? Fraction.Neutral :
-            componentsCache.ClassInformation.CurrentFraction;
-    }
-
-    public static Mover GetMover(this GameObject gameObject)
-    {
-        var componentsCache = gameObject.GetComponent<PublicComponentsCacheBase>();
-
-        return componentsCache == null ? null :
-            componentsCache.Mover;
-    }
-
-    public static ISpawnableObject GetSpawnableObject(this GameObject gameObject)
-    {
-        var spawnableObject = gameObject.GetComponent<SpawnableObjectsProxy>();
-        return spawnableObject;
+        var cache = gameObject.GetLevelObjectComponent<PublicComponentsCacheBase>();
+        if (cache == null)
+        {
+            return Fraction.Neutral;
+        }
+        return cache.GetFraction();
     }
 
     public static T[] GetComponentsExtended<T>(this GameObject gameObject, bool shouldCountChildren = false, 

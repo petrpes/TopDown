@@ -9,7 +9,7 @@ public class RotationMoveController : MoveController
     public override bool GetControl(out DirectionVector direction)
     {
         Vector3 globalPositon = 
-            LevelManager.Instance.CurrentRoom.Shape.Rectangle.center + _position;
+            LevelAPIs.CurrentRoom.Shape.Rectangle.center + _position;
 
         var distance = globalPositon - _mover.Position;
         var distRotate = Quaternion.Euler(0, 0, 90) * distance;

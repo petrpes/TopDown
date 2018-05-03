@@ -6,10 +6,10 @@ public class PutInARoomCommand : Command
 
     public override void Execute(GameObject actor)
     {
-        Mover mover = actor.GetMover();
+        Mover mover = actor.GetLevelObjectComponent<Mover>();
         if (mover != null)
         {
-            Rect roomRectangle = LevelManager.Instance.CurrentRoom.Shape.Rectangle;
+            Rect roomRectangle = LevelAPIs.CurrentRoom.Shape.Rectangle;
 
             mover.Position = roomRectangle.min +
                 (roomRectangle.max - roomRectangle.min).Multiply(_positionInARoom);

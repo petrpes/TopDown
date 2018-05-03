@@ -7,15 +7,6 @@ public class TestLevelMap : MonoBehaviour, ILevelMap
     public static TestLevelMap Instance;
 
     [SerializeField] private TestRoom[] _rooms;
-    [SerializeField] private Transform _player;//todo not in here
-
-    public Transform Player
-    {
-        get
-        {
-            return _player;
-        }
-    }
 
     public int RoomsCount
     {
@@ -30,7 +21,7 @@ public class TestLevelMap : MonoBehaviour, ILevelMap
         Instance = this;
     }
 
-    public IEnumerable<IRoom> GetRooms(Func<IRoom, bool> predicate = null)
+    public IEnumerable<IRoom> GetRooms(Predicate<IRoom> predicate = null)
     {
         for (int i = 0; i < _rooms.Length; i++)
         {

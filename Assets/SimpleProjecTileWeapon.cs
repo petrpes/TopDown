@@ -25,7 +25,7 @@ public class SimpleProjecTileWeapon : Weapon
 
         if (_isCanAttack)
         {
-            Projectile projectile = SpawnManager.Instance.Spawn(_projectile.gameObject).GetComponent<Projectile>();
+            Projectile projectile = ObjectsAPI.SpawnObject(_projectile.gameObject).GetComponent<Projectile>();
             float rotation = direction.Value.VectorAngle();
             float projectileSpeed = _skillSet.ProjectileSpeed;
 

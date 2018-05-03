@@ -8,26 +8,26 @@ public class ComponentsCache
 {
     [SerializeField] private string _componentTypeName;
     [SerializeField] private string _assemblyQualifiedName;
-    [SerializeField] private bool _shouldAlsoCountInChildren;
+    [SerializeField] private bool _shouldCountInChildren;
     [SerializeField] private bool _shouldCountSelf = false;
     [SerializeField] private bool _showAdditionalInEditor = false;
     [SerializeField] protected Component[] _components;
 
-    public ComponentsCache(string componentTypeName, bool shouldAlsoCountInChildren, 
-        bool shouldAlsoCountSelf = false, string assemblyQualifiedName = "", bool showAdditionalInEditor = false)
+    public ComponentsCache(string componentTypeName, bool shouldCountInChildren, 
+        bool shouldCountSelf = false, string assemblyQualifiedName = "", bool showAdditionalInEditor = false)
     {
         _componentTypeName = componentTypeName;
-        _shouldAlsoCountInChildren = shouldAlsoCountInChildren;
-        _shouldCountSelf = shouldAlsoCountSelf;
+        _shouldCountInChildren = shouldCountInChildren;
+        _shouldCountSelf = shouldCountSelf;
         _assemblyQualifiedName = assemblyQualifiedName;
         _showAdditionalInEditor = showAdditionalInEditor;
     }
 
-    public ComponentsCache(Type type, bool shouldAlsoCountInChildren,
+    public ComponentsCache(Type type, bool shouldCountInChildren,
         bool shouldAlsoCountSelf = false)
     {
         _componentTypeName = type.Name;
-        _shouldAlsoCountInChildren = shouldAlsoCountInChildren;
+        _shouldCountInChildren = shouldCountInChildren;
         _shouldCountSelf = shouldAlsoCountSelf;
         _assemblyQualifiedName = type.AssemblyQualifiedName;
     }
@@ -52,7 +52,7 @@ public class ComponentsCache
 
     public void RecalculateComponents<T>(GameObject parent, Component self)
     {
-        _components = Array.ConvertAll(parent.GetComponentsExtended<T>(_shouldAlsoCountInChildren, 
+        _components = Array.ConvertAll(parent.GetComponentsExtended<T>(_shouldCountInChildren, 
             (comp) => 
             {
                 return _shouldCountSelf || (!_shouldCountSelf && comp.Equals(self));
@@ -69,10 +69,10 @@ public class ComponentsCache
 
         Type parentType = SystemExtentions.FindType(_componentTypeName, _assemblyQualifiedName);
 
-        _components = Array.ConvertAll(parent.GetComponentsExtended(parentType, _shouldAlsoCountInChildren,
+        _components = Array.ConvertAll(parent.GetComponentsExtended(parentType, _shouldCountInChildren,
             (comp) =>
             {
-                return _shouldCountSelf || (!_shouldCountSelf && comp.Equals(self));
+                return !comp.Equals(self) || _shouldCountSelf;
             }),
             item => item as Component);
     }

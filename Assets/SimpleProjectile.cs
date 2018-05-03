@@ -45,7 +45,7 @@ public class SimpleProjectile : Projectile
 
     private void DespawnAction()
     {
-        SpawnManager.Instance.Despawn(gameObject);
+        ObjectsAPI.DespawnObject(gameObject);
     }
 }
 
