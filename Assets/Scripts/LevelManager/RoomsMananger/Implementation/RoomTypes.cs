@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public interface IRoomTransition : Components.RoomsManager.IRoomTransition<IRoom>
+﻿public interface IRoomTransition : Components.RoomsManager.IRoomTransition<IRoom>
 {
 }
 

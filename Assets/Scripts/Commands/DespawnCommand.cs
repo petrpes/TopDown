@@ -6,7 +6,7 @@ public class DespawnCommand : Command
 
     public override void Execute(GameObject actor)
     {
-        ObjectsAPI.DespawnObject(_objectToDespawn ?? gameObject);
+        ObjectsAPI.DespawnObject(_objectToDespawn == null ? gameObject : _objectToDespawn);
     }
 }
 

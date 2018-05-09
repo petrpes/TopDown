@@ -46,5 +46,13 @@ public static class LevelAPIs
             return LevelManager.Instance.RoomsManager.Hooks;
         }
     }
+
+    public static IRoomEventsSubscriber<RoomEventType, IRoom> RoomSubscriber
+    {
+        get
+        {
+            return LevelManager.Instance.RoomsManager.EventsSubscriber;
+        }
+    }
 }
 

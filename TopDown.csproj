@@ -112,7 +112,6 @@
     <Compile Include="Assets\Scripts\Commands\BuffSpeedCommand.cs" />
     <Compile Include="Assets\Scripts\Commands\Command.cs" />
     <Compile Include="Assets\Scripts\Commands\DespawnCommand.cs" />
-    <Compile Include="Assets\Scripts\Commands\DestroyCommand.cs" />
     <Compile Include="Assets\Scripts\Commands\HitCommand.cs" />
     <Compile Include="Assets\Scripts\Commands\PutInARoomCommand.cs" />
     <Compile Include="Assets\Scripts\Commands\SpawnObjectCommand.cs" />
@@ -159,10 +158,14 @@
     <Compile Include="Assets\Scripts\LevelManager\Level\ILevel.cs" />
     <Compile Include="Assets\Scripts\LevelManager\Level\ILevelCreator.cs" />
     <Compile Include="Assets\Scripts\LevelManager\Level\ILevelDestroyer.cs" />
+    <Compile Include="Assets\Scripts\LevelManager\Level\ILevelEventListener.cs" />
     <Compile Include="Assets\Scripts\LevelManager\Level\ILevelMap.cs" />
     <Compile Include="Assets\Scripts\LevelManager\Level\ILevelStarter.cs" />
+    <Compile Include="Assets\Scripts\LevelManager\Level\LevelEventListenerCollection.cs" />
+    <Compile Include="Assets\Scripts\LevelManager\Level\LevelEventListenerCommand.cs" />
     <Compile Include="Assets\Scripts\LevelManager\Level\LevelManager.cs" />
     <Compile Include="Assets\Scripts\LevelManager\RoomsMananger\Implementation\IRoom.cs" />
+    <Compile Include="Assets\Scripts\LevelManager\RoomsMananger\Implementation\ObjectAppearanceListenerInvoker.cs" />
     <Compile Include="Assets\Scripts\LevelManager\RoomsMananger\Implementation\OnTransitionSetRoomActive.cs" />
     <Compile Include="Assets\Scripts\LevelManager\RoomsMananger\Implementation\RoomEventListenerCollector.cs" />
     <Compile Include="Assets\Scripts\LevelManager\RoomsMananger\Implementation\RoomEventListenerCommands.cs" />
@@ -245,6 +248,7 @@
     <Compile Include="Assets\Scripts\Modules\Timer\TimeGetter\ITimeGetter.cs" />
     <Compile Include="Assets\Scripts\Mover\ChangableMoveController.cs" />
     <Compile Include="Assets\Scripts\Mover\Mover.cs" />
+    <Compile Include="Assets\Scripts\Mover\Random90MoveController.cs" />
     <Compile Include="Assets\Scripts\Mover\RotationMoveController.cs" />
     <Compile Include="Assets\Scripts\Mover\VelocityMover.cs" />
     <Compile Include="Assets\Scripts\Mover\VisionMoveController.cs" />

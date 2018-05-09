@@ -93,5 +93,10 @@ public static class GameObjectExtentions
 
         return result;
     }
+
+    public static bool ShouldListenAllRoomsEvents(this PublicComponentsCacheBase cache)
+    {
+        return (cache as PublicComponentCache) != null && (cache as PublicComponentCache).ShouldListenToAllRooms;
+    }
 }
 

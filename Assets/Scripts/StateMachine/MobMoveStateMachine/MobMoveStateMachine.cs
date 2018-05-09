@@ -1,25 +1,22 @@
-﻿using Components.Spawner;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class MobMoveStateMachine : StateMachine<MobMoveStateMachine>, ISpawnableObject
+public class MobMoveStateMachine : StateMachine<MobMoveStateMachine>, IObjectAppearanceListener
 {
     [SerializeField] private ChangableMoveController _moveController;
     [SerializeField] private Vision _vision;
 
     public ChangableMoveController MoveController { get { return _moveController; } }
 
-    public void OnAfterSpawn()
+    public void OnAppearanceAction(ObjectAppearanceType type)
     {
-        CurrentState = StatesHolder.MobMoveStates.IdleState;
-    }
-
-    public void OnBeforeDespawn()
-    {
-    }
-
-    private void Awake()
-    {
-        _vision.SpottedImportantObject += OnObjectSpotted;
+        if (type.Equals(ObjectAppearanceType.Appeared))
+        {
+            CurrentState = StatesHolder.MobMoveStates.IdleState;
+        }
+        if (type.Equals(ObjectAppearanceType.Created))
+        {
+            _vision.SpottedImportantObject += OnObjectSpotted;
+        }
     }
 
     private void OnObjectSpotted(GameObject gameObject)

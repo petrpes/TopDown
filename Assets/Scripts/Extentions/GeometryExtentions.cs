@@ -21,6 +21,11 @@ public static class GeometryExtentions
                 Mathf.Rad2Deg - 90;
     }
 
+    public static Vector2 ToVector2(this float angle, float length)
+    {
+        return Quaternion.Euler(0, 0, angle) * (Vector2.right * length);
+    }
+
     public static Quaternion RotationTowards(this Vector3 vector)
     {
         return Quaternion.Euler(0f, 0f, vector.VectorAngle());
@@ -112,6 +117,11 @@ public static class GeometryExtentions
         value /= vector1.magnitude * vector2.magnitude;
         */
         return Vector2.SignedAngle(vector1, vector2);
+    }
+
+    public static DirectionVector ToDirectionVector(this DirectionVector2 vector)
+    {
+        return new DirectionVector(vector.Value);
     }
 }
 

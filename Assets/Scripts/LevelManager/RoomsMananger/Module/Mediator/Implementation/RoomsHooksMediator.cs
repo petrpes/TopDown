@@ -25,7 +25,7 @@ namespace Components.RoomsManager
         {
             var listener = RetrieveListener(roomObject);
 
-            if (listener != null && !listener.ShouldListenAllRooms)
+            if (listener != null && !ShouldListenAllRooms(roomObject))
             {
                 _manager.EventsSubscriber.SubscribeListener(listener, room);
             }
@@ -35,7 +35,7 @@ namespace Components.RoomsManager
         {
             var listener = RetrieveListener(roomObject);
 
-            if (listener != null && !listener.ShouldListenAllRooms)
+            if (listener != null && !ShouldListenAllRooms(roomObject))
             {
                 _manager.EventsSubscriber.UnsubscribeListener(listener, room);
             }
@@ -44,6 +44,11 @@ namespace Components.RoomsManager
         protected virtual IRoomEventListener<E, R> RetrieveListener(O roomObject)
         {
             return roomObject as IRoomEventListener<E, R>;
+        }
+
+        protected virtual bool ShouldListenAllRooms(O roomObject)
+        {
+            return true;
         }
     }
 }

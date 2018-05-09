@@ -16,12 +16,14 @@ public class GameManager : MonoBehaviour
 
     IRoom[] _rooms;
 
-	void Start ()
+    private void Awake()
     {
         Instance = this;
-
         ConnectManagers();
+    }
 
+    void Start ()
+    {
         LevelManager.Instance.LoadNextLevel(null);
 
         _rooms = new IRoom[TestLevelMap.Instance.RoomsCount];
@@ -35,6 +37,10 @@ public class GameManager : MonoBehaviour
 
     private void ConnectManagers()
     {
+        //when object added to the room - subscribe it to room's events if it listens only for one room's events
+        var roomMananager = LevelManager.Instance.RoomsManager;
+        new RoomListenersMediator().Connect(roomMananager);
+
         //On level created - add default rooms' objects to content
         LevelManager.Instance.OnAfterLevelCreated += (level) =>
         {
@@ -48,20 +54,74 @@ public class GameManager : MonoBehaviour
         };
 
         //On object spawned - add to room's content
-        if (LevelAPIs.CurrentRoom != null)
+        SceneObjectsMananger.Instance.SpawnManager.AfterObjectSpawned += (obj) =>
         {
-            SceneObjectsMananger.Instance.SpawnManager.AfterObjectSpawned += (obj) =>
+            if (LevelAPIs.CurrentRoom == null)
             {
-                LevelAPIs.RoomContent.AddObject(LevelAPIs.CurrentRoom, obj);
-            };
-            SceneObjectsMananger.Instance.SpawnManager.BeforeObjectDespawned += (obj) =>
+                return;
+            }
+            var cache = obj.GetLevelObjectComponent<PublicComponentsCacheBase>();
+            if (cache != null)
             {
-                LevelAPIs.RoomContent.RemoveObject(LevelAPIs.CurrentRoom, obj);
-            };
-        }
+                LevelAPIs.RoomContent.AddObject(LevelAPIs.CurrentRoom, cache);
+            }
+        };
+        SceneObjectsMananger.Instance.SpawnManager.BeforeObjectDespawned += (obj) =>
+        {
+            if (LevelAPIs.CurrentRoom == null)
+            {
+                return;
+            }
+            var cache = obj.GetLevelObjectComponent<PublicComponentsCacheBase>();
+            if (cache != null)
+            {
+                LevelAPIs.RoomContent.RemoveObject(LevelAPIs.CurrentRoom, cache);
+            }
+        };
+
+        //On object created - subscribe to all rooms events if it listens all rooms
+        SceneObjectsMananger.Instance.AppearanceHooks.OnAppearanceAction += (type, obj) =>
+        {
+            var cache = obj.GetLevelObjectComponent<PublicComponentsCacheBase>();
+            var listener = cache == null ? null : cache.GetCachedComponent<IRoomEventListener>();
+            if (cache != null && cache.ShouldListenAllRoomsEvents() && listener != null)
+            {
+                if (type.Equals(ObjectAppearanceType.Created))
+                {
+                    LevelAPIs.RoomSubscriber.SubscribeListener(listener, null);
+                }
+                else if (type.Equals(ObjectAppearanceType.Destroyed))
+                {
+                    LevelAPIs.RoomSubscriber.UnsubscribeListener(listener, null);
+                }
+            }
+        };
+
+        //TODO on create
+        //On object appeared - subscribe to level events
+        SceneObjectsMananger.Instance.AppearanceHooks.OnAppearanceAction += (type, obj) =>
+        {
+            var cache = obj.GetLevelObjectComponent<PublicComponentsCacheBase>();
+            var listener = cache == null ? null : cache.GetCachedComponent<ILevelEventListener>();
+            if (cache != null && listener != null)
+            {
+                if (type.Equals(ObjectAppearanceType.Appeared))
+                {
+                    LevelManager.Instance.OnAfterLevelStarted += listener.OnLevelStarted;
+                    LevelManager.Instance.OnAfterLevelCreated += listener.OnLevelCreated;
+                    LevelManager.Instance.OnAfterLevelStarted += listener.OnLevelStarted;
+                }
+                else if (type.Equals(ObjectAppearanceType.Disappeared))
+                {
+                    LevelManager.Instance.OnAfterLevelStarted -= listener.OnLevelStarted;
+                    LevelManager.Instance.OnAfterLevelCreated -= listener.OnLevelCreated;
+                    LevelManager.Instance.OnAfterLevelStarted -= listener.OnLevelStarted;
+                }
+            }
+        };
 
         //Set rooms enabled (disabled) on open (close)
-        new OnTransitionSetRoomActive().Connect(LevelManager.Instance.RoomsManager);
+        new OnTransitionSetRoomActive().Connect(roomMananager);
     }
 
     private void Update()

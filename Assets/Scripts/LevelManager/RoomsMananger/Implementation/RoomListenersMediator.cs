@@ -10,5 +10,10 @@ public class RoomListenersMediator : RoomsHooksMediator<RoomEventType, IRoom, ob
     {
         return roomObject.GetLevelObjectComponent<IRoomEventListener>();
     }
+
+    protected override bool ShouldListenAllRooms(object roomObject)
+    {
+        return roomObject.GetLevelObjectComponent<PublicComponentsCacheBase>().ShouldListenAllRoomsEvents();
+    }
 }
 

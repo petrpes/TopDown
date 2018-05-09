@@ -40,7 +40,10 @@ public class CollisionActionHandler : MonoBehaviour
             }
         }
 
-        _updateCollisions.Clear();
+        if (_updateCollisions != null)
+        {
+            _updateCollisions.Clear();
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

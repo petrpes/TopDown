@@ -19,24 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4284188657686042}
-  - component: {fileID: 114241808759481708}
-  - component: {fileID: 114929544607504050}
-  m_Layer: 0
-  m_Name: SpawnPoint
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &1559196770375994
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 4154719974194262}
-  - component: {fileID: 114820823768111710}
+  - component: {fileID: 114088808404815752}
   m_Layer: 0
   m_Name: SpawnPoint
   m_TagString: Untagged
@@ -52,8 +35,9 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4131668407270944}
-  - component: {fileID: 114441514069207944}
+  - component: {fileID: 114014139731034620}
   - component: {fileID: 114603053635818914}
+  - component: {fileID: 114712669510704440}
   m_Layer: 0
   m_Name: RoomEventListener
   m_TagString: Untagged
@@ -74,19 +58,6 @@ Transform:
   m_Father: {fileID: 4284188657686042}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4154719974194262
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1559196770375994}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4284188657686042}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4284188657686042
 Transform:
   m_ObjectHideFlags: 1
@@ -98,24 +69,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4131668407270944}
-  - {fileID: 4154719974194262}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114241808759481708
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1335264296905656}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22af072b208fd8244b09262a610f6f3e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _defaultRoom:
-    _component: {fileID: 0}
---- !u!114 &114441514069207944
+--- !u!114 &114014139731034620
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -123,15 +80,53 @@ MonoBehaviour:
   m_GameObject: {fileID: 1657504156183870}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f356a3e6642f564e927c0653684ed44, type: 3}
+  m_Script: {fileID: 11500000, guid: f057ac6f6e3e074419e6839519d051a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _onOpenCommands:
   - {fileID: 114603053635818914}
   _onCloseCommands: []
-  _onClearCommands: []
-  _onStartCommands: []
-  _shouldDebug: 1
+--- !u!114 &114088808404815752
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1335264296905656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b2015d1194969047b5ff01619ce395c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _buffHandler: {fileID: 0}
+  _mover: {fileID: 0}
+  _healthChanger: {fileID: 0}
+  _classInformation: {fileID: 0}
+  _roomEventListeners:
+    _componentTypeName: IRoomEventListener
+    _assemblyQualifiedName: IRoomEventListener, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    _shouldCountInChildren: 1
+    _shouldCountSelf: 0
+    _showAdditionalInEditor: 0
+    _components:
+    - {fileID: 114014139731034620}
+  _appearenceListeners:
+    _componentTypeName: IObjectAppearanceListener
+    _assemblyQualifiedName: IObjectAppearanceListener, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    _shouldCountInChildren: 1
+    _shouldCountSelf: 0
+    _showAdditionalInEditor: 0
+    _components: []
+  _levelEventsListeners:
+    _componentTypeName: ILevelEventListener
+    _assemblyQualifiedName: ILevelEventListener, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    _shouldCountInChildren: 1
+    _shouldCountSelf: 0
+    _showAdditionalInEditor: 0
+    _components: []
+  _shouldListenToAllRooms: 0
 --- !u!114 &114603053635818914
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -143,37 +138,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9bfda967d84f6d4f90cff705ff297fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnPoint: {fileID: 114820823768111710}
---- !u!114 &114820823768111710
+  _spawnPoint: {fileID: 114712669510704440}
+--- !u!114 &114712669510704440
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1559196770375994}
+  m_GameObject: {fileID: 1657504156183870}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ed362810ab5375f4da0349719ca838e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _prefab: {fileID: 1309725087474148, guid: 70c3e854c5fb12e4d8b3050f4d5051ad, type: 2}
+  _prefab: {fileID: 1013173111645966, guid: 8ec7a86b8c52d3343a638fe6f351ae60, type: 2}
   _parentTransform: {fileID: 4284188657686042}
---- !u!114 &114929544607504050
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1335264296905656}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 833a29a3458ded34ab74f0a74420ea95, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _roomEventsListener:
-    _componentTypeName: IRoomEventListener
-    _assemblyQualifiedName: 
-    _shouldAlsoCountInChildren: 1
-    _shouldCountSelf: 0
-    _showAdditionalInEditor: 0
-    _components:
-    - {fileID: 114441514069207944}
-  _roomObject: {fileID: 114241808759481708}
+  _count: 1
+  _rand: 0
+  _variance: 1

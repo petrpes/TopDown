@@ -10,7 +10,7 @@ public class LevelManager
 
     public event Action<ILevel> OnAfterLevelCreated;
     public event Action<ILevel> OnBeforeLevelDestroyed;
-    public event Action OnAfterLevelStarted;
+    public event Action<ILevel> OnAfterLevelStarted;
 
     private ILevelCreator _levelCreator;
     private ILevelDestroyer _levelDestroyer;
@@ -58,7 +58,7 @@ public class LevelManager
 
             _levelStarter.StartLevel(CurrentLevel, () =>
             {
-                OnAfterLevelStarted.SafeInvoke();
+                OnAfterLevelStarted.SafeInvoke(level);
             });
         });
     }

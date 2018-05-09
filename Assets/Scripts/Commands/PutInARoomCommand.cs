@@ -3,15 +3,15 @@
 public class PutInARoomCommand : Command
 {
     [SerializeField] private Vector2 _positionInARoom;
+    [SerializeField] private Mover _mover;
 
     public override void Execute(GameObject actor)
     {
-        Mover mover = actor.GetLevelObjectComponent<Mover>();
-        if (mover != null)
+        if (_mover != null)
         {
             Rect roomRectangle = LevelAPIs.CurrentRoom.Shape.Rectangle;
 
-            mover.Position = roomRectangle.min +
+            _mover.Position = roomRectangle.min +
                 (roomRectangle.max - roomRectangle.min).Multiply(_positionInARoom);
         }
     }
