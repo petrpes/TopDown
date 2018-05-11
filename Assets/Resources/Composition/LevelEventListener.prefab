@@ -52,7 +52,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _onCreatedCommands: []
-  _onStartCommands:
-  - {fileID: 0}
+  _onStartCommands: []
   _onDestroyedCommands: []
   _parent: {fileID: 0}

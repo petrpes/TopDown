@@ -4,8 +4,8 @@ using UnityEngine;
 public class InvincibleProtection : MonoBehaviour
 {
     [SerializeField] private float _invincibleTime;
-    [SerializeField] private HealthContainer _healthContainer;
-    [SerializeField] private HealthChanger _healthChanger;
+    [AutomaticSet] [SerializeField] private HealthContainer _healthContainer;
+    [AutomaticSet] [SerializeField] private HealthChanger _healthChanger;
 
     public float InvincibleTime { set { _invincibleTime = value; } }
 

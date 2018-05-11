@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class VelocityMover : Mover
 {
-    [SerializeField] private Rigidbody2D _rigidbody;
-    [SerializeField] private WalkableSkillsSet _skillSet;
-    [SerializeField] private MoveController _controller;
+    [AutomaticSet] [SerializeField] private Rigidbody2D _rigidbody;
+    [AutomaticSet] [SerializeField] private WalkableSkillsSet _skillSet;
+    [AutomaticSet] [SerializeField] private MoveController _controller;
 
     private Vector3 _walkingSpeed;
     private bool _isWalking;

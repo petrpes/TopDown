@@ -3,7 +3,7 @@ using UnityEngine;
 
 public abstract class HealthChanger : MonoBehaviour
 {
-    [SerializeField] private HealthContainer _healthContainer;
+    [AutomaticSet] [SerializeField] private HealthContainer _healthContainer;
 
     protected HealthContainer HealthContainer { get { return _healthContainer; } }
 

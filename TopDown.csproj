@@ -96,6 +96,7 @@
     <Compile Include="Assets\PlayerViewController.cs" />
     <Compile Include="Assets\Projectile.cs" />
     <Compile Include="Assets\ProjectileView.cs" />
+    <Compile Include="Assets\Scripts\Attributes\AutomaticSetAttribute.cs" />
     <Compile Include="Assets\Scripts\Buff\BuffHandler.cs" />
     <Compile Include="Assets\Scripts\Buff\ComponentsBuffHandler.cs" />
     <Compile Include="Assets\Scripts\CallbackCollector\CallbackCollector.cs" />
@@ -117,6 +118,8 @@
     <Compile Include="Assets\Scripts\Commands\SpawnObjectCommand.cs" />
     <Compile Include="Assets\Scripts\Commands\TestCommand.cs" />
     <Compile Include="Assets\Scripts\ComponentsCache\ComponentsCache.cs" />
+    <Compile Include="Assets\Scripts\ComponentsCache\IBuiltGlobally.cs" />
+    <Compile Include="Assets\Scripts\ComponentsCache\IBuiltLocally.cs" />
     <Compile Include="Assets\Scripts\ComponentsCache\InterfaceComponentCache.cs" />
     <Compile Include="Assets\Scripts\ComponentsCache\LinearPropertyDrawer.cs" />
     <Compile Include="Assets\Scripts\ComponentsCache\ParentObjectsComponentCache.cs" />
@@ -128,6 +131,7 @@
     <Compile Include="Assets\Scripts\Consts\RoomConsts.cs" />
     <Compile Include="Assets\Scripts\DoorsEditor\DoorsEditor.cs" />
     <Compile Include="Assets\Scripts\DoorsEditor\IDoorsEditor.cs" />
+    <Compile Include="Assets\Scripts\EditorDesigners\DialogWindows\SelectComponentsDialogWindow.cs" />
     <Compile Include="Assets\Scripts\EditorDesigners\WallsCreator\IWallsColliderCreator.cs" />
     <Compile Include="Assets\Scripts\EditorDesigners\WallsCreator\IWallsCreator.cs" />
     <Compile Include="Assets\Scripts\EditorDesigners\WallsCreator\WallsColliderCreator.cs" />
@@ -137,6 +141,7 @@
     <Compile Include="Assets\Scripts\Extentions\CommandsExtentions.cs" />
     <Compile Include="Assets\Scripts\Extentions\GameObjectExtentions.cs" />
     <Compile Include="Assets\Scripts\Extentions\GeometryExtentions.cs" />
+    <Compile Include="Assets\Scripts\Extentions\GraphicsExtentions.cs" />
     <Compile Include="Assets\Scripts\Extentions\MonoExtentions.cs" />
     <Compile Include="Assets\Scripts\Extentions\ObjectExtentions.cs" />
     <Compile Include="Assets\Scripts\Extentions\RoomsExtentions.cs" />
@@ -164,6 +169,7 @@
     <Compile Include="Assets\Scripts\LevelManager\Level\LevelEventListenerCollection.cs" />
     <Compile Include="Assets\Scripts\LevelManager\Level\LevelEventListenerCommand.cs" />
     <Compile Include="Assets\Scripts\LevelManager\Level\LevelManager.cs" />
+    <Compile Include="Assets\Scripts\LevelManager\RoomsMananger\Implementation\IPublicRoomEventListener.cs" />
     <Compile Include="Assets\Scripts\LevelManager\RoomsMananger\Implementation\IRoom.cs" />
     <Compile Include="Assets\Scripts\LevelManager\RoomsMananger\Implementation\ObjectAppearanceListenerInvoker.cs" />
     <Compile Include="Assets\Scripts\LevelManager\RoomsMananger\Implementation\OnTransitionSetRoomActive.cs" />

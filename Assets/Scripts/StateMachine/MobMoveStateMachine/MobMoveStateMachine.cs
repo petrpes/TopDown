@@ -2,8 +2,8 @@
 
 public class MobMoveStateMachine : StateMachine<MobMoveStateMachine>, IObjectAppearanceListener
 {
-    [SerializeField] private ChangableMoveController _moveController;
-    [SerializeField] private Vision _vision;
+    [AutomaticSet] [SerializeField] private ChangableMoveController _moveController;
+    [AutomaticSet] [SerializeField] private Vision _vision;
 
     public ChangableMoveController MoveController { get { return _moveController; } }
 

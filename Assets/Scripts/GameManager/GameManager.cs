@@ -37,9 +37,27 @@ public class GameManager : MonoBehaviour
 
     private void ConnectManagers()
     {
-        //when object added to the room - subscribe it to room's events if it listens only for one room's events
         var roomMananager = LevelManager.Instance.RoomsManager;
-        new RoomListenersMediator().Connect(roomMananager);
+
+        //when object added to the room - subscribe it to room's events if it listens only for one room's events
+        roomMananager.Content.OnObjectAddedToTheRoom += (obj, room) =>
+        {
+            var listener = obj.GetLevelObjectComponent<IPublicRoomEventListener>();
+
+            if (listener != null && listener.Listener != null && !listener.ShouldListenAllRooms)
+            {
+                roomMananager.EventsSubscriber.SubscribeListener(listener.Listener, room);
+            }
+        };
+        roomMananager.Content.OnObjectRemovedFromRoom += (obj, room) =>
+        {
+            var listener = obj.GetLevelObjectComponent<IPublicRoomEventListener>();
+
+            if (listener != null && listener.Listener != null && !listener.ShouldListenAllRooms)
+            {
+                roomMananager.EventsSubscriber.UnsubscribeListener(listener.Listener, room);
+            }
+        };
 
         //On level created - add default rooms' objects to content
         LevelManager.Instance.OnAfterLevelCreated += (level) =>
@@ -82,17 +100,16 @@ public class GameManager : MonoBehaviour
         //On object created - subscribe to all rooms events if it listens all rooms
         SceneObjectsMananger.Instance.AppearanceHooks.OnAppearanceAction += (type, obj) =>
         {
-            var cache = obj.GetLevelObjectComponent<PublicComponentsCacheBase>();
-            var listener = cache == null ? null : cache.GetCachedComponent<IRoomEventListener>();
-            if (cache != null && cache.ShouldListenAllRoomsEvents() && listener != null)
+            var listener = obj.GetLevelObjectComponent<IPublicRoomEventListener>();
+            if (listener != null && listener.ShouldListenAllRooms && listener.Listener != null)
             {
                 if (type.Equals(ObjectAppearanceType.Created))
                 {
-                    LevelAPIs.RoomSubscriber.SubscribeListener(listener, null);
+                    LevelAPIs.RoomSubscriber.SubscribeListener(listener.Listener, null);
                 }
                 else if (type.Equals(ObjectAppearanceType.Destroyed))
                 {
-                    LevelAPIs.RoomSubscriber.UnsubscribeListener(listener, null);
+                    LevelAPIs.RoomSubscriber.UnsubscribeListener(listener.Listener, null);
                 }
             }
         };

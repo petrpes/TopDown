@@ -8,6 +8,9 @@ public class TestRoom : MonoBehaviour, IRoom
     [SerializeField] private DoorsHolder _doorsHolder;
     [HideInInspector]
     [SerializeField] private ComponentsCache _roomObjects = new ComponentsCache(typeof(PublicComponentCache), true);
+    [Header("Drag a floor sprite here to adjust it's size to room")]
+    [SerializeField] private SpriteRenderer _floorSprite;
+    [SerializeField] private bool _lockSprite;
 
     private Transform _transform;
     private Rect _rectangle;
@@ -72,6 +75,44 @@ public class TestRoom : MonoBehaviour, IRoom
             Debug.Log(_roomObjects.Count + " objects was successfully added to the room");
         }
     }
+
+    public void AdjustSprite()
+    {
+        if (_floorSprite == null || _lockSprite)
+        {
+            return;
+        }
+
+        var floorTransform = _floorSprite.transform;
+        if (!floorTransform.localScale.Equals(Vector3.one))
+        {
+            Debug.LogWarning("It would be better if " + _floorSprite.gameObject.name + " scale would be 1,1,1");
+        }
+
+        if (Shape.Rectangle.width == 0 ||
+                Shape.Rectangle.height == 0)
+        {
+            Debug.LogError("Size of the room should not be nullable");
+            return;
+        }
+        floorTransform.localPosition = Vector3.zero;
+
+        if (_floorSprite.drawMode.Equals(SpriteDrawMode.Simple))
+        {
+            var size = _floorSprite.sprite.GetSize();
+
+            size.x = Shape.Rectangle.width / size.x;
+            size.y = Shape.Rectangle.height / size.y;
+
+            floorTransform.localScale = size;
+        }
+        else
+        {
+            _floorSprite.size = Shape.Rectangle.size;
+        }
+
+        _floorSprite.size = Shape.Rectangle.size;
+    }
 #endif
 }
 
@@ -82,6 +123,7 @@ public class TestRoomEditor : Editor
     private int _previousCount = 0;
     private IWallsColliderCreator _collidersCreator = new WallsColliderCreator();
     private TestRoom BasicObject { get { return this.BasicComponent<TestRoom>(); } }
+    private Rect _prevRect;
 
     public override void OnInspectorGUI()
     {
@@ -98,6 +140,8 @@ public class TestRoomEditor : Editor
         {
             BuildWalls();
         }
+
+        BasicObject.AdjustSprite();
     }
 
     private void BuildWalls()
@@ -135,6 +179,11 @@ public class TestRoomEditor : Editor
         rigidbody.bodyType = RigidbodyType2D.Static;
 
         return wallGameObject;
+    }
+
+    private void OnSceneGUI()
+    {
+        Handles.DrawSolidRectangleWithOutline(BasicObject.Shape.Rectangle, new Color(1,1,1,0), Color.red);
     }
 }
 

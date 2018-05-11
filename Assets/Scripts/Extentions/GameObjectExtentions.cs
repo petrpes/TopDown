@@ -50,8 +50,32 @@ public static class GameObjectExtentions
         return cache.GetFraction();
     }
 
+    public static T GetComponentExtended<T>(this GameObject gameObject, bool shouldCountChildren = false,
+        Predicate<T> predicate = null, bool showWarningOnMoreThanOne = false, bool returnNullOnMoreThanOne = false)
+        where T : class
+    {
+        T[] result = gameObject.GetComponentsExtended(shouldCountChildren, predicate);
+
+        if (result == null || result.Length == 0)
+        {
+            return null;
+        }
+        else if (result.Length > 1)
+        {
+            if (showWarningOnMoreThanOne)
+            {
+                Debug.LogWarning("There are more than one component of type " + typeof(T).Name);
+            }
+            if (returnNullOnMoreThanOne)
+            {
+                return null;
+            }
+        }
+        return result[0];
+    }
+
     public static T[] GetComponentsExtended<T>(this GameObject gameObject, bool shouldCountChildren = false, 
-        Predicate<T> predicate = null)
+        Predicate<T> predicate = null) where T : class
     {
         T[] result;
 
@@ -92,11 +116,6 @@ public static class GameObjectExtentions
         }
 
         return result;
-    }
-
-    public static bool ShouldListenAllRoomsEvents(this PublicComponentsCacheBase cache)
-    {
-        return (cache as PublicComponentCache) != null && (cache as PublicComponentCache).ShouldListenToAllRooms;
     }
 }
 

@@ -2,12 +2,15 @@
 using System;
 using System.Collections.Generic;
 
-public class RoomEventListenerCollector : IRoomEventListener
+public class RoomEventListenerCollector : IPublicRoomEventListener, IRoomEventListener
 {
     private EnumActionDictionary<RoomEventType, IRoom> _actions;
+    public bool ShouldListenAllRooms { get; private set; }
 
-    public RoomEventListenerCollector(IEnumerable<IRoomEventListener> listeners)
+    public RoomEventListenerCollector(bool listenAllRooms, IEnumerable<IRoomEventListener> listeners)
     {
+        ShouldListenAllRooms = listenAllRooms;
+
         _actions = new EnumActionDictionary<RoomEventType, IRoom>();
 
         foreach (var listener in listeners)
@@ -27,6 +30,14 @@ public class RoomEventListenerCollector : IRoomEventListener
         get
         {
             return _actions[eventType];
+        }
+    }
+
+    public IRoomEventListener Listener
+    {
+        get
+        {
+            return this;
         }
     }
 }

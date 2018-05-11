@@ -50,7 +50,7 @@ public class ComponentsCache
         }
     }
 
-    public void RecalculateComponents<T>(GameObject parent, Component self)
+    public void RecalculateComponents<T>(GameObject parent, Component self) where T : class
     {
         _components = Array.ConvertAll(parent.GetComponentsExtended<T>(_shouldCountInChildren, 
             (comp) => 

@@ -3,7 +3,7 @@
 public class PutInARoomCommand : Command
 {
     [SerializeField] private Vector2 _positionInARoom;
-    [SerializeField] private Mover _mover;
+    [AutomaticSet] [SerializeField] private Mover _mover;
 
     public override void Execute(GameObject actor)
     {

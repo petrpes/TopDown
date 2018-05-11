@@ -4,9 +4,9 @@ using UnityEngine;
 public class SimpleProjecTileWeapon : Weapon
 {
     [SerializeField] private Projectile _projectile;
-    [SerializeField] private MobSkillSet _skillSet;
-    [SerializeField] private DamageSkill _damageSkill;
-    [SerializeField] private ClassInformation _classInformation;
+    [AutomaticSet] [SerializeField] private MobSkillSet _skillSet;
+    [AutomaticSet] [SerializeField] private DamageSkill _damageSkill;
+    [AutomaticSet] [SerializeField] private ClassInformation _classInformation;
 
     private bool _isCanAttack = true;
     private ExpirationTimer _shootTimer;

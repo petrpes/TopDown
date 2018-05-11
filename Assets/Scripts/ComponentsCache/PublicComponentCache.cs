@@ -1,17 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-public class PublicComponentCache : PublicComponentsCacheBase
+public class PublicComponentCache : PublicComponentsCacheBase, IBuiltGlobally
 {
-    [SerializeField] private BuffHandler _buffHandler;
-    [SerializeField] private Mover _mover;
-    [SerializeField] private HealthChanger _healthChanger;
-    [SerializeField] private ClassInformation _classInformation;
+    [AutomaticSet] [SerializeField] private BuffHandler _buffHandler;
+    [AutomaticSet] [SerializeField] private Mover _mover;
+    [AutomaticSet] [SerializeField] private HealthChanger _healthChanger;
+    [AutomaticSet] [SerializeField] private ClassInformation _classInformation;
 
     [HideInInspector]
     [SerializeField] private ComponentsCache _roomEventListeners = new ComponentsCache(typeof(IRoomEventListener), true);
-    private IRoomEventListener _roomEventListener;
+    private IPublicRoomEventListener _roomEventListener;
 
     [HideInInspector]
     [SerializeField]
@@ -23,9 +26,7 @@ public class PublicComponentCache : PublicComponentsCacheBase
     private ComponentsCache _levelEventsListeners = new ComponentsCache(typeof(ILevelEventListener), true);
     private ILevelEventListener _levelEventsListener;
 
-    //TODO change this
     [SerializeField] private bool _shouldListenToAllRooms;
-    public bool ShouldListenToAllRooms { get { return _shouldListenToAllRooms; } }
 
     public override T GetCachedComponent<T>()
     {
@@ -45,14 +46,29 @@ public class PublicComponentCache : PublicComponentsCacheBase
         {
             return _classInformation as T;
         }
+        if (typeof(T).Equals(typeof(IPublicRoomEventListener)))
+        {
+            if (_roomEventListener == null && _roomEventListeners.Count > 0)
+            {
+                _roomEventListener =
+                    new RoomEventListenerCollector(_shouldListenToAllRooms,
+                    _roomEventListeners.GetCachedComponets<IRoomEventListener>());
+            }
+            return _roomEventListener as T;
+        }
         if (typeof(T).Equals(typeof(IRoomEventListener)))
         {
             if (_roomEventListener == null && _roomEventListeners.Count > 0)
             {
                 _roomEventListener =
-                    new RoomEventListenerCollector(_roomEventListeners.GetCachedComponets<IRoomEventListener>());
+                    new RoomEventListenerCollector(_shouldListenToAllRooms, 
+                    _roomEventListeners.GetCachedComponets<IRoomEventListener>());
             }
-            return _roomEventListener as T;
+            else
+            {
+                return null;
+            }
+            return _roomEventListener.Listener as T;
         }
         if (typeof(T).Equals(typeof(ILevelEventListener)))
         {
@@ -141,6 +157,22 @@ public class PublicComponentCache : PublicComponentsCacheBase
         if (_levelEventsListeners.Count > 0)
         {
             Debug.Log(_levelEventsListeners.Count + " level events listeners were succesfully subscribed");
+        }
+
+        foreach (var built in GetComponentsInChildren<MonoBehaviour>())
+        {
+            BuildType(built.GetType(), built);
+            BuildType(built.GetType().BaseType, built);
+        }
+    }
+
+    private void BuildType(Type type, MonoBehaviour component)
+    {
+        foreach (var field in type.GetFields(BindingFlags.NonPublic | BindingFlags.Instance)
+            .Where(field => field.IsDefined(typeof(AutomaticSetAttribute), false)))
+        {
+            gameObject.ChooseComponentWithWindow(field.FieldType, comp =>
+                { field.SetValue(component, comp); EditorUtility.SetDirty(component); }, null);
         }
     }
 #endif

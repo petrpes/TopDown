@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class StandartHealthChanger : HealthChanger
 {
-    [SerializeField] private ClassInformation _classInformation;
+    [AutomaticSet] [SerializeField] private ClassInformation _classInformation;
 
     private Fraction CurrentFraction
     {

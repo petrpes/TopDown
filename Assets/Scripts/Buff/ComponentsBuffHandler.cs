@@ -2,9 +2,9 @@
 
 public class ComponentsBuffHandler : BuffHandler
 {
-    [SerializeField] private WalkableSkillsSet _walkableSkillSet;
-    [SerializeField] private DamageSkill _damageSkill;
-    [SerializeField] private MobSkillSet _mobSkill;
+    [AutomaticSet] [SerializeField] private WalkableSkillsSet _walkableSkillSet;
+    [AutomaticSet] [SerializeField] private DamageSkill _damageSkill;
+    [AutomaticSet] [SerializeField] private MobSkillSet _mobSkill;
 
     public override bool BuffParameter(BuffType type, object value, object sender)
     {
